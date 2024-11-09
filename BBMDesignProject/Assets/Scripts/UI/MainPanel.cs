@@ -48,6 +48,7 @@ namespace UI {
             if (GUILayout.Button("Add Object", buttonStyle, GUILayout.Height(30)))
             {
                 Debug.Log("Add Object button clicked");
+                AddObjectWindow.ShowWindow();
             }
 
             if (GUILayout.Button("Delete Object", buttonStyle, GUILayout.Height(30)))
