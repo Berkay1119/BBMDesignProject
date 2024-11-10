@@ -1,10 +1,26 @@
+using System;
+using System.Collections.Generic;
+using Backend.Objects;
 using UnityEditor;
 using UnityEngine;
 
-namespace UI {
+namespace UI
+{
     public class MainPanel : EditorWindow
     {
         private static Texture2D lightGreyTexture;
+        private static PanelContentController _panelContentController;
+
+        private Vector2 gridOffset; // Offset for panning
+        private Vector2 dragStartPos;
+        private bool isDragging = false;
+        private const float gridSpacing = 20f;
+        private Vector2 rightPanelScrollPosition;
+
+        private void OnEnable()
+        {
+            _panelContentController = PanelContentController.Instance;
+        }
 
         [MenuItem("Custom UI/Easy Prototyping")]
         public static void ShowWindow()
@@ -23,28 +39,60 @@ namespace UI {
 
         private void OnGUI()
         {
-            // Set the inner window scales
             float leftPanelWidth = position.width * 0.8f;
             float rightPanelWidth = position.width * 0.2f;
 
-            // Left panel
+            // Left panel with movable grid
             GUILayout.BeginArea(new Rect(0, 0, leftPanelWidth - 2, position.height), EditorStyles.helpBox);
+            //HandleGridDragging();
+            DrawGrid(leftPanelWidth, position.height);
+            _panelContentController.DrawPanelContent();
             GUILayout.EndArea();
 
-            // Borderline between left and right panels
+            // Right panel setup
+            DrawRightPanel(leftPanelWidth, rightPanelWidth);
+        }
+
+        private void DrawGrid(float width, float height)
+        {
+            Handles.color = Color.gray;
+
+            for (float x = gridOffset.x % gridSpacing; x < width; x += gridSpacing)
+                Handles.DrawLine(new Vector3(x, 0, 0), new Vector3(x, height, 0));
+            for (float y = gridOffset.y % gridSpacing; y < height; y += gridSpacing)
+                Handles.DrawLine(new Vector3(0, y, 0), new Vector3(width, y, 0));
+        }
+
+        private void HandleGridDragging()
+        {
+            Event currentEvent = Event.current;
+            if (currentEvent.type == EventType.MouseDown && currentEvent.button == 0)
+            {
+                isDragging = true;
+                dragStartPos = currentEvent.mousePosition;
+            }
+            else if (currentEvent.type == EventType.MouseUp && currentEvent.button == 0)
+            {
+                isDragging = false;
+            }
+
+            if (isDragging && currentEvent.type == EventType.MouseDrag)
+            {
+                Vector2 dragDelta = currentEvent.mousePosition - dragStartPos;
+                gridOffset += dragDelta;
+                dragStartPos = currentEvent.mousePosition;
+                Repaint();
+            }
+        }
+
+        private void DrawRightPanel(float leftPanelWidth, float rightPanelWidth)
+        {
             EditorGUI.DrawRect(new Rect(leftPanelWidth - 2, 0, 4, position.height), Color.grey);
 
-            // Right panel background color
-            GUIStyle rightPanelStyle = new GUIStyle();
-            rightPanelStyle.normal.background = lightGreyTexture;
-
-            // Right panel
+            GUIStyle rightPanelStyle = new GUIStyle { normal = { background = lightGreyTexture } };
             GUILayout.BeginArea(new Rect(leftPanelWidth + 2, 0, rightPanelWidth - 2, position.height), rightPanelStyle);
 
-            // Button styles
-            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
-            buttonStyle.normal.textColor = Color.black;
-
+            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button) { normal = { textColor = Color.black } };
             if (GUILayout.Button("Add Object", buttonStyle, GUILayout.Height(30)))
             {
                 Debug.Log("Add Object button clicked");

@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using Backend.Components;
+using Backend.Objects;
 using UnityEditor;
 using UnityEngine;
 
@@ -52,7 +55,16 @@ namespace UI {
                 if (isPlatformCharacter) Debug.Log("- Platform Character");
                 if (isCollectible) Debug.Log("- Collectible");
                 if (isObstacle) Debug.Log("- Obstacle");
-
+                Dictionary<string,bool> components = new Dictionary<string, bool>
+                {
+                    {"Platform", isPlatform},
+                    {"Platform Character", isPlatformCharacter},
+                    {"Collectible", isCollectible},
+                    {"Obstacle", isObstacle}
+                };
+                var objectOnPanel = new ObjectOnPanel(objectTexture, objectName, components);
+                PanelContentController.Instance.AddObjectOnPanel(objectOnPanel);
+                
                 // Auto-closing after adding
                 Close();
             }
