@@ -41,8 +41,7 @@ namespace UI
         {
             float leftPanelWidth = position.width * 0.8f;
             float rightPanelWidth = position.width * 0.2f;
-
-            // Left panel with movable grid
+            
             GUILayout.BeginArea(new Rect(0, 0, leftPanelWidth - 2, position.height), EditorStyles.helpBox);
             //HandleGridDragging();
             DrawGrid(leftPanelWidth, position.height);
@@ -99,9 +98,14 @@ namespace UI
                 AddObjectWindow.ShowWindow();
             }
 
-            if (GUILayout.Button("Delete Object", buttonStyle, GUILayout.Height(30)))
+            if (GUILayout.Button("Play", buttonStyle, GUILayout.Height(30)))
             {
-                Debug.Log("Delete Object button clicked");
+                Debug.Log("Play is button clicked");
+            }
+            
+            if (GUILayout.Button("Save as JSON", buttonStyle, GUILayout.Height(30)))
+            {
+                Debug.Log("Prototype has been saved as JSON");
             }
 
             GUILayout.EndArea();

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Backend.Components;
+using Backend.Controllers;
 using Backend.Objects;
 using UnityEditor;
 using UnityEngine;
@@ -9,14 +10,19 @@ namespace UI {
     {
         private string objectName = "";
         private Texture2D objectTexture;
-        private bool isPlatform;
-        private bool isPlatformCharacter;
-        private bool isCollectible;
-        private bool isObstacle;
+        private static List<BaseComponent> _availableComponents;
+        private static List<bool> _componentsToggle = new List<bool>();
 
         public static void ShowWindow()
         {
             GetWindow<AddObjectWindow>("Add New Object");
+            _availableComponents = ComponentController.FindComponents();
+            _componentsToggle.Clear();
+            // Initialize toggles
+            foreach (var baseComponent in _availableComponents)
+            {
+                _componentsToggle.Add(false);
+            }
         }
 
         private void OnGUI()
@@ -29,12 +35,14 @@ namespace UI {
 
             GUILayout.Label("Components and Behaviours:", EditorStyles.boldLabel);
             
-            DrawToggleWithDescription(ref isPlatform, "Platform", "This object acts as a platform.");
-            DrawToggleWithDescription(ref isPlatformCharacter, "Platform Character", "Character that interacts with platforms.");
-            DrawToggleWithDescription(ref isCollectible, "Collectible", "Collectible item that the player can collect.");
-            DrawToggleWithDescription(ref isObstacle, "Obstacle", "Object that acts as an obstacle for the player.");
+           
             
-            
+            for (int i = 0; i < _componentsToggle.Count; i++)
+            {
+                DrawToggleWithDescription(ref i, _availableComponents[i].Name, _availableComponents[i].Description);
+            }
+
+
             // Add functionality
             if (GUILayout.Button("Add"))
             {
@@ -51,18 +59,14 @@ namespace UI {
 
                 // Debugging
                 Debug.Log("Selected Components and Behaviours:");
-                if (isPlatform) Debug.Log("- Platform");
-                if (isPlatformCharacter) Debug.Log("- Platform Character");
-                if (isCollectible) Debug.Log("- Collectible");
-                if (isObstacle) Debug.Log("- Obstacle");
-                Dictionary<string,bool> components = new Dictionary<string, bool>
+                
+                var _components = new Dictionary<string, bool>();
+                for (int i = 0; i < _componentsToggle.Count; i++)
                 {
-                    {"Platform", isPlatform},
-                    {"Platform Character", isPlatformCharacter},
-                    {"Collectible", isCollectible},
-                    {"Obstacle", isObstacle}
-                };
-                var objectOnPanel = new ObjectOnPanel(objectTexture, objectName, components);
+                    _components.Add(_availableComponents[i].Name, _componentsToggle[i]);
+                }
+                
+                var objectOnPanel = new ObjectOnPanel(objectTexture, objectName, _components);
                 PanelContentController.Instance.AddObjectOnPanel(objectOnPanel);
                 
                 // Auto-closing after adding
@@ -72,10 +76,10 @@ namespace UI {
         }
         
         // Helper func to adjust toggles and descriptions
-        private void DrawToggleWithDescription(ref bool toggleValue, string label, string description)
+        private void DrawToggleWithDescription(ref int toggleIndex, string label, string description)
         {
             GUILayout.BeginHorizontal();
-            toggleValue = EditorGUILayout.Toggle(toggleValue, GUILayout.Width(20)); // Toggle on the left
+            _componentsToggle[toggleIndex] = EditorGUILayout.Toggle(_componentsToggle[toggleIndex], GUILayout.Width(20)); // Toggle on the left
             GUILayout.Label($"{label}: {description}", GUILayout.ExpandWidth(true)); // Description on the right
             GUILayout.EndHorizontal();
         }

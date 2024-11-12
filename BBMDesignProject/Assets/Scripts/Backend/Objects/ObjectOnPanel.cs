@@ -11,13 +11,16 @@ namespace Backend.Objects
         private string _name;
         private List<BaseComponent> _components;
         public Vector2 Position { get; set; }
+        public List<BaseComponent> Components => _components;
         
         public bool HasSprite => _texture != null;
         public string Name => _name;
+        public float Scale { get; set; }
 
         public ObjectOnPanel(Texture2D texture, string name, Dictionary<string,bool> components)
         {
             _texture = texture;
+            Scale = 1;
             _name = name;
             _components = new List<BaseComponent>();
             foreach (var component in components)

@@ -3,7 +3,7 @@ using Backend.Objects;
 
 namespace Backend.Components
 {
-    [Component("Platform", "A platform that the player can stand on.")]
+    [Component]
     public class PlatformComponent: BaseComponent
     {
         public PlatformComponent()
@@ -11,6 +11,8 @@ namespace Backend.Components
             IsStatic = true;
             HasCollider = true;
             IsTrigger = false;
+            SetName("Platform");
+            SetDescription("A platform that the player can stand on.");
         }
     }
 }
