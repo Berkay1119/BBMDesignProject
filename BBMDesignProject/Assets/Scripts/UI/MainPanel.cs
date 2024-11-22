@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using Backend.Objects;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,7 +8,7 @@ namespace UI
         private static Texture2D lightGreyTexture;
         private static PanelContentController _panelContentController;
 
-        private Vector2 gridOffset; // Offset for panning
+        private Vector2 gridOffset; 
         private Vector2 dragStartPos;
         private bool isDragging = false;
         private const float gridSpacing = 20f;
@@ -25,10 +22,10 @@ namespace UI
         [MenuItem("Custom UI/Easy Prototyping")]
         public static void ShowWindow()
         {
-            // Open the window
+            // open the window
             GetWindow<MainPanel>("Easy Prototyping Panel");
 
-            // Create light grey texture if not already created
+            // create light grey texture if not already created
             if (lightGreyTexture == null)
             {
                 lightGreyTexture = new Texture2D(1, 1);
@@ -48,7 +45,6 @@ namespace UI
             _panelContentController.DrawPanelContent();
             GUILayout.EndArea();
 
-            // Right panel setup
             DrawRightPanel(leftPanelWidth, rightPanelWidth);
         }
 
