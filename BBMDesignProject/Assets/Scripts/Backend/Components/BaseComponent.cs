@@ -1,16 +1,17 @@
-﻿namespace Backend.Components
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Backend.Components
 {
-    public abstract class BaseComponent
+    public abstract class BaseComponent:MonoBehaviour
     {
-        protected bool IsStatic;
-        protected bool HasCollider;
-        protected bool IsTrigger;
         private string _name;
         private string _description;
         public string Name => _name;
         public string Description => _description;
 
-        
+        protected  List<Component> _addedComponents = new List<Component>();
         public void SetName(string name)
         {
             _name = name;
@@ -20,5 +21,15 @@
         {
             _description = description;
         }
+
+        private void OnDisable()
+        {
+            foreach (var component in _addedComponents)
+            {
+                Destroy(component);
+            }
+        }
+
+        public abstract void SetupComponent();
     }
 }

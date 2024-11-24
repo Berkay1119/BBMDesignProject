@@ -1,17 +1,49 @@
-﻿using Backend.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using Backend.Attributes;
+using Backend.Components.SubComponents;
+using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Backend.Components
 {
     [Component]
     public class CharacterComponent: BaseComponent
     {
+        [SerializeField] private string leftKey = "a";
+        [SerializeField] private string rightKey = "d";
+        [SerializeField] private float speed = 5f;
+        [SerializeField] private float jumpForce = 10f;
+        public char LeftKey => leftKey[0];
+        public char RightKey => rightKey[0];
+        public float Speed => speed;
+        public float JumpForce => jumpForce;
+        
+        private PlayerController _playerController;
+        private Rigidbody2D _playerRigidbody2D;
+        
         public CharacterComponent()
         {
             SetName("Character");
             SetDescription("This component is used to define a character in the game.");
-            IsStatic = false;
-            HasCollider = true;
-            IsTrigger = false;
+        }
+
+        private void OnEnable()
+        {
+            _playerController=gameObject.AddComponent<PlayerController>();
+            _addedComponents.Add(_playerController);
+            var tempCollider =gameObject.AddComponent<BoxCollider2D>();
+            _addedComponents.Add(tempCollider);
+            _playerRigidbody2D=gameObject.AddComponent<Rigidbody2D>();
+            _addedComponents.Add(_playerRigidbody2D);
+            _playerRigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
+            
+            _playerController.Setup(this,_playerRigidbody2D);
+        }
+
+        public override void SetupComponent()
+        {
+
         }
     }
 }

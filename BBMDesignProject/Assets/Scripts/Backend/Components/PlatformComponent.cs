@@ -1,5 +1,6 @@
-﻿using Backend.Attributes;
-using Backend.Objects;
+﻿using System;
+using Backend.Attributes;
+using UnityEngine;
 
 namespace Backend.Components
 {
@@ -8,11 +9,19 @@ namespace Backend.Components
     {
         public PlatformComponent()
         {
-            IsStatic = true;
-            HasCollider = true;
-            IsTrigger = false;
             SetName("Platform");
             SetDescription("A platform that the player can stand on.");
+        }
+
+        private void OnEnable()
+        {
+            var tempCollider=gameObject.AddComponent<BoxCollider2D>();
+            _addedComponents.Add(tempCollider);
+        }
+
+        public override void SetupComponent()
+        {
+            
         }
     }
 }
