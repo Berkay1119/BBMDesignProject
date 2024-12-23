@@ -8,7 +8,12 @@ namespace Backend
     {
         public string eventName;
         public string eventDescription;
-        public EasyCondition Condition;
-        public EasyAction Action;
+        [SerializeReference] public EasyCondition Condition;
+        [SerializeReference] public EasyAction Action;
+
+        public void Setup()
+        {
+            Condition.Setup(Action);
+        }
     }
 }

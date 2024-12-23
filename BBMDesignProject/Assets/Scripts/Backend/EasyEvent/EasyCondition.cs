@@ -9,8 +9,13 @@ namespace Backend
     {
         public string conditionName;
         public string conditionDescription;
-        [Header("Colliding")]
-        public bool isColliding;
-        public List<GameObject> collidingObjects = new List<GameObject>();
+
+        public virtual void DrawGUI()
+        {
+            GUILayout.BeginVertical();
+            GUILayout.Label("Condition Name: " + conditionName);
+        }
+
+        public abstract void Setup(EasyAction action);
     }
 }
