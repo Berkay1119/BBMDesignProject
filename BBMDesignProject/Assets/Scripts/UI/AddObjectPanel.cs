@@ -15,6 +15,8 @@ namespace UI {
         // holds the users selection of components and behaviours
         private static List<bool> _componentsToggle = new List<bool>();
 
+        private bool cameraFollowCharacter = false;
+        
         public static void ShowWindow() {
             GetWindow<AddObjectWindow>("Add New EasyObject");
             _availableComponents = ComponentController.FindComponents();
@@ -34,6 +36,15 @@ namespace UI {
             
             for (var i = 0; i < _componentsToggle.Count; i++) {
                 DrawToggleWithDescription(ref i, _availableComponents[i].Name, _availableComponents[i].Description);
+               
+                if (_availableComponents[i].Name == "Character" && _componentsToggle[i])
+                {
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Space(20); 
+                    bool cameraFollow = GUILayout.Toggle(cameraFollowCharacter, "Camera: Follow Character");
+                    cameraFollowCharacter = cameraFollow;
+                    GUILayout.EndHorizontal();
+                }
                 if ( _componentsToggle[i])
                 {
                     _availableComponents[i].DrawGUI();
@@ -75,14 +86,18 @@ namespace UI {
                 Debug.Log("No texture provided, SpriteRenderer not added.");
             }*/
 
-            if (objectTexture)
-            {
+            if (objectTexture) {
                 easyObject.AddSprite(objectTexture);
+            } else {
+                Debug.Log("No texture provided, SpriteRenderer not added.");
             }
+            
             var selectedComponents = new Dictionary<string, bool>();
             for (var i = 0; i < _componentsToggle.Count; i++) {
                 selectedComponents.Add(_availableComponents[i].Name, _componentsToggle[i]);
+                
             }
+            
             easyObject.CreateEasyComponents(selectedComponents);
 
             Debug.Log($"Created new object '{objectName}' with components:");
@@ -96,6 +111,17 @@ namespace UI {
                 BoxCollider2D boxCollider2D = newObject.AddComponent<BoxCollider2D>();
                 boxCollider2D.size = new Vector2(1, 1);
             }*/
+            
+            // If "Camera: Follow Character" is selected
+            if (selectedComponents.ContainsKey("Character") && selectedComponents["Character"]) {
+                var characterComponent = newObject.GetComponent<CharacterComponent>();
+                if (characterComponent != null && cameraFollowCharacter) {
+                    var cameraFollow = Camera.main?.gameObject.AddComponent<CameraFollowComponent>();
+                    if (cameraFollow != null) {
+                        cameraFollow.target = newObject.transform;
+                    }
+                }
+            }
 
             // select the new object in the hierarchy
             Selection.activeGameObject = newObject;
