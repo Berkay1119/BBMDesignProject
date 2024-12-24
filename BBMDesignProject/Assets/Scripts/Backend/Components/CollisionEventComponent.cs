@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Backend.Components
 {
-    [Component]
     public class CollisionEventComponent:BaseComponent
     {
         [SerializeField] private List<(GameObject,EasyAction)> _targets = new List<(GameObject, EasyAction)>();

@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using Backend.Attributes;
+﻿using Backend.Attributes;
 using Backend.Components.SubComponents;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Backend.Components
 {
     [Component]
     public class CharacterComponent: BaseComponent
     {
+        [SerializeField] public bool cameraFollowCharacter = false;
         [SerializeField] private string leftKey = "a";
         [SerializeField] private string rightKey = "d";
         [SerializeField] private float speed = 5f;
@@ -28,8 +26,7 @@ namespace Backend.Components
             SetDescription("This component is used to define a character in the game.");
         }
 
-        private void OnEnable()
-        {
+        private void OnEnable() {
             _playerController=gameObject.AddComponent<PlayerController>();
             _addedComponents.Add(_playerController);
             var tempCollider =gameObject.AddComponent<BoxCollider2D>();
@@ -39,6 +36,14 @@ namespace Backend.Components
             _playerRigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
             
             _playerController.Setup(this,_playerRigidbody2D);
+            
+            if (!cameraFollowCharacter) {
+                return;
+            }
+
+            var cameraFollow = Camera.main.gameObject.AddComponent<CameraFollowComponent>();
+            cameraFollow.target = gameObject.transform;
+
         }
 
         public override void SetupComponent()

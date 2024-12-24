@@ -29,28 +29,27 @@ namespace Backend.Components.SubComponents
             _rigidbody2D = rigidbody2D;
         }
 
-        private void Update()
-        {
-            if (!_characterComponent)
-            {
+        private void Update() {
+            if (!_characterComponent) {
                 return;
             }
+
+            Vector2 velocity = _rigidbody2D.velocity;
             
-            if (Input.GetKey(GetKeyCode(_characterComponent.LeftKey)))
-            {
-                var force = _characterComponent.Speed * Time.deltaTime;
-                _rigidbody2D.AddForce(Vector2.left * force,ForceMode2D.Impulse);
-            }
-            else if (Input.GetKey(GetKeyCode(_characterComponent.RightKey)))
-            {
-                var force = _characterComponent.Speed * Time.deltaTime;
-                _rigidbody2D.AddForce(Vector2.right * force,ForceMode2D.Impulse);
+            if (Input.GetKey(GetKeyCode(_characterComponent.LeftKey))) {
+                velocity.x = -_characterComponent.Speed; // Sabit bir hız
+            } else if (Input.GetKey(GetKeyCode(_characterComponent.RightKey))) {
+                velocity.x = _characterComponent.Speed; // Sabit bir hız
+            } else {
+                velocity.x = 0;
             }
 
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                _rigidbody2D.AddForce(Vector2.up * _characterComponent.JumpForce, ForceMode2D.Impulse);
+            if (Input.GetKeyDown(KeyCode.Space) && Mathf.Abs(_rigidbody2D.velocity.y) < 0.01f) {
+                velocity.y = _characterComponent.JumpForce;
             }
+
+            _rigidbody2D.velocity = velocity;
         }
+
     }
 }
