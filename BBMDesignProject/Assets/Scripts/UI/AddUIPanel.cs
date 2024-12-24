@@ -89,8 +89,18 @@ namespace UI
                     var text = textObject.AddComponent<TMPro.TextMeshProUGUI>();
                     textObject.GetComponent<RectTransform>().localScale = Vector3.one;
                     collectibleAmountDisplay.text = text;
+                    text.alignment = TMPro.TextAlignmentOptions.Center;
                     break;
                 case UIType.TextDisplay:
+                    textObject = new GameObject("Text");
+                    rect = textObject.AddComponent<RectTransform>();
+                    textObject.transform.SetParent(panel.transform);
+                    rect.anchoredPosition = Vector2.zero;
+                    rect.pivot = GetPivot(_settings.Position);
+                    text = textObject.AddComponent<TMPro.TextMeshProUGUI>();
+                    textObject.GetComponent<RectTransform>().localScale = Vector3.one;
+                    text.text = _settings.Text;
+                    text.alignment = TMPro.TextAlignmentOptions.Center;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -109,6 +119,8 @@ namespace UI
                     return new Vector2(0, 1);
                 case UIPosition.LeftBottom:
                     return new Vector2(0, 0);
+                case UIPosition.Center:
+                    return new Vector2(0.5f, 0.5f);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -126,6 +138,8 @@ namespace UI
                     return new Vector2(0, 1);
                 case UIPosition.LeftBottom:
                     return new Vector2(0, 0);
+                case UIPosition.Center:
+                    return new Vector2(0.5f, 0.5f);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -143,6 +157,8 @@ namespace UI
                     return new Vector2(0, 1);
                 case UIPosition.LeftBottom:
                     return new Vector2(0, 0);
+                case UIPosition.Center:
+                    return new Vector2(0.5f, 0.5f);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -172,6 +188,7 @@ namespace UI
         RightTop,
         RightBottom,
         LeftTop,
-        LeftBottom
+        LeftBottom,
+        Center
     }
 }
