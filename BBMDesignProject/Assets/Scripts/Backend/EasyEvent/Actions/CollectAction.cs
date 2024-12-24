@@ -9,7 +9,7 @@ namespace Backend.Actions
     public class CollectAction:EasyAction
     {
         public GameObject Target;
-        public string ItemName;
+        public CollectibleType ItemType;
         public int Amount;
         
         public CollectAction()
@@ -23,6 +23,7 @@ namespace Backend.Actions
             base.DrawGUI();
             Target = (GameObject)EditorGUILayout.ObjectField("Target", Target, typeof(GameObject), true);
             Amount = EditorGUILayout.IntField("Amount", Amount);
+            ItemType = (CollectibleType)EditorGUILayout.EnumPopup("Item Type", ItemType);
             GUILayout.EndVertical();
         }
 
@@ -32,7 +33,7 @@ namespace Backend.Actions
             {
                 Target.AddComponent<InventoryComponent>();
             }
-            Target.GetComponent<InventoryComponent>().AddItem(ItemName, Amount);
+            Target.GetComponent<InventoryComponent>().AddItem(ItemType, Amount);
         }
     }
 }

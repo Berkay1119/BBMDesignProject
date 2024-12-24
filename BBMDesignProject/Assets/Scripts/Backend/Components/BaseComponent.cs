@@ -30,6 +30,11 @@ namespace Backend.Components
             }
         }
 
+        public virtual void DrawGUI()
+        {
+            
+        }
+
         public abstract void SetupComponent();
     }
 }

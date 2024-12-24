@@ -34,6 +34,10 @@ namespace UI {
             
             for (var i = 0; i < _componentsToggle.Count; i++) {
                 DrawToggleWithDescription(ref i, _availableComponents[i].Name, _availableComponents[i].Description);
+                if ( _componentsToggle[i])
+                {
+                    _availableComponents[i].DrawGUI();
+                }
             }
 
             // "add" button

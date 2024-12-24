@@ -1,6 +1,8 @@
 ﻿using System;
 using Backend.Attributes;
 using Backend.Components;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 namespace Backend.Conditions
@@ -8,8 +10,8 @@ namespace Backend.Conditions
     [Condition]
     public class CollidingCondition:EasyCondition
     {
-        public string Tag1;
-        public string Tag2;
+        public CollectibleType CollectibleType;
+        public string collecterTag;
         
         public CollidingCondition()
         {
@@ -20,31 +22,30 @@ namespace Backend.Conditions
         public override void DrawGUI()
         {
             base.DrawGUI();
-            Tag1 = UnityEditor.EditorGUILayout.TextField("Tag1", Tag1);
-            Tag2 = UnityEditor.EditorGUILayout.TextField("Tag2", Tag2);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Collectible Type:", GUILayout.Width(150));
+            CollectibleType= (CollectibleType)EditorGUILayout.EnumPopup(CollectibleType);
+            GUILayout.EndHorizontal();
+            collecterTag = EditorGUILayout.TextField("Collecter Tag", collecterTag);
             GUILayout.EndVertical();
         }
 
         public override void Setup(EasyAction action)
         {
-            var objects1 = GameObject.FindGameObjectsWithTag(Tag1);
-            var objects2 = GameObject.FindGameObjectsWithTag(Tag2);
-            foreach (var obj1 in objects1)
+            var collectibles = UnityEngine.Object.FindObjectsOfType<CollectibleComponent>();
+            var collecters = GameObject.FindGameObjectsWithTag(collecterTag);
+            foreach (var obj1 in collectibles)
             {
-                foreach (var obj2 in objects2)
+                foreach (var obj2 in collecters)
                 {
                     if (obj1.GetComponent<CollisionEventComponent>()==null)
                     {
                         obj1.AddComponent<CollisionEventComponent>();
                     }
                     obj1.GetComponent<CollisionEventComponent>().AddTarget(obj2,action);
-                    if (obj2.GetComponent<CollisionEventComponent>()==null)
-                    {
-                        obj2.AddComponent<CollisionEventComponent>();
-                    }
-                    obj2.GetComponent<CollisionEventComponent>().AddTarget(obj1,action);
                 }
             }
+
         }
     }
 }

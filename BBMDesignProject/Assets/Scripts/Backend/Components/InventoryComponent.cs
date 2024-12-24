@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Backend.UIComponents;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -9,27 +10,35 @@ namespace Backend.Components
     {
         [SerializeField] private List<ItemStack> items = new List<ItemStack>();
         
+        public IReadOnlyList<ItemStack> Items => items;
         public override void SetupComponent()
         {
             SetName("Inventory");
             SetDescription("This component allows the entity to store items.");
         }
         
-        public void AddItem(string nameKey, int amount)
+        public void AddItem(CollectibleType type, int amount)
         {
             foreach (var item in items)
             {
-                if (item.name == nameKey)
+                if (item.type == type)
                 {
                     item.amount += amount;
-                    return;
+                                        
                 }
             }
             items.Add(new ItemStack
             {
                 amount = amount,
-                name = nameKey
+                type = type
             });
+            var ui=FindObjectsOfType<UICollectibleAmountDisplay>();
+
+            foreach (var display in ui)
+            {
+                display.UpdateText();
+            }
+            return;
         }
     }
 
@@ -37,6 +46,6 @@ namespace Backend.Components
     public class ItemStack
     {
         public int amount;
-        public string name;
+        public CollectibleType type;
     }
 }

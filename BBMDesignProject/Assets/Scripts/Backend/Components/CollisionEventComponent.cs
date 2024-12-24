@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Backend.Components
 {
-    [Component]
     public class CollisionEventComponent:BaseComponent
     {
         [SerializeField] private List<(GameObject,EasyAction)> _targets = new List<(GameObject, EasyAction)>();
@@ -20,14 +19,19 @@ namespace Backend.Components
 
         private void OnCollisionEnter2D(Collision2D other)
         {
+            bool isTriggered = false;
             foreach (var (targetGameObject, action) in _targets)
             {
                 if (other.gameObject == targetGameObject)
                 {
+                    isTriggered = true;
                     action.Execute();
                 }
             }
-            Debug.Log("Collision");
+            if (isTriggered)
+            {
+                Destroy(gameObject);
+            }
         }
 
         public override void SetupComponent()
