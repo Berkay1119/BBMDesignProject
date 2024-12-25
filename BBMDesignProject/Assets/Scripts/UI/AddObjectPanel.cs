@@ -16,6 +16,7 @@ namespace UI {
         private static List<bool> _componentsToggle = new List<bool>();
 
         private bool cameraFollowCharacter = false;
+        private bool isMovingPanel = false;
         
         public static void ShowWindow() {
             GetWindow<AddObjectWindow>("Add New EasyObject");
@@ -45,6 +46,14 @@ namespace UI {
                     cameraFollowCharacter = cameraFollow;
                     GUILayout.EndHorizontal();
                 }
+                if (_availableComponents[i].Name == "Platform" && _componentsToggle[i]) {
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Space(20); 
+                    isMovingPanel = GUILayout.Toggle(isMovingPanel, "Moving Panel");
+                    GUILayout.EndHorizontal();
+                }
+
+                
                 if ( _componentsToggle[i])
                 {
                     _availableComponents[i].DrawGUI();
@@ -67,6 +76,7 @@ namespace UI {
             // create new gameObject
             GameObject newObject = new GameObject(objectName);
             var easyObject=newObject.AddComponent<EasyObject>();
+            
             // add rect transform to the object
             //RectTransform rectTransform = newObject.AddComponent<RectTransform>();
            
@@ -105,13 +115,6 @@ namespace UI {
                 Debug.Log(component.GetType().Name);
             }
             
-            // if object is a character or a platform, add boxCollider2D
-            /*if (_componentsToggle[0] || _componentsToggle[1])
-            {
-                BoxCollider2D boxCollider2D = newObject.AddComponent<BoxCollider2D>();
-                boxCollider2D.size = new Vector2(1, 1);
-            }*/
-            
             // If "Camera: Follow Character" is selected
             if (selectedComponents.ContainsKey("Character") && selectedComponents["Character"]) {
                 var characterComponent = newObject.GetComponent<CharacterComponent>();
@@ -120,6 +123,13 @@ namespace UI {
                     if (cameraFollow != null) {
                         cameraFollow.target = newObject.transform;
                     }
+                }
+            }
+            
+            if (selectedComponents.ContainsKey("Platform") && selectedComponents["Platform"]) {
+                var platformComponent = newObject.GetComponent<PlatformComponent>();
+                if (platformComponent != null && isMovingPanel) {
+                    platformComponent.IsMoving = true; 
                 }
             }
 
