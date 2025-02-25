@@ -9,7 +9,7 @@ namespace Backend.UIComponents
         public GameObject target;
         public TMPro.TextMeshProUGUI text;
         
-        private void Start()
+        private void Awake()
         {
             UpdateText();
         }
@@ -28,6 +28,7 @@ namespace Backend.UIComponents
                 text.text = type.ToString() + ": " + item.amount;
                 return;
             }
+            text.text = type.ToString() + ": 0";
         }
     }
 }
