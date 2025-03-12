@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Backend.Components;
 using Backend.Controllers;
+using Backend.CustomVariableFeature;
 using Backend.Object;
 using UnityEditor;
 using UnityEngine;
@@ -17,6 +18,11 @@ namespace UI {
 
         private bool cameraFollowCharacter = false;
         private bool isMovingPanel = false;
+        
+        private List<CustomVariable> _customVariables = new List<CustomVariable>();
+        private string newVariableName = "";
+        private VariableType newVariableType = VariableType.String;
+        private string newVariableValue = "";
         
         public static void ShowWindow() {
             GetWindow<AddObjectWindow>("Add New EasyObject");
@@ -59,6 +65,34 @@ namespace UI {
                     _availableComponents[i].DrawGUI();
                 }
             }
+            
+            GUILayout.Label("Custom Variables", EditorStyles.boldLabel);
+            
+            // Input fields for new variable
+            GUILayout.BeginHorizontal();
+            newVariableName = EditorGUILayout.TextField("Variable Name", newVariableName, GUILayout.Width(300));
+            newVariableType = (VariableType)EditorGUILayout.EnumPopup("Type", newVariableType, GUILayout.Width(300));
+            newVariableValue = EditorGUILayout.TextField("Value", newVariableValue, GUILayout.Width(300));
+            
+            if (GUILayout.Button("+", GUILayout.Width(30))) {
+                if (!string.IsNullOrWhiteSpace(newVariableName)) {
+                    _customVariables.Add(new CustomVariable(newVariableName, newVariableType, newVariableValue));
+                    newVariableName = "";
+                    newVariableValue = "";
+                }
+            }
+            GUILayout.EndHorizontal();
+
+            // Display custom variables list
+            for (int i = 0; i < _customVariables.Count; i++) {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label($"{_customVariables[i].Name} ({_customVariables[i].Type}): {_customVariables[i].Value}");
+                if (GUILayout.Button("Remove", GUILayout.Width(70))) {
+                    _customVariables.RemoveAt(i);
+                }
+                GUILayout.EndHorizontal();
+            }
+            
 
             // "add" button
             if (GUILayout.Button("Add")) {
@@ -109,6 +143,11 @@ namespace UI {
             }
             
             easyObject.CreateEasyComponents(selectedComponents);
+            
+            // Apply custom variables
+            foreach (var customVar in _customVariables) {
+                easyObject.AddCustomVariable(customVar.Name, customVar.Type, customVar.Value.ToString());
+            }
 
             Debug.Log($"Created new object '{objectName}' with components:");
             foreach (var component in newObject.GetComponents<Component>()) {
