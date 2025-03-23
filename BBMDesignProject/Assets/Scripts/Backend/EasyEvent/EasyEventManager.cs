@@ -36,5 +36,13 @@ namespace Backend
                 events[i].eventName = newEvent.eventName;
                 events[i].eventDescription = newEvent.eventDescription;
          }
+
+         private void Update()
+         {
+             foreach (var easyEvent in events)
+             {
+                 easyEvent.CheckCondition();
+             }
+         }
     }
 }

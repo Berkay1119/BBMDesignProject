@@ -1,6 +1,7 @@
 ﻿using System;
 using Backend.Attributes;
 using Backend.Components;
+using Backend.Object;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -10,8 +11,11 @@ namespace Backend.Conditions
     [Condition]
     public class CollidingCondition:EasyCondition
     {
-        public CollectibleType CollectibleType;
-        public string collecterTag;
+        public EasyObject _objectOne;
+        public EasyObject _objectTwo;
+        
+        private Collider2D firstCollider;
+        private Collider2D secondCollider;
         
         public CollidingCondition()
         {
@@ -23,29 +27,26 @@ namespace Backend.Conditions
         {
             base.DrawGUI();
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Collectible Type:", GUILayout.Width(150));
-            CollectibleType= (CollectibleType)EditorGUILayout.EnumPopup(CollectibleType);
+            GUILayout.Label("Object One:", GUILayout.Width(150));
+            _objectOne= (EasyObject)EditorGUILayout.ObjectField(_objectOne, typeof(EasyObject), true);
             GUILayout.EndHorizontal();
-            collecterTag = EditorGUILayout.TextField("Collecter Tag", collecterTag);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Object Two:", GUILayout.Width(150));
+            _objectTwo= (EasyObject)EditorGUILayout.ObjectField(_objectTwo, typeof(EasyObject), true);
+            GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
 
-        public override void Setup(EasyAction action)
+        public override void Setup(EasyEvent easyEvent)
         {
-            var collectibles = UnityEngine.Object.FindObjectsOfType<CollectibleComponent>();
-            var collecters = GameObject.FindGameObjectsWithTag(collecterTag);
-            foreach (var obj1 in collectibles)
-            {
-                foreach (var obj2 in collecters)
-                {
-                    if (obj1.GetComponent<CollisionEventComponent>()==null)
-                    {
-                        obj1.AddComponent<CollisionEventComponent>();
-                    }
-                    obj1.GetComponent<CollisionEventComponent>().AddTarget(obj2,action);
-                }
-            }
+            base.Setup(easyEvent);
+            firstCollider=_objectOne.AddComponent<PolygonCollider2D>();
+            secondCollider=_objectTwo.AddComponent<PolygonCollider2D>();
+        }
 
+        public override bool Check()
+        {
+            return firstCollider.IsTouching(secondCollider);
         }
     }
 }

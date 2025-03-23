@@ -13,7 +13,15 @@ namespace Backend
 
         public void Setup()
         {
-            Condition.Setup(Action);
+            Condition.Setup(this);
+        }
+
+        public void CheckCondition()
+        {
+            if (Condition.Check())
+            {
+                Action.Execute();
+            }
         }
     }
 }

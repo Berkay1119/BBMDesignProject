@@ -9,6 +9,7 @@ namespace Backend
     {
         public string conditionName;
         public string conditionDescription;
+        public EasyEvent relatedEvent;
 
         public virtual void DrawGUI()
         {
@@ -16,6 +17,11 @@ namespace Backend
             GUILayout.Label("Condition Name: " + conditionName);
         }
 
-        public abstract void Setup(EasyAction action);
+        public virtual void Setup(EasyEvent easyEvent)
+        {
+            this.relatedEvent = easyEvent;
+        }
+        
+        public abstract bool Check();
     }
 }
