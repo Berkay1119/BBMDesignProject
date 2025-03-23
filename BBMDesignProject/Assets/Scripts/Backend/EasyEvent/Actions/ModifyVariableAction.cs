@@ -11,7 +11,7 @@ namespace Backend.Actions
     public class ModifyVariableAction:EasyAction
     {
         public SerializableCustomVariable CustomVariable;
-        private EasyObject easyObject;
+        public EasyObject easyObject;
         public string variableName;
         private int variableIndex;
         public VariableOperation variableOperation;

@@ -39,5 +39,10 @@ namespace Backend.Object
             var serializableCustomVariable = gameObject.AddComponent<SerializableCustomVariable>();
             serializableCustomVariable.SetVariable(customVariable);
         }
+
+        public void DestroyEasyObject()
+        {
+            Destroy(gameObject);
+        }
     }
 }

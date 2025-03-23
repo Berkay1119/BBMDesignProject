@@ -31,8 +31,8 @@ namespace Backend
 
          public void SaveEvent(int i, EasyEvent newEvent)
          {
-                events[i].Condition = newEvent.Condition;
-                events[i].Action = newEvent.Action;
+                events[i].Conditions = newEvent.Conditions;
+                events[i].Actions = newEvent.Actions;
                 events[i].eventName = newEvent.eventName;
                 events[i].eventDescription = newEvent.eventDescription;
          }

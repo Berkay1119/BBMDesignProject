@@ -46,6 +46,10 @@ namespace Backend.Conditions
 
         public override bool Check()
         {
+            if (firstCollider == null || secondCollider == null)
+            {
+                return false;
+            }
             return firstCollider.IsTouching(secondCollider);
         }
     }

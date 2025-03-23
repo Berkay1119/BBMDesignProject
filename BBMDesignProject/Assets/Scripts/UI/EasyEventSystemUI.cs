@@ -7,81 +7,104 @@ using UnityEngine;
 
 namespace UI
 {
-    public class EasyEventSystemUI:EditorWindow
+    public class EasyEventSystemUI : EditorWindow
     {
         private List<EasyEvent> _events = new List<EasyEvent>();
         private EasyEventManager _easyEventManager;
+
         [MenuItem("Window/Easy Event System")]
         public static void ShowWindow()
         {
             GetWindow<EasyEventSystemUI>("Easy Event System");
         }
-        
+
         private void OnGUI()
         {
             GUILayout.BeginVertical();
             GUILayout.Label("Easy Event System", EditorStyles.boldLabel);
             _events = GetEasyEventManager().Events.ToList();
+
             for (int i = 0; i < _events.Count; i++)
             {
                 GUILayout.BeginVertical("box");
                 GUILayout.Label($"Event {i + 1}", EditorStyles.label);
 
-                // Display event details
+                // Event details
                 _events[i].eventName = EditorGUILayout.TextField("Event Name", _events[i].eventName);
                 _events[i].eventDescription = EditorGUILayout.TextField("Event Description", _events[i].eventDescription);
+
                 var conditions = AttributeFinder.FindClassesWithAttribute<ConditionAttribute>();
                 var actions = AttributeFinder.FindClassesWithAttribute<ActionAttribute>();
-                
-                var conditionDropdownMenu = new GenericMenu();
-                var currentEvent = _events[i];
-                foreach (var condition in conditions)
+
+                // Dropdown for adding conditions
+                if (EditorGUILayout.DropdownButton(new GUIContent("Add Condition"), FocusType.Keyboard))
                 {
-                    conditionDropdownMenu.AddItem(new GUIContent($"Condition/{condition.Name}"), false, () =>
+                    var conditionMenu = new GenericMenu();
+                    foreach (var condition in conditions)
                     {
-                        var classInstance = (EasyCondition)System.Activator.CreateInstance(condition);
-                        currentEvent.Condition = classInstance;
-                    });
+                        var i1 = i;
+                        conditionMenu.AddItem(new GUIContent(condition.Name), false, () =>
+                        {
+                            var classInstance = (EasyCondition)System.Activator.CreateInstance(condition);
+                            _events[i1].Conditions.Add(classInstance);
+                        });
+                    }
+                    conditionMenu.ShowAsContext();
                 }
-                var actionDropdownMenu = new GenericMenu();
-                foreach (var action in actions)
+
+                // Display selected conditions
+                GUILayout.Label("Conditions:", EditorStyles.boldLabel);
+                for (int c = 0; c < _events[i].Conditions.Count; c++)
                 {
-                    actionDropdownMenu.AddItem(new GUIContent($"Action/{action.Name}"), false, () =>
+                    GUILayout.BeginHorizontal("box");
+                    GUILayout.Label(_events[i].Conditions[c].conditionName);
+                    if (GUILayout.Button("Remove", GUILayout.Width(60)))
                     {
-                        var classInstance = (EasyAction)System.Activator.CreateInstance(action);
-                        currentEvent.Action = classInstance;
-                    });
+                        _events[i].Conditions.RemoveAt(c);
+                        break;
+                    }
+                    GUILayout.EndHorizontal();
+                    _events[i].Conditions[c].DrawGUI();
                 }
-                GUILayout.BeginHorizontal("box");
-                if (EditorGUILayout.DropdownButton(new GUIContent(_events[i].Condition==null?"Select Condition": _events[i].Condition.conditionName), FocusType.Keyboard))
+
+                // Dropdown for adding actions
+                if (EditorGUILayout.DropdownButton(new GUIContent("Add Action"), FocusType.Keyboard))
                 {
-                    conditionDropdownMenu.ShowAsContext();
+                    var actionMenu = new GenericMenu();
+                    foreach (var action in actions)
+                    {
+                        var i1 = i;
+                        actionMenu.AddItem(new GUIContent(action.Name), false, () =>
+                        {
+                            var classInstance = (EasyAction)System.Activator.CreateInstance(action);
+                            _events[i1].Actions.Add(classInstance);
+                        });
+                    }
+                    actionMenu.ShowAsContext();
                 }
-                if (EditorGUILayout.DropdownButton(new GUIContent( _events[i].Action==null ? "Select Action" : _events[i].Action.actionName), FocusType.Keyboard))
+
+                // Display selected actions
+                GUILayout.Label("Actions:", EditorStyles.boldLabel);
+                for (int a = 0; a < _events[i].Actions.Count; a++)
                 {
-                    actionDropdownMenu.ShowAsContext();
+                    GUILayout.BeginHorizontal("box");
+                    GUILayout.Label(_events[i].Actions[a].actionName);
+                    if (GUILayout.Button("Remove", GUILayout.Width(60)))
+                    {
+                        _events[i].Actions.RemoveAt(a);
+                        break;
+                    }
+                    GUILayout.EndHorizontal();
+                    _events[i].Actions[a].DrawGUI();
                 }
-                GUILayout.EndHorizontal();
-                
-                GUILayout.BeginHorizontal("box");
-                if (_events[i].Condition != null)
-                {
-                    _events[i].Condition.DrawGUI();
-                }
-                GUILayout.Space(10);
-                if (_events[i].Action != null)
-                {
-                    _events[i].Action.DrawGUI();
-                }
-                
-                GUILayout.EndHorizontal();
-                //Save button
+
+                // Save button
                 if (GUILayout.Button("Save Event"))
                 {
                     GetEasyEventManager().SaveEvent(i, _events[i]);
                 }
-                
-                // Remove button
+
+                // Remove event
                 if (GUILayout.Button("Remove Event"))
                 {
                     _events.RemoveAt(i);
@@ -91,18 +114,22 @@ namespace UI
                 GUILayout.EndVertical();
             }
 
-            // Add new event button
+            // Add new event
             if (GUILayout.Button("Add New Event"))
             {
-                GetEasyEventManager().AddEvent(new EasyEvent());
-                _events.Add(new EasyEvent());
+                var newEvent = new EasyEvent();
+                newEvent.Conditions = new List<EasyCondition>();
+                newEvent.Actions = new List<EasyAction>();
+
+                GetEasyEventManager().AddEvent(newEvent);
+                _events.Add(newEvent);
             }
             GUILayout.EndVertical();
         }
-        
+
         private EasyEventManager GetEasyEventManager()
         {
-            if (_easyEventManager== null)
+            if (_easyEventManager == null)
             {
                 _easyEventManager = FindObjectOfType<EasyEventManager>();
                 if (_easyEventManager == null)

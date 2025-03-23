@@ -133,8 +133,6 @@ GameObject:
   - component: {fileID: 15292595}
   - component: {fileID: 15292594}
   - component: {fileID: 15292593}
-  - component: {fileID: 15292592}
-  - component: {fileID: 15292591}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
@@ -142,63 +140,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!61 &15292591
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 15292590}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.84, y: 0.84}
-    newSize: {x: 0.84, y: 0.84}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.84, y: 0.84}
-  m_EdgeRadius: 0
---- !u!114 &15292592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 15292590}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a24551ea9a864f0d97d2cced64cbc338, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &15292593
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -472,7 +413,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 184
-      _typelessdata: 1f85eb3e713d6a3f000000009a99193fe17a34bf000000009a99193f3d0ad73d000000003d0ad73ee17a743f0000000085ebd13ee17a74bf0000000014ae07bfe17a74bf00000000295c0fbfe17a743f000000009a9919bf85eb713f000000009a9919bf14ae67bf0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 1f85eb3e713d6a3f000000009a99193fe17a34bf000000009a99193f3d0ad73d000000003d0ad73ee17a743f0000000085ebd13ee17a74bf0000000014ae07bfe17a74bf00000000295c0fbfe17a743f000000009a9919bf85eb713f000000009a9919bf14ae67bf00000000000000002222623f85a37a3f0000803f0b08063e0000803fc4120e3f9a99593f0000803f7777573f00000000f7ee6e3d000000008988083d0000803f898808b3e1a87e3f898808b34473d63c
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -799,7 +740,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 208
-      _typelessdata: cdccec3fd7a3f03e000000003333f33f8fc2f53c000000003333f33fcdcccc3e00000000cdcccc3f3d0ad7be000000005c8fc2bed7a3f0be000000003333d3bfd7a3f0be00000000e17ad4bf6666e6be00000000cdccecbfd7a3f03e000000003333f3bfcdcccc3e000000003333f3bf295c8f3d0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: cdccec3fd7a3f03e000000003333f33f8fc2f53c000000003333f33fcdcccc3e00000000cdcccc3f3d0ad7be000000005c8fc2bed7a3f0be000000003333d3bfd7a3f0be00000000e17ad4bf6666e6be00000000cdccecbfd7a3f03e000000003333f3bfcdcccc3e000000003333f3bf295c8f3d000000000000000000000000afa17c3f0000803f0000803f932b083f0000803fa9ef6c3f1bca6b3f52df593dcdcccc3e00000000a2bc863d00000000ed58813d414cae3c3694573c0000803f00000000a9ef6c3f000000005710133f
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -1304,17 +1245,44 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   events:
-  - eventName: 
+  - eventName: Collect
     eventDescription: 
-    Condition:
-      rid: -2
-    Action:
-      rid: -2
+    Conditions:
+    - rid: 8349286115780591664
+    Actions:
+    - rid: 8349286115780591665
+    - rid: 8349286115780591672
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 8349286115780591664
+      type: {class: CollidingCondition, ns: Backend.Conditions, asm: Assembly-CSharp}
+      data:
+        conditionName: CollidingCondition
+        conditionDescription: Check if two objects are colliding
+        relatedEvent:
+          eventName: 
+          eventDescription: 
+          Conditions: []
+          Actions: []
+        _objectOne: {fileID: 2007655736}
+        _objectTwo: {fileID: 15292594}
+    - rid: 8349286115780591665
+      type: {class: ModifyVariableAction, ns: Backend.Actions, asm: Assembly-CSharp}
+      data:
+        actionName: 
+        actionDescription: 
+        CustomVariable: {fileID: 2007655738}
+        easyObject: {fileID: 2007655736}
+        variableName: CoinAmount
+        variableOperation: 0
+        operationValue: 1
+    - rid: 8349286115780591672
+      type: {class: DestroyObjectAction, ns: Backend.Actions, asm: Assembly-CSharp}
+      data:
+        actionName: 
+        actionDescription: 
+        EasyObject: {fileID: 15292594}
 --- !u!4 &1889582463
 Transform:
   m_ObjectHideFlags: 0
@@ -1524,7 +1492,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 152
-      _typelessdata: 3d0ad73e85ebd13e00000000cdcccc3e3d0ad7be000000003d0ad73ecdccccbe000000003333b33e3d0ad73e000000009a9999be3d0ad7be000000003d0ad7be3d0ad73e000000003d0ad7beec51b8be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 3d0ad73e85ebd13e00000000cdcccc3e3d0ad7be000000003d0ad73ecdccccbe000000003333b33e3d0ad73e000000009a9999be3d0ad7be000000003d0ad7be3d0ad73e000000003d0ad7beec51b8be000000000000000000000000000000000000803fcff37c3f9ee7793f000000000000803f310cc33cabaa6a3f0000803f2349123e00000000000000000000803f000000002549923d
     m_Bindpose: []
     textureRect:
       serializedVersion: 2
@@ -1552,6 +1520,7 @@ GameObject:
   - component: {fileID: 2007655736}
   - component: {fileID: 2007655735}
   - component: {fileID: 2007655734}
+  - component: {fileID: 2007655738}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1655,6 +1624,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2007655738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007655733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94a53438b5544ad78920a25738ff008e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: CoinAmount
+  _value: 0
+  _type: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

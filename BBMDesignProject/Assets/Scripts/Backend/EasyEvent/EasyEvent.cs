@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Backend
@@ -8,19 +9,28 @@ namespace Backend
     {
         public string eventName;
         public string eventDescription;
-        [SerializeReference] public EasyCondition Condition;
-        [SerializeReference] public EasyAction Action;
+        [SerializeReference] public List<EasyCondition> Conditions = new List<EasyCondition>();
+        [SerializeReference] public List<EasyAction> Actions = new List<EasyAction>();
 
         public void Setup()
         {
-            Condition.Setup(this);
+            foreach (var condition in Conditions)
+            {
+                condition.Setup(this);
+            }
         }
 
         public void CheckCondition()
         {
-            if (Condition.Check())
+            foreach (var condition in Conditions)
             {
-                Action.Execute();
+                if (condition.Check())
+                {
+                    foreach (var action in Actions)
+                    {
+                        action.Execute();
+                    }
+                }
             }
         }
     }
