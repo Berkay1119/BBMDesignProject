@@ -1,79 +1,75 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Backend.Components.SubComponents
 {
-    public class PlayerController:MonoBehaviour
+    public class PlayerController : MonoBehaviour
     {
         private CharacterComponent _characterComponent;
         private Rigidbody2D _rigidbody2D;
-        
-        private readonly Dictionary<char, KeyCode> _keycodeCache = new Dictionary<char, KeyCode>();
 
-        private KeyCode GetKeyCode(char character)
-        {
-            
-            KeyCode code;
-            if (_keycodeCache.TryGetValue(character, out code)) return code;
+        // For tracking platform movement
+        private Transform _currentPlatform;
+        private Vector3 _lastPlatformPosition;
 
-            // Cast to it's integer value
-            int alphaValue = character;
-            code = (KeyCode)Enum.Parse(typeof(KeyCode), alphaValue.ToString());
-            _keycodeCache.Add(character, code);
-            return code;
-        }
         public void Setup(CharacterComponent characterComponent, Rigidbody2D rigidbody2D)
         {
             _characterComponent = characterComponent;
             _rigidbody2D = rigidbody2D;
         }
 
-        private void Update() {
-            if (!_characterComponent) {
-                return;
-            }
+        private void Update()
+        {
+            if (!_characterComponent) return;
 
+            HandleMovementInput();
+            HandlePlatformMovement();
+        }
+
+        private void HandleMovementInput()
+        {
             Vector2 velocity = _rigidbody2D.velocity;
 
-            // Handle input for movement
-            if (Input.GetKey(GetKeyCode(_characterComponent.LeftKey))) {
-                velocity.x = -_characterComponent.Speed; 
-            } else if (Input.GetKey(GetKeyCode(_characterComponent.RightKey))) {
-                velocity.x = _characterComponent.Speed; 
-            } else {
+            if (Input.GetKey(GetKeyCode(_characterComponent.LeftKey)))
+                velocity.x = -_characterComponent.Speed;
+            else if (Input.GetKey(GetKeyCode(_characterComponent.RightKey)))
+                velocity.x = _characterComponent.Speed;
+            else
                 velocity.x = 0;
-            }
 
-            // Handle jumping
-            if (Input.GetKeyDown(KeyCode.Space) && Mathf.Abs(_rigidbody2D.velocity.y) < 0.01f) {
+            if (Input.GetKeyDown(KeyCode.Space) && 
+                Mathf.Abs(_rigidbody2D.velocity.y - (_currentPlatform==null ? 0f : _currentPlatform.GetComponent<Rigidbody2D>().velocity.y )) < 0.01f)
+            {
                 velocity.y = _characterComponent.JumpForce;
+                Debug.Log("Jump");
             }
-
-            if (transform.parent != null) {
-                PlatformComponent platformComponent = transform.parent.GetComponent<PlatformComponent>();
-                if (platformComponent != null) {
-                    Rigidbody2D platformRigidbody = transform.parent.GetComponent<Rigidbody2D>();
-                    if (platformRigidbody != null) {
-                        // Adjust velocity based on platform's moving direction
-                        switch (platformComponent.Direction) {
-                            case MovingDirection.Horizontal:
-                                velocity.x += platformRigidbody.velocity.x;
-                                break;
-
-                            case MovingDirection.Vertical:
-                                velocity.y = platformRigidbody.velocity.y;
-                                break;
-                        }
-                    }
-                }
-            }
-
-            // Apply the calculated velocity to the character
+                
             _rigidbody2D.velocity = velocity;
         }
 
+        private void HandlePlatformMovement()
+        {
+            if (transform.parent != null && transform.parent != _currentPlatform)
+            {
+                // Just stepped onto a new platform
+                _currentPlatform = transform.parent;
+                _lastPlatformPosition = _currentPlatform.position;
+            }
 
+            if (_currentPlatform != null)
+            {
+                Vector3 platformDelta = _currentPlatform.position - _lastPlatformPosition;
+                
+                // Apply platform's positional movement directly to player
+                if (platformDelta != Vector3.zero)
+                    transform.position += platformDelta;
 
+                _lastPlatformPosition = _currentPlatform.position;
+            }
+        }
+
+        private KeyCode GetKeyCode(char character)
+        {
+            return (KeyCode)System.Enum.Parse(typeof(KeyCode), character.ToString().ToUpper());
+        }
     }
 }
