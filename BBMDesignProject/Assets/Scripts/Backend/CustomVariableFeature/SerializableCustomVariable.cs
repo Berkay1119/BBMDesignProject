@@ -5,10 +5,12 @@ namespace Backend.CustomVariableFeature
 {
     public class SerializableCustomVariable:MonoBehaviour
     {
-        [SerializeField] private string _name;
-        [SerializeField] private string _value;
-        [SerializeField] private VariableType _type;
+        [SerializeField] public string _name;
+        [SerializeField] public string _value;
+        [SerializeField] public VariableType _type;
         private CustomVariable _variable;
+        public string Name => _name;
+        public VariableType Type => _type;
 
         public void SetVariable(CustomVariable variable)
         {
