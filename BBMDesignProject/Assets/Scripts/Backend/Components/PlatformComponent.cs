@@ -1,4 +1,5 @@
 ﻿using Backend.Attributes;
+using Backend.Interfaces;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace Backend.Components
     }
 
     [Component]
-    public class PlatformComponent : BaseComponent
+    public class PlatformComponent : BaseComponent, IFixedUpdatable
     {
         [SerializeField] public bool IsMoving = false;
         [SerializeField] public MovingDirection Direction = MovingDirection.Horizontal;
@@ -44,7 +45,7 @@ namespace Backend.Components
             SetDescription("A platform that the player can stand on.");
         }
 
-        private void FixedUpdate()
+        public void OnFixedUpdate()
         {
             if (!IsMoving) return;
 
@@ -103,8 +104,9 @@ namespace Backend.Components
             }
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
             if (gameObject.GetComponent<BoxCollider2D>() == null)
             {
                 var tempCollider = gameObject.AddComponent<BoxCollider2D>();

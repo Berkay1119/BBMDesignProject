@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Backend.EasyEvent;
 using Backend.UIComponents;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Backend.Components
 {

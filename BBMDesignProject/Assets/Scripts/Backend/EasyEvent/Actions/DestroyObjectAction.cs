@@ -3,7 +3,7 @@ using Backend.Object;
 using UnityEditor;
 using UnityEngine;
 
-namespace Backend.Actions
+namespace Backend.EasyEvent.Actions
 {
     [Action]
     public class DestroyObjectAction:EasyAction

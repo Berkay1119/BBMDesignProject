@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Backend.Interfaces;
 using UnityEngine;
 
 namespace Backend.Components.SubComponents
 {
-    public class PlayerController:MonoBehaviour
+    public class PlayerControllerComponent : BaseComponent, IUpdatable
     {
         private CharacterComponent _characterComponent;
         private Rigidbody2D _rigidbody2D;
@@ -13,7 +14,6 @@ namespace Backend.Components.SubComponents
 
         private KeyCode GetKeyCode(char character)
         {
-            
             KeyCode code;
             if (_keycodeCache.TryGetValue(character, out code)) return code;
 
@@ -29,7 +29,7 @@ namespace Backend.Components.SubComponents
             _rigidbody2D = rigidbody2D;
         }
 
-        private void Update() {
+        public void OnUpdate() {
             if (!_characterComponent) {
                 return;
             }
@@ -73,7 +73,8 @@ namespace Backend.Components.SubComponents
             _rigidbody2D.velocity = velocity;
         }
 
-
-
+        public override void SetupComponent()
+        {
+        }
     }
 }

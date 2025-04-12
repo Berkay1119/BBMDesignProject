@@ -17,7 +17,7 @@ namespace Backend.Components
         public float Speed => speed;
         public float JumpForce => jumpForce;
         
-        private PlayerController _playerController;
+        private PlayerControllerComponent _playerControllerComponent;
         private Rigidbody2D _playerRigidbody2D;
         
         public CharacterComponent()
@@ -26,16 +26,17 @@ namespace Backend.Components
             SetDescription("This component is used to define a character in the game.");
         }
 
-        private void OnEnable() {
-            _playerController=gameObject.AddComponent<PlayerController>();
-            _addedComponents.Add(_playerController);
+        protected override void OnEnable() {
+            base.OnEnable();
+            _playerControllerComponent=gameObject.AddComponent<PlayerControllerComponent>();
+            _addedComponents.Add(_playerControllerComponent);
             var tempCollider =gameObject.AddComponent<BoxCollider2D>();
             _addedComponents.Add(tempCollider);
             _playerRigidbody2D=gameObject.AddComponent<Rigidbody2D>();
             _addedComponents.Add(_playerRigidbody2D);
             _playerRigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
             
-            _playerController.Setup(this,_playerRigidbody2D);
+            _playerControllerComponent.Setup(this,_playerRigidbody2D);
             
             if (!cameraFollowCharacter) {
                 return;

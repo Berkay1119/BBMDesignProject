@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Backend
+namespace Backend.EasyEvent
 {
     [Serializable]
     public class EasyEvent
