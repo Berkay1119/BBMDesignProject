@@ -40,8 +40,26 @@ namespace Backend.Conditions
         public override void Setup(EasyEvent easyEvent)
         {
             base.Setup(easyEvent);
-            firstCollider=_objectOne.AddComponent<PolygonCollider2D>();
-            secondCollider=_objectTwo.AddComponent<PolygonCollider2D>();
+            
+            if (_objectOne.GetComponent<PolygonCollider2D>()==null)
+            {
+                firstCollider=_objectOne.AddComponent<PolygonCollider2D>();
+            }
+            else
+            {
+                firstCollider=_objectOne.GetComponent<PolygonCollider2D>();
+            }
+            
+            
+            if (_objectTwo.GetComponent<PolygonCollider2D>()==null)
+            {
+                secondCollider=_objectTwo.AddComponent<PolygonCollider2D>();
+            }
+            else
+            {
+                secondCollider=_objectTwo.GetComponent<PolygonCollider2D>();
+            }
+            
         }
 
         public override bool Check()
