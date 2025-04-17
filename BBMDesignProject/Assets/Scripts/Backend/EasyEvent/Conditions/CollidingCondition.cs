@@ -1,12 +1,10 @@
-﻿using System;
-using Backend.Attributes;
-using Backend.Components;
+﻿using Backend.Attributes;
 using Backend.Object;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
-namespace Backend.Conditions
+namespace Backend.EasyEvent.Conditions
 {
     [Condition]
     public class CollidingCondition:EasyCondition

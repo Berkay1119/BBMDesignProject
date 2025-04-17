@@ -2,7 +2,7 @@ using Backend.Attributes;
 using UnityEditor;
 using UnityEngine;
 
-namespace Backend.Actions
+namespace Backend.EasyEvent.Actions
 {
     [Action]
     public class PrintStringAction:EasyAction

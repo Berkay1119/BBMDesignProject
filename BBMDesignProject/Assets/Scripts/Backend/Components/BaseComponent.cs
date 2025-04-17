@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Backend.Interfaces;
+using Backend.Managers;
 using UnityEngine;
 
 namespace Backend.Components
@@ -22,8 +23,31 @@ namespace Backend.Components
             _description = description;
         }
 
-        private void OnDisable()
+        protected virtual void OnEnable()
         {
+            switch (this)
+            {
+                case IUpdatable updateable:
+                    UpdateManager.Instance.Register(updateable);
+                    break;
+                case IFixedUpdatable fixedUpdateable:
+                    UpdateManager.Instance.Register(fixedUpdateable);
+                    break;
+            }
+        }
+
+        protected virtual void OnDisable()
+        {
+            switch (this)
+            {
+                case IUpdatable updateable:
+                    UpdateManager.Instance.Unregister(updateable);
+                    break;
+                case IFixedUpdatable fixedUpdateable:
+                    UpdateManager.Instance.Unregister(fixedUpdateable);
+                    break;
+            }
+
             foreach (var component in _addedComponents)
             {
                 Destroy(component);

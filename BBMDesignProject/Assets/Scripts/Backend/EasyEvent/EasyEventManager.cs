@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Backend
+namespace Backend.EasyEvent
 {
     public class EasyEventManager:MonoBehaviour
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Backend
+namespace Backend.EasyEvent
 {
     [Serializable]
     public abstract class EasyAction

@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Backend.Attributes;
+﻿using System.Collections.Generic;
+using Backend.EasyEvent;
 using UnityEngine;
 
 namespace Backend.Components
