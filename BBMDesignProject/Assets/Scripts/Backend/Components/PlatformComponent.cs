@@ -6,9 +6,17 @@ using UnityEngine;
 
 namespace Backend.Components
 {
+    public enum MovingDirection
+    {
+        Horizontal,
+        Vertical
+    }
+    
     [Component]
     public class PlatformComponent : BaseComponent
     {
+        [SerializeField] public MovingDirection Direction = MovingDirection.Horizontal;
+        
         [SerializeField] public bool IsMoving = false;
 
         [SerializeField] List<EasyObject> waypoints = new List<EasyObject>();
@@ -98,7 +106,7 @@ namespace Backend.Components
             }
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
             if (gameObject.GetComponent<BoxCollider2D>() == null)
             {
