@@ -92,17 +92,17 @@ namespace Backend.Components
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (IsMoving & collision.gameObject.CompareTag("Player"))
+            if (IsMoving & collision.gameObject.CompareTag("Character"))
             {
-                collision.transform.SetParent(transform); // Oyuncuyu platforma bağla
+                collision.transform.SetParent(transform); // Connect the character to the platform
             }
         }
 
         private void OnCollisionExit2D(Collision2D collision)
         {
-            if (IsMoving & collision.gameObject.CompareTag("Player"))
+            if (IsMoving & collision.gameObject.CompareTag("Character"))
             {
-                collision.transform.SetParent(null); // Oyuncuyu platformdan ayır
+                collision.transform.SetParent(null); // Split the character from the platform
             }
         }
 

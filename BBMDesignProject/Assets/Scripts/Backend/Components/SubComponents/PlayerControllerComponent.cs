@@ -9,6 +9,7 @@ namespace Backend.Components.SubComponents
     {
         private CharacterComponent _characterComponent;
         private Rigidbody2D _rigidbody2D;
+        private Rigidbody2D _currentPlatformRb;
         
         private readonly Dictionary<char, KeyCode> _keycodeCache = new Dictionary<char, KeyCode>();
 
@@ -23,53 +24,54 @@ namespace Backend.Components.SubComponents
             _keycodeCache.Add(character, code);
             return code;
         }
+        
         public void Setup(CharacterComponent characterComponent, Rigidbody2D rigidbody2D)
         {
             _characterComponent = characterComponent;
             _rigidbody2D = rigidbody2D;
         }
+        
+        private void OnCollisionEnter2D(Collision2D col)
+        {
+            if (col.gameObject.CompareTag("Platform"))
+            {
+                _currentPlatformRb = col.rigidbody;
+            }
+        }
+
+        private void OnCollisionExit2D(Collision2D col)
+        {
+            if (col.gameObject.CompareTag("Platform"))
+            {
+                _currentPlatformRb = null;
+            }
+        }
 
         public void OnUpdate() {
-            if (!_characterComponent) {
-                return;
-            }
+            if (!_characterComponent) return;
+            
+            var inputVel = 0f;
+            if (Input.GetKey(GetKeyCode(_characterComponent.LeftKey)))
+                inputVel = -_characterComponent.Speed;
+            else if (Input.GetKey(GetKeyCode(_characterComponent.RightKey)))
+                inputVel = _characterComponent.Speed;
 
+            // Platform speed
+            var platformVelX = _currentPlatformRb != null
+                ? _currentPlatformRb.velocity.x
+                : 0f;
+
+            // Vertical speed
             Vector2 velocity = _rigidbody2D.velocity;
+            velocity.x = inputVel + platformVelX;
 
-            // Handle input for movement
-            if (Input.GetKey(GetKeyCode(_characterComponent.LeftKey))) {
-                velocity.x = -_characterComponent.Speed; 
-            } else if (Input.GetKey(GetKeyCode(_characterComponent.RightKey))) {
-                velocity.x = _characterComponent.Speed; 
-            } else {
-                velocity.x = 0;
-            }
-
-            // Handle jumping
-            if (Input.GetKeyDown(KeyCode.Space) && Mathf.Abs(_rigidbody2D.velocity.y) < 0.01f) {
+            // Jump if the character on a platform
+            if (Input.GetKeyDown(KeyCode.Space) && _currentPlatformRb != null)
+            {
                 velocity.y = _characterComponent.JumpForce;
             }
 
-            if (transform.parent != null) {
-                PlatformComponent platformComponent = transform.parent.GetComponent<PlatformComponent>();
-                if (platformComponent != null) {
-                    Rigidbody2D platformRigidbody = transform.parent.GetComponent<Rigidbody2D>();
-                    if (platformRigidbody != null) {
-                        // Adjust velocity based on platform's moving direction
-                        switch (platformComponent.Direction) {
-                            case MovingDirection.Horizontal:
-                                velocity.x += platformRigidbody.velocity.x;
-                                break;
-
-                            case MovingDirection.Vertical:
-                                velocity.y = platformRigidbody.velocity.y;
-                                break;
-                        }
-                    }
-                }
-            }
-
-            // Apply the calculated velocity to the character
+            // Apply the velocity
             _rigidbody2D.velocity = velocity;
         }
 

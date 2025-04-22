@@ -49,7 +49,7 @@ namespace Backend.Components
 
         public override void SetupComponent()
         {
-            gameObject.tag = "Player";
+            gameObject.tag = "Character";
         }
     }
 }
