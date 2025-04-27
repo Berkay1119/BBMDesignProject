@@ -19,19 +19,7 @@ namespace Backend.EasyEvent
                 condition.Setup(this);
             }
         }
-
-        public void CheckCondition()
-        {
-            foreach (var condition in Conditions)
-            {
-                if (condition.Check())
-                {
-                    foreach (var action in Actions)
-                    {
-                        action.Execute();
-                    }
-                }
-            }
-        }
+        
+        
     }
 }

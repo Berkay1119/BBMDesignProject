@@ -1,4 +1,5 @@
 ﻿using System;
+using Backend.Components;
 using UnityEngine;
 
 namespace Backend.EasyEvent
@@ -15,6 +16,6 @@ namespace Backend.EasyEvent
             GUILayout.Label("Action Name: " + actionName);
         }
 
-        public abstract void Execute();
+        public abstract void Execute(BaseComponent source, BaseComponent other);
     }
 }

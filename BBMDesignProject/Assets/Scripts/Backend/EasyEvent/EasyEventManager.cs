@@ -3,10 +3,9 @@ using UnityEngine;
 
 namespace Backend.EasyEvent
 {
-    public class EasyEventManager:MonoBehaviour
+    public class EasyEventManager : MonoBehaviour
     {
         [SerializeField] private List<EasyEvent> events = new List<EasyEvent>();
-        
         public List<EasyEvent> Events => events;
 
         private void OnEnable()
@@ -20,6 +19,7 @@ namespace Backend.EasyEvent
         public void AddEvent(EasyEvent easyEvent)
          {
               events.Add(easyEvent);
+              easyEvent.Setup(); 
          }
 
 
@@ -34,14 +34,8 @@ namespace Backend.EasyEvent
                 events[i].Actions = newEvent.Actions;
                 events[i].eventName = newEvent.eventName;
                 events[i].eventDescription = newEvent.eventDescription;
+                events[i].Setup(); 
          }
-
-         private void Update()
-         {
-             foreach (var easyEvent in events)
-             {
-                 easyEvent.CheckCondition();
-             }
-         }
+         
     }
 }

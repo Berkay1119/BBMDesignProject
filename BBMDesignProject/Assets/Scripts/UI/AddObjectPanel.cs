@@ -111,25 +111,6 @@ namespace UI {
             // create new gameObject
             GameObject newObject = new GameObject(objectName);
             var easyObject=newObject.AddComponent<EasyObject>();
-            
-            // add rect transform to the object
-            //RectTransform rectTransform = newObject.AddComponent<RectTransform>();
-           
-            // default size
-            //rectTransform.sizeDelta = new Vector2(3, 3); 
-
-            // add sprite renderer to the object
-            
-            
-            /*if (objectTexture != null) {
-                SpriteRenderer spriteRenderer = newObject.AddComponent<SpriteRenderer>();
-                Sprite sprite = Sprite.Create(objectTexture, 
-                    new Rect(0, 0, objectTexture.width, objectTexture.height), 
-                    new Vector2(0.5f, 0.5f)); // center pivot
-                spriteRenderer.sprite = sprite;
-            } else {
-                Debug.Log("No texture provided, SpriteRenderer not added.");
-            }*/
 
             if (objectTexture) {
                 easyObject.AddSprite(objectTexture);

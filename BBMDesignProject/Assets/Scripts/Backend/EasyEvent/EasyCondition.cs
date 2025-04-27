@@ -8,7 +8,11 @@ namespace Backend.EasyEvent
     {
         public string conditionName;
         public string conditionDescription;
-        public EasyEvent relatedEvent;
+        
+        [NonSerialized] [HideInInspector]
+        internal EasyEvent relatedEvent;
+        
+        protected bool _isSubscribed;
 
         public virtual void DrawGUI()
         {
@@ -18,9 +22,16 @@ namespace Backend.EasyEvent
 
         public virtual void Setup(EasyEvent easyEvent)
         {
-            this.relatedEvent = easyEvent;
+            if (_isSubscribed)
+            {
+                Unsubscribe();
+            }
+            relatedEvent = easyEvent;
+            Subscribe();
+            _isSubscribed = true;
         }
         
-        public abstract bool Check();
+        protected abstract void Subscribe();
+        protected abstract void Unsubscribe();
     }
 }
