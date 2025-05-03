@@ -1,72 +1,93 @@
-﻿using Backend.Attributes;
-using Backend.Object;
-using Unity.VisualScripting;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using Backend.Attributes;
+using Backend.Components;
 using UnityEditor;
 using UnityEngine;
 
 namespace Backend.EasyEvent.Conditions
 {
     [Condition]
-    public class CollidingCondition:EasyCondition
+    public class CollidingCondition : EasyCondition
     {
-        public EasyObject _objectOne;
-        public EasyObject _objectTwo;
-        
-        private Collider2D firstCollider;
-        private Collider2D secondCollider;
+        // Needs to stay "public" otherwise it won't work
+        public string firstTypeName;
+        public string secondTypeName;
+        private Type firstType, secondType;
         
         public CollidingCondition()
         {
-            conditionName = "CollidingCondition";
+            conditionName = "Colliding Condition";
             conditionDescription = "Check if two objects are colliding";
         }
 
         public override void DrawGUI()
         {
             base.DrawGUI();
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Object One:", GUILayout.Width(150));
-            _objectOne= (EasyObject)EditorGUILayout.ObjectField(_objectOne, typeof(EasyObject), true);
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Object Two:", GUILayout.Width(150));
-            _objectTwo= (EasyObject)EditorGUILayout.ObjectField(_objectTwo, typeof(EasyObject), true);
-            GUILayout.EndHorizontal();
+            
+            var types = Assembly.GetAssembly(typeof(BaseComponent))
+                .GetTypes()
+                .Where(t => t.IsSubclassOf(typeof(BaseComponent)) && !t.IsAbstract)
+                .ToArray();
+            var names = types.Select(t => t.Name).ToArray();
+            
+            // Type 1
+            int idx1 = Array.IndexOf(names, firstTypeName);
+            idx1 = Mathf.Clamp(EditorGUILayout.Popup("First Type", idx1, names), 0, names.Length - 1);
+            firstTypeName = names[idx1];
+            
+            // Type 2
+            int idx2 = Array.IndexOf(names, secondTypeName);
+            idx2 = Mathf.Clamp(EditorGUILayout.Popup("Second Type", idx2, names), 0, names.Length - 1);
+            secondTypeName = names[idx2];
+            
             GUILayout.EndVertical();
         }
 
-        public override void Setup(EasyEvent easyEvent)
+        protected override void Subscribe()
         {
-            base.Setup(easyEvent);
-            
-            if (_objectOne.GetComponent<PolygonCollider2D>()==null)
+            if (string.IsNullOrEmpty(firstTypeName) || string.IsNullOrEmpty(secondTypeName))
             {
-                firstCollider=_objectOne.AddComponent<PolygonCollider2D>();
-            }
-            else
-            {
-                firstCollider=_objectOne.GetComponent<PolygonCollider2D>();
+                Debug.LogWarning($"[{nameof(CollidingCondition)}] Type-1 or Type-2 is undefined. Subscription skipped.");
+                return;
             }
             
-            
-            if (_objectTwo.GetComponent<PolygonCollider2D>()==null)
+            var asm = Assembly.GetAssembly(typeof(BaseComponent));
+            firstType  = asm.GetType(firstTypeName);
+            secondType = asm.GetType(secondTypeName);
+
+            foreach (var type in asm.GetTypes().Where(t => t.IsSubclassOf(typeof(BaseComponent))))
             {
-                secondCollider=_objectTwo.AddComponent<PolygonCollider2D>();
-            }
-            else
-            {
-                secondCollider=_objectTwo.GetComponent<PolygonCollider2D>();
+                if (type.Name == firstTypeName)
+                { 
+                    firstType = type;
+                }
+                else if (type.Name == secondTypeName)
+                {
+                    secondType = type;
+                }
             }
             
+            EventBus.OnCollision2D += OnAnyCollision;
+        } 
+        
+        protected override void Unsubscribe()
+        {
+            EventBus.OnCollision2D -= OnAnyCollision;
         }
 
-        public override bool Check()
+        private void OnAnyCollision(BaseComponent source, BaseComponent other)
         {
-            if (firstCollider == null || secondCollider == null)
+            if (source.GetType() == firstType && other.GetType() == secondType)
             {
-                return false;
+                foreach (var action in relatedEvent.Actions)
+                {
+                    action.Execute(source, other);
+                }
+                    
             }
-            return firstCollider.IsTouching(secondCollider);
         }
+        
     }
 }

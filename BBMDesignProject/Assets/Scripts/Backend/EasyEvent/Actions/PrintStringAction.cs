@@ -1,13 +1,22 @@
 using Backend.Attributes;
+using Backend.Components;
 using UnityEditor;
 using UnityEngine;
 
 namespace Backend.EasyEvent.Actions
 {
     [Action]
-    public class PrintStringAction:EasyAction
+    public class PrintStringAction : EasyAction
     {
         public string text;
+        
+        public PrintStringAction()
+        {
+            actionName = "Print String";
+            actionDescription = "Prints text to the console";
+        }
+        
+        
         public override void DrawGUI()
         {
             base.DrawGUI();
@@ -15,9 +24,9 @@ namespace Backend.EasyEvent.Actions
             GUILayout.EndVertical();
         }
 
-        public override void Execute()
+        public override void Execute(BaseComponent source, BaseComponent other)
         {
-            Debug.Log(text);
+            Debug.Log($"[PrintString Action] {text}");
         }
     }
 }

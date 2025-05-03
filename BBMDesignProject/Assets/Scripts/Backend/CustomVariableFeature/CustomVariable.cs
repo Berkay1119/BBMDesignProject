@@ -2,10 +2,6 @@
 {
     public class CustomVariable
     {
-        // Göz değil, nakış mübarek
-        // Bendeki aşk değil, ibadet
-        // Elleri sevdi nihayet
-        
         public VariableType Type;
         public string Name;
         public object Value;

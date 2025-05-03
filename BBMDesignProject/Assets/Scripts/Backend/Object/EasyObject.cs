@@ -7,8 +7,6 @@ namespace Backend.Object
 {
     public class EasyObject: MonoBehaviour
     {
-        
-        
         public void CreateEasyComponents(Dictionary<string,bool> components)
         {
             foreach (var component in components)
@@ -39,10 +37,6 @@ namespace Backend.Object
             var serializableCustomVariable = gameObject.AddComponent<SerializableCustomVariable>();
             serializableCustomVariable.SetVariable(customVariable);
         }
-
-        public void DestroyEasyObject()
-        {
-            Destroy(gameObject);
-        }
+        
     }
 }

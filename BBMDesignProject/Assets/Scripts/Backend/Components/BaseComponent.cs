@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Backend.EasyEvent;
 using Backend.Interfaces;
 using Backend.Managers;
 using UnityEngine;
@@ -13,6 +14,12 @@ namespace Backend.Components
         public string Description => _description;
 
         protected  List<Component> _addedComponents = new List<Component>();
+        
+        private void Awake()
+        {
+            EventBus.PublishSpawn(this);
+        }
+        
         public void SetName(string name)
         {
             _name = name;
@@ -52,6 +59,15 @@ namespace Backend.Components
             {
                 Destroy(component);
             }
+            
+            EventBus.PublishDestroy(this);
+        }
+        
+        private void OnCollisionEnter2D(Collision2D col)
+        {
+            var other = col.gameObject.GetComponent<BaseComponent>();
+            if (other != null)
+                EventBus.PublishCollision(this, other);
         }
 
         public virtual void DrawGUI()
