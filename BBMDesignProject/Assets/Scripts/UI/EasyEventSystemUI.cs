@@ -15,7 +15,7 @@ namespace UI
 
         [MenuItem("Window/Easy Event System")]
         public static void ShowWindow() => GetWindow<EasyEventSystemUI>("Easy Event System");
-
+        private Vector2 _scrollPos;
    
         private void OnGUI()
         {
@@ -23,13 +23,17 @@ namespace UI
             GUILayout.Label("Easy Event System", EditorStyles.boldLabel);
 
             var manager = GetEasyEventManager();
+            
+            // Begin scroll view
+            _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos, GUILayout.ExpandHeight(true));
+            
             if (manager == null || manager.Events == null)
             {
                 EditorGUILayout.HelpBox("EasyEventManager can not be found or there is no events.", MessageType.Warning);
                 GUILayout.EndVertical();
                 return;
             }
-
+            
             _events = manager.Events.ToList();
             foreach (var ev in _events)
             {
@@ -48,7 +52,11 @@ namespace UI
                 var ev = _events[i];
                 if (ev == null) continue;
 
+                var oldBg = GUI.backgroundColor;
+                GUI.backgroundColor = new Color(1f, 0f, 0.54f, 1f);
                 GUILayout.BeginVertical("box");
+                GUI.backgroundColor = oldBg;
+                
                 ev.eventName        = EditorGUILayout.TextField("Event Name",        ev.eventName ?? "");
                 ev.eventDescription = EditorGUILayout.TextField("Event Description", ev.eventDescription ?? "");
 
@@ -114,26 +122,31 @@ namespace UI
                     act.DrawGUI();
                 }
 
-                // Kaydet & Sil butonları
+                // Save and Remove buttons
                 GUILayout.BeginHorizontal();
+                
                 if (GUILayout.Button("Save Event"))
+                {
                     manager.SaveEvent(i, ev);
+                }
 
                 if (GUILayout.Button("Remove Event"))
+                {
                     removeIndex = i;
+                }
+                
                 GUILayout.EndHorizontal();
-
                 GUILayout.EndVertical();
             }
 
-            // Döngü bittikten sonra gerçekten sil
+            // Removes the flagged event from both the manager and local list
             if (removeIndex >= 0)
             {
                 manager.RemoveEvent(removeIndex);
                 _events.RemoveAt(removeIndex);
             }
 
-            // Yeni Event Ekle
+            // Add new event
             if (GUILayout.Button("Add New Event"))
             {
                 var newEvt = new EasyEvent
@@ -146,7 +159,7 @@ namespace UI
                 manager.AddEvent(newEvt);
                 _events.Add(newEvt);
             }
-
+            EditorGUILayout.EndScrollView();
             GUILayout.EndVertical();
         }
 
