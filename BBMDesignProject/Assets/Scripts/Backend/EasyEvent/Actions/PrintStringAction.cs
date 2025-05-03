@@ -12,8 +12,8 @@ namespace Backend.EasyEvent.Actions
         
         public PrintStringAction()
         {
-            actionName = "PrintString";
-            actionDescription = "Prints text to the console.";
+            actionName = "Print String";
+            actionDescription = "Prints text to the console";
         }
         
         
@@ -26,7 +26,7 @@ namespace Backend.EasyEvent.Actions
 
         public override void Execute(BaseComponent source, BaseComponent other)
         {
-            Debug.Log($"[PrintString] {text}");
+            Debug.Log($"[PrintString Action] {text}");
         }
     }
 }

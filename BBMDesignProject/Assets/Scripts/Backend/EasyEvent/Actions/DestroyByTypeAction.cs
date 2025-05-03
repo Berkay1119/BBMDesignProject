@@ -11,7 +11,8 @@ namespace Backend.EasyEvent.Actions
     [Action]
     public class DestroyByTypeAction : EasyAction
     {
-        private string targetTypeName;
+        // Needs to stay "public" otherwise it won't work
+        public string targetTypeName;
         private Type targetType;
         
         public DestroyByTypeAction()
@@ -50,8 +51,6 @@ namespace Backend.EasyEvent.Actions
                 Debug.LogError($"[DestroyByTypeAction] Can not find type: '{targetTypeName}'");
                 return;
             }
-            
-            Debug.Log(targetType);
 
             // If source object matches, destroy it
             if (source != null && source.GetType() == targetType)

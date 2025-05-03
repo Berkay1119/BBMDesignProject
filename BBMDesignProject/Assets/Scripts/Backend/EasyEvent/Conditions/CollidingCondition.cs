@@ -11,8 +11,9 @@ namespace Backend.EasyEvent.Conditions
     [Condition]
     public class CollidingCondition : EasyCondition
     {
-        private string firstTypeName;
-        private string secondTypeName;
+        // Needs to stay "public" otherwise it won't work
+        public string firstTypeName;
+        public string secondTypeName;
         private Type firstType, secondType;
         
         public CollidingCondition()

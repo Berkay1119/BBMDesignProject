@@ -7,35 +7,49 @@ namespace Backend.Managers
     public class UpdateManager : MonoBehaviour
     {
         private static UpdateManager _instance;
+        private static bool _quitting;
+        
+        private readonly List<IUpdatable> _updatables = new List<IUpdatable>();
+        private readonly List<IFixedUpdatable> _fixedUpdatables = new List<IFixedUpdatable>();
+        
         public static UpdateManager Instance
         {
             get
             {
+                // If we’re in the middle of quitting, just return null
+                if (_quitting)
+                {
+                    return null;
+                }
+
                 if (_instance == null)
                 {
                     Debug.LogError("UpdateManager instance not found! (It may have been destroyed or not initialized)");
                 }
+                
                 return _instance;
             }
         }
-    
-        private readonly List<IUpdatable> _updatables = new List<IUpdatable>();
-        private readonly List<IFixedUpdatable> _fixedUpdatables = new List<IFixedUpdatable>();
 
         private void Awake()
         {
             if (_instance == null)
             {
                 _instance = this;
-                // Prevent this object from being destroyed on scene loads.
+                // Prevent this object from being destroyed on scene loads
                 DontDestroyOnLoad(gameObject);
             }
             else if (_instance != this)
             {
-                // If a new instance is found, log a warning and destroy it.
+                // If a new instance is found, log a warning and destroy it
                 Debug.LogWarning("Another instance of UpdateManager was created. Destroying the duplicate instance.");
                 Destroy(gameObject);
             }
+        }
+        
+        private void OnApplicationQuit()
+        {
+            _quitting = true;
         }
         
         public void Register(IUpdatable updatable)
