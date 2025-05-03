@@ -11,13 +11,13 @@ namespace Backend.EasyEvent.Conditions
     [Condition]
     public class CollidingCondition : EasyCondition
     {
-        public string firstTypeName;
-        public string secondTypeName;
+        private string firstTypeName;
+        private string secondTypeName;
         private Type firstType, secondType;
         
         public CollidingCondition()
         {
-            conditionName = "CollidingCondition";
+            conditionName = "Colliding Condition";
             conditionDescription = "Check if two objects are colliding";
         }
 
@@ -31,14 +31,14 @@ namespace Backend.EasyEvent.Conditions
                 .ToArray();
             var names = types.Select(t => t.Name).ToArray();
             
-            // type 1
+            // Type 1
             int idx1 = Array.IndexOf(names, firstTypeName);
-            idx1 = Mathf.Clamp(EditorGUILayout.Popup("Tip A", idx1, names), 0, names.Length - 1);
+            idx1 = Mathf.Clamp(EditorGUILayout.Popup("First Type", idx1, names), 0, names.Length - 1);
             firstTypeName = names[idx1];
             
-            // type 2
+            // Type 2
             int idx2 = Array.IndexOf(names, secondTypeName);
-            idx2 = Mathf.Clamp(EditorGUILayout.Popup("Tip B", idx2, names), 0, names.Length - 1);
+            idx2 = Mathf.Clamp(EditorGUILayout.Popup("Second Type", idx2, names), 0, names.Length - 1);
             secondTypeName = names[idx2];
             
             GUILayout.EndVertical();
@@ -48,18 +48,24 @@ namespace Backend.EasyEvent.Conditions
         {
             if (string.IsNullOrEmpty(firstTypeName) || string.IsNullOrEmpty(secondTypeName))
             {
-                Debug.LogWarning($"[{nameof(CollidingCondition)}] firstTypeName veya secondTypeName tanımsız. Abonelik atlandı.");
+                Debug.LogWarning($"[{nameof(CollidingCondition)}] Type-1 or Type-2 is undefined. Subscription skipped.");
                 return;
             }
             
             var asm = Assembly.GetAssembly(typeof(BaseComponent));
             firstType  = asm.GetType(firstTypeName);
             secondType = asm.GetType(secondTypeName);
-            
-            if (firstType == null || secondType == null)
-            { 
-                Debug.LogError($"[{nameof(CollidingCondition)}] Tip bulunamadı: {firstTypeName}, {secondTypeName}"); 
-                return;
+
+            foreach (var type in asm.GetTypes().Where(t => t.IsSubclassOf(typeof(BaseComponent))))
+            {
+                if (type.Name == firstTypeName)
+                { 
+                    firstType = type;
+                }
+                else if (type.Name == secondTypeName)
+                {
+                    secondType = type;
+                }
             }
             
             EventBus.OnCollision2D += OnAnyCollision;
@@ -70,14 +76,17 @@ namespace Backend.EasyEvent.Conditions
             EventBus.OnCollision2D -= OnAnyCollision;
         }
 
-        private void OnAnyCollision(BaseComponent a, BaseComponent b)
+        private void OnAnyCollision(BaseComponent source, BaseComponent other)
         {
-            if ((a.GetType() == firstType && b.GetType() == secondType) ||
-                (a.GetType() == secondType && b.GetType() == firstType))
+            if (source.GetType() == firstType && other.GetType() == secondType)
             {
                 foreach (var action in relatedEvent.Actions)
-                    action.Execute(a, b);
+                {
+                    action.Execute(source, other);
+                }
+                    
             }
         }
+        
     }
 }

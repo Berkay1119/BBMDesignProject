@@ -104,11 +104,11 @@ namespace UI {
         private void CreateNewObject() {
             
             if (string.IsNullOrWhiteSpace(objectName)) {
-                Debug.LogWarning("EasyObject name cannot be empty!");
+                Debug.LogWarning("EasyObject name can not be empty!");
                 return;
             }
 
-            // create new gameObject
+            // Create a new gameObject
             GameObject newObject = new GameObject(objectName);
             var easyObject=newObject.AddComponent<EasyObject>();
 
@@ -121,7 +121,6 @@ namespace UI {
             var selectedComponents = new Dictionary<string, bool>();
             for (var i = 0; i < _componentsToggle.Count; i++) {
                 selectedComponents.Add(_availableComponents[i].Name, _componentsToggle[i]);
-                
             }
             
             easyObject.CreateEasyComponents(selectedComponents);
@@ -131,33 +130,52 @@ namespace UI {
                 easyObject.AddCustomVariable(customVar.Name, customVar.Type, customVar.Value.ToString());
             }
 
+            Debug.Log("____________________________________________________");
             Debug.Log($"Created new object '{objectName}' with components:");
             foreach (var component in newObject.GetComponents<Component>()) {
                 Debug.Log(component.GetType().Name);
             }
+            Debug.Log("____________________________________________________");
             
-            // If "Camera: Follow Character" is selected
-            if (selectedComponents.ContainsKey("Character") && selectedComponents["Character"]) {
+            if (selectedComponents.ContainsKey("Character") && selectedComponents["Character"])
+            {
                 var characterComponent = newObject.GetComponent<CharacterComponent>();
-                if (characterComponent != null && cameraFollowCharacter) {
-                    var cameraFollow = Camera.main?.gameObject.AddComponent<CameraFollowComponent>();
-                    if (cameraFollow != null) {
-                        cameraFollow.target = newObject.transform;
+                if (characterComponent != null && cameraFollowCharacter)
+                {
+                    var camGO = Camera.main?.gameObject;
+                    if (camGO != null)
+                    {
+                        // Check if there is already a CameraFollowComponent 
+                        var existingFollow = camGO.GetComponent<CameraFollowComponent>();
+                        if (existingFollow != null)
+                        {
+                            // Update the target
+                            var oldTarget = existingFollow.target;
+                            existingFollow.target = newObject.transform;
+                            Debug.Log($"Camera following target changed from '{oldTarget?.name}' to '{newObject.name}'.");
+                        } 
+                        else
+                        {
+                            // Add a new CameraFollowComponent
+                            var cameraFollow = camGO.AddComponent<CameraFollowComponent>();
+                            cameraFollow.target = newObject.transform;
+                            Debug.Log($"CameraFollowComponent added with target '{newObject.name}'");
+                        }
                     }
                 }
             }
             
-            if (selectedComponents.ContainsKey("Platform") && selectedComponents["Platform"]) {
+            if (selectedComponents.ContainsKey("Platform") && selectedComponents["Platform"]){
                 var platformComponent = newObject.GetComponent<PlatformComponent>();
                 if (platformComponent != null && isMovingPanel) {
                     platformComponent.IsMoving = true; 
                 }
             }
 
-            // select the new object in the hierarchy
+            // Auto highlight the new object in the hierarchy
             Selection.activeGameObject = newObject;
 
-            // auto-closing after adding
+            // Auto-closing after adding
             Close();
         }
 
