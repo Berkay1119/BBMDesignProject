@@ -137,6 +137,7 @@ namespace UI
                 
                 GUILayout.EndHorizontal();
                 GUILayout.EndVertical();
+                GUILayout.Space(25);
             }
 
             // Removes the flagged event from both the manager and local list
