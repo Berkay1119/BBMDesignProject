@@ -5,7 +5,7 @@ namespace Backend.EasyEvent
 {
     public static class EventBus
     {
-        // İhtiyaç duyduğun diğer olayları da buraya ekle
+        // Add every event here
         public static event Action<BaseComponent, BaseComponent> OnCollision2D;
         public static event Action<BaseComponent> OnSpawn;
         public static event Action<BaseComponent> OnDestroy;

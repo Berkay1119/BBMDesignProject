@@ -49,7 +49,27 @@ namespace Backend.Managers
         
         private void OnApplicationQuit()
         {
+            Shutdown();   
             _quitting = true;
+        }
+        
+        private void OnDestroy()
+        {
+            // Clear the static reference on destroy
+            if (_instance == this)
+                _instance = null;
+        }
+        
+        /// <summary>
+        /// Clears all records, destroys singleton instance and game object
+        /// </summary>
+        private void Shutdown()
+        {
+            Debug.Log("Shutting down UpdateManager");
+            _updatables.Clear();
+            _fixedUpdatables.Clear();
+            _instance = null;
+            Destroy(gameObject);
         }
         
         public void Register(IUpdatable updatable)
@@ -60,16 +80,6 @@ namespace Backend.Managers
         public void Register(IFixedUpdatable fixedUpdatable)
         {
             RegisterHelper(_fixedUpdatables, fixedUpdatable, "fixed updateable");
-        }
-        
-        public void Unregister(IUpdatable updatable)
-        {
-            UnregisterHelper(_updatables, updatable, "updatable");
-        }
-
-        public void Unregister(IFixedUpdatable fixedUpdatable)
-        {
-            UnregisterHelper(_fixedUpdatables, fixedUpdatable, "fixed updatable");
         }
 
         private void Update()
@@ -97,13 +107,5 @@ namespace Backend.Managers
             }
         }
         
-        private static void UnregisterHelper<T>(List<T> list, T item, string label)
-        {
-            if (list.Contains(item))
-            {
-                list.Remove(item);
-                Debug.Log($"Unregistered {label}: {item}");
-            }
-        }
     }
 }

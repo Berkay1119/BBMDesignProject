@@ -35,7 +35,7 @@ namespace Backend.Components
         private void Awake()
         {
             _rigidbody2D = gameObject.AddComponent<Rigidbody2D>();
-            _rigidbody2D.bodyType = RigidbodyType2D.Kinematic; // Platform hareketi için gerekli
+            _rigidbody2D.bodyType = RigidbodyType2D.Kinematic; // Necessary for platform movement
         }
 
         public PlatformComponent()

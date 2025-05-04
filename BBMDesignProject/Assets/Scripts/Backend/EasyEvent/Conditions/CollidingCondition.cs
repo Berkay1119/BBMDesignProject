@@ -49,7 +49,7 @@ namespace Backend.EasyEvent.Conditions
         {
             if (string.IsNullOrEmpty(firstTypeName) || string.IsNullOrEmpty(secondTypeName))
             {
-                Debug.LogWarning($"[{nameof(CollidingCondition)}] Type-1 or Type-2 is undefined. Subscription skipped.");
+                //Debug.LogWarning($"[{nameof(CollidingCondition)}] Type-1 or Type-2 is undefined. Subscription skipped.");
                 return;
             }
             

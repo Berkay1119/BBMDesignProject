@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Backend.Components
 {
-    public abstract class BaseComponent:MonoBehaviour
+    public abstract class BaseComponent : MonoBehaviour
     {
         private string _name;
         private string _description;
@@ -32,29 +32,19 @@ namespace Backend.Components
 
         protected virtual void OnEnable()
         {
-            switch (this)
+            if (this is IUpdatable u)
             {
-                case IUpdatable updateable:
-                    UpdateManager.Instance.Register(updateable);
-                    break;
-                case IFixedUpdatable fixedUpdateable:
-                    UpdateManager.Instance.Register(fixedUpdateable);
-                    break;
+                UpdateManager.Instance?.Register(u);
+            }
+
+            if (this is IFixedUpdatable f)
+            {
+                UpdateManager.Instance?.Register(f);
             }
         }
 
         protected virtual void OnDisable()
         {
-            switch (this)
-            {
-                case IUpdatable updateable:
-                    UpdateManager.Instance.Unregister(updateable);
-                    break;
-                case IFixedUpdatable fixedUpdateable:
-                    UpdateManager.Instance.Unregister(fixedUpdateable);
-                    break;
-            }
-
             foreach (var component in _addedComponents)
             {
                 Destroy(component);
