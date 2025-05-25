@@ -191,6 +191,8 @@ namespace UI
 
                 GUILayout.Space(20); 
                 
+                EditorGUILayout.HelpBox("Don't forget to save the event after making any changes or updates!", MessageType.Info);
+                
                 // Save and Remove buttons
                 GUILayout.BeginHorizontal();
                 GUILayout.FlexibleSpace();

@@ -2026,13 +2026,13 @@ MonoBehaviour:
   - eventName: 
     eventDescription: 
     Conditions:
-    - rid: 1605981350723584051
+    - rid: 1605981350723584076
     Actions:
-    - rid: 1605981350723584060
+    - rid: 1605981350723584084
   references:
     version: 2
     RefIds:
-    - rid: 1605981350723584051
+    - rid: 1605981350723584076
       type: {class: CollidingCondition, ns: Backend.EasyEvent.Conditions, asm: Assembly-CSharp}
       data:
         conditionName: Colliding Condition
@@ -2041,17 +2041,17 @@ MonoBehaviour:
         secondTypeName: CollectibleComponent
         firstRequiredTag: Character
         secondRequiredTag: Carrot
-    - rid: 1605981350723584060
+    - rid: 1605981350723584084
       type: {class: ModifyVariableAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
       data:
         actionName: ModifyVariable
         actionDescription: Modifies or sets the value of a custom variable based
           on its type and selected operation.
-        CustomVariable: {fileID: 1607131181}
+        CustomVariable: {fileID: 1607131179}
         easyObject: {fileID: 1607131176}
-        variableName: isAlive
-        variableOperation: 3
-        operationValue: True
+        variableName: CarrotAmount
+        variableOperation: 0
+        operationValue: 
 --- !u!4 &1344682290
 Transform:
   m_ObjectHideFlags: 0
@@ -2429,8 +2429,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: HP
-  _value: 100
-  _type: 2
+  _value: Hello
+  _type: 0
 --- !u!114 &1607131181
 MonoBehaviour:
   m_ObjectHideFlags: 0

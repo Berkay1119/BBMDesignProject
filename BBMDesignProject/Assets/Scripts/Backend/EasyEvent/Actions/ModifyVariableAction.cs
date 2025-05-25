@@ -41,11 +41,33 @@ namespace Backend.EasyEvent.Actions
 
                 if (variableNames.Count > 0)
                 {
-                    variableIndex = Mathf.Clamp(variableIndex, 0, variableNames.Count - 1);
-                    variableIndex = EditorGUILayout.Popup("Variable:", variableIndex, variableNames.ToArray());
-                    variableName = variableNames[variableIndex];
-                    CustomVariable = customVariables[variableIndex];
-                    
+                    if (!string.IsNullOrEmpty(variableName))
+                    {
+                        variableIndex = variableNames.IndexOf(variableName);
+                    }
+                    else
+                    {
+                        variableIndex = 0;
+                    }
+
+                    if (variableIndex < 0) variableIndex = 0;
+                    int newIndex = EditorGUILayout.Popup("Variable:", variableIndex, variableNames.ToArray());
+
+                    if (newIndex != variableIndex)
+                    {
+                        variableIndex = newIndex;
+                        variableName = variableNames[variableIndex];
+                        CustomVariable = customVariables[variableIndex];
+
+                        // Reset operation value only if variable changed
+                        operationValue = "";
+                    }
+                    else
+                    {
+                        variableName = variableNames[variableIndex];
+                        CustomVariable = customVariables[variableIndex];
+                    }
+
                     DrawOperationGUI(CustomVariable.Type);
                 }
                 else
@@ -64,9 +86,13 @@ namespace Backend.EasyEvent.Actions
             {
                 case VariableType.Integer:
                 case VariableType.Float:
-                    variableOperation = (VariableOperation)EditorGUILayout.EnumPopup("Operation", variableOperation);
-                    if (variableOperation != VariableOperation.Invert)
-                        operationValue = EditorGUILayout.TextField("Value", operationValue);
+                    string[] numericOps = { "Add", "Multiply", "Divide", "Set" };
+                    int selectedNumeric = (int)variableOperation;
+                    if (selectedNumeric > 3) selectedNumeric = 0; // Fallback from Invert etc.
+                    selectedNumeric = EditorGUILayout.Popup("Operation", selectedNumeric, numericOps);
+                    variableOperation = (VariableOperation)selectedNumeric;
+
+                    operationValue = EditorGUILayout.TextField("Value", operationValue);
                     break;
 
                 case VariableType.Boolean:
