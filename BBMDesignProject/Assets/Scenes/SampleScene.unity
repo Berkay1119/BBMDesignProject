@@ -1285,6 +1285,95 @@ Transform:
   - {fileID: 1876567000}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1055853566
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1055853568}
+  - component: {fileID: 1055853567}
+  m_Layer: 0
+  m_Name: EasyEventManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1055853567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055853566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95de8afebd4045a5b1a9bfabc1b19f1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  events:
+  - eventName: DestroyCarrots
+    eventDescription: destroy carrot objects when rabbit collides with them
+    Conditions:
+    - rid: 1605981350723584258
+    Actions:
+    - rid: 1605981350723584259
+    - rid: 1605981350723584260
+    - rid: 1605981350723584261
+  references:
+    version: 2
+    RefIds:
+    - rid: 1605981350723584258
+      type: {class: CollidingCondition, ns: Backend.EasyEvent.Conditions, asm: Assembly-CSharp}
+      data:
+        conditionName: Colliding Condition
+        conditionDescription: Check if two objects are colliding
+        firstTypeName: CharacterComponent
+        secondTypeName: CollectibleComponent
+        firstRequiredTag: Character
+        secondRequiredTag: Carrot
+    - rid: 1605981350723584259
+      type: {class: DestroyObjectAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
+      data:
+        actionName: Destroy Object
+        actionDescription: Destroys object that matches the selected type and tag.
+        targetTypeName: CollectibleComponent
+        targetTag: Carrot
+    - rid: 1605981350723584260
+      type: {class: ModifyVariableAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
+      data:
+        actionName: ModifyVariable
+        actionDescription: Modifies or sets the value of a custom variable based
+          on its type and selected operation.
+        CustomVariable: {fileID: 1607131179}
+        easyObject: {fileID: 1607131176}
+        variableName: CarrotAmount
+        variableOperation: 0
+        operationValue: 1
+    - rid: 1605981350723584261
+      type: {class: PrintStringAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
+      data:
+        actionName: Print String
+        actionDescription: Prints text to the console
+        text: Collected a new Carrot!
+--- !u!4 &1055853568
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055853566}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1061865664
 GameObject:
   m_ObjectHideFlags: 0
@@ -2321,92 +2410,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1307807442}
   m_CullTransparentMesh: 1
---- !u!1 &1344682288
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1344682290}
-  - component: {fileID: 1344682289}
-  m_Layer: 0
-  m_Name: EasyEventManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1344682289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1344682288}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95de8afebd4045a5b1a9bfabc1b19f1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  events:
-  - eventName: 
-    eventDescription: 
-    Conditions:
-    - rid: 1605981350723584076
-    Actions:
-    - rid: 1605981350723584162
-    - rid: 1605981350723584165
-  references:
-    version: 2
-    RefIds:
-    - rid: 1605981350723584076
-      type: {class: CollidingCondition, ns: Backend.EasyEvent.Conditions, asm: Assembly-CSharp}
-      data:
-        conditionName: Colliding Condition
-        conditionDescription: Check if two objects are colliding
-        firstTypeName: CharacterComponent
-        secondTypeName: CollectibleComponent
-        firstRequiredTag: Character
-        secondRequiredTag: Carrot
-    - rid: 1605981350723584162
-      type: {class: ModifyVariableAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
-      data:
-        actionName: ModifyVariable
-        actionDescription: Modifies or sets the value of a custom variable based
-          on its type and selected operation.
-        CustomVariable: {fileID: 1607131179}
-        easyObject: {fileID: 1607131176}
-        variableName: CarrotAmount
-        variableOperation: 0
-        operationValue: 1
-    - rid: 1605981350723584165
-      type: {class: ModifyVariableAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
-      data:
-        actionName: ModifyVariable
-        actionDescription: Modifies or sets the value of a custom variable based
-          on its type and selected operation.
-        CustomVariable: {fileID: 1607131181}
-        easyObject: {fileID: 1607131176}
-        variableName: isAlive
-        variableOperation: 4
-        operationValue: 
---- !u!4 &1344682290
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1344682288}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1420785840
 GameObject:
   m_ObjectHideFlags: 0
@@ -3630,7 +3633,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 73640659}
   - {fileID: 519420032}
-  - {fileID: 1344682290}
   - {fileID: 1871314784}
   - {fileID: 1124312025}
   - {fileID: 1785950720}
@@ -3647,3 +3649,4 @@ SceneRoots:
   - {fileID: 1607131177}
   - {fileID: 850071322}
   - {fileID: 1037942959}
+  - {fileID: 1055853568}

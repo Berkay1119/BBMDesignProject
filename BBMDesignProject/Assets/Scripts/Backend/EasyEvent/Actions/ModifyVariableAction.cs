@@ -75,6 +75,10 @@ namespace Backend.EasyEvent.Actions
                     GUILayout.Label("No variables found.");
                 }
             }
+            else
+            {
+                EditorGUILayout.HelpBox("Select an object to modify a variable of it.", MessageType.Info);
+            }
             
             GUILayout.EndVertical();
         }

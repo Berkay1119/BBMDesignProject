@@ -14,6 +14,7 @@ namespace Backend.EasyEvent
         {
             GUILayout.BeginVertical();
             GUILayout.Label("Action Name: " + actionName);
+            GUILayout.Label("Action Description: " + actionDescription);
         }
 
         public abstract void Execute(BaseComponent source, BaseComponent other);
