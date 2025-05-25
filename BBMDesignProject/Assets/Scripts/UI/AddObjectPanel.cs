@@ -26,7 +26,8 @@ namespace UI {
         private string newVariableValue = "";
         
         public static void ShowWindow() {
-            GetWindow<AddObjectWindow>("Add New EasyObject");
+            var window = GetWindow<AddObjectWindow>("Add New EasyObject");
+            window.minSize = new Vector2(Screen.currentResolution.width * 0.4f, Screen.currentResolution.height * 0.3f);
             _availableComponents = ComponentController.FindComponents();
             _componentsToggle.Clear();
             

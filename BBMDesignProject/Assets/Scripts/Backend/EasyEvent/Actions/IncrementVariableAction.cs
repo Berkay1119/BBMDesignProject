@@ -22,7 +22,7 @@ namespace Backend.EasyEvent.Actions
         public ModifyVariableAction()
         {
             actionName = "ModifyVariable";
-            actionDescription = "Seçilen objenin custom variable değerini değiştirir";
+            actionDescription = "Increases or decreases the value of a desired custom variable of the selected object.";
         }
         
         public override void DrawGUI()
@@ -75,11 +75,15 @@ namespace Backend.EasyEvent.Actions
 
                     switch (variableOperation)
                     {
-                        case VariableOperation.Increment:
+                        case VariableOperation.Add:
                             intVal += opVal;
                             break;
-                        case VariableOperation.Decrement:
-                            intVal -= opVal;
+                        case VariableOperation.Multiply:
+                            intVal *= opVal;
+                            break;
+                        case VariableOperation.Divide:
+                            if (opVal == 0) return;
+                            intVal /= opVal;
                             break;
                     }
 
@@ -89,20 +93,32 @@ namespace Backend.EasyEvent.Actions
                 case VariableType.Float:
                     if (!float.TryParse(variableValue, out var floatVal)) return;
                     if (!float.TryParse(operationValue, out var fOpVal)) return;
-                    floatVal = variableOperation == VariableOperation.Increment ? floatVal + fOpVal : floatVal - fOpVal;
+                    
+                    switch (variableOperation)
+                    {
+                        case VariableOperation.Add:
+                            floatVal += fOpVal;
+                            break;
+                        case VariableOperation.Multiply:
+                            floatVal *= fOpVal;
+                            break;
+                        case VariableOperation.Divide:
+                            if (Mathf.Approximately(fOpVal, 0f)) return;
+                            floatVal /= fOpVal;
+                            break;
+                    }
+
                     CustomVariable._value = floatVal.ToString();
                     break;
 
                 case VariableType.String:
-                    // Örneğin birleştir
-                    CustomVariable._value = variableOperation == VariableOperation.Increment
+                    CustomVariable._value = variableOperation == VariableOperation.Add
                         ? variableValue + operationValue
                         : variableValue.Replace(operationValue, "");
                     break;
 
                 case VariableType.Boolean:
-                    if (!bool.TryParse(variableValue, out var boolVal)) return;
-                    // toggle dışında opValue'yu parse edip setleyebilirsin
+                    if (!bool.TryParse(variableValue, out var boolVal) && variableOperation == VariableOperation.Add) return;
                     CustomVariable._value = (!boolVal).ToString();
                     break;
             }
@@ -111,7 +127,8 @@ namespace Backend.EasyEvent.Actions
 
     public enum VariableOperation
     {
-        Increment,
-        Decrement,
+        Add,
+        Multiply,
+        Divide,
     }
 }

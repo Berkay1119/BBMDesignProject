@@ -20,7 +20,7 @@ namespace Backend.EasyEvent.Actions
         public AssignVariableAction()
         {
             actionName = "AssignVariable";
-            actionDescription = "Seçilen objenin custom variable değerini değiştirir.";
+            actionDescription = "Sets the value of a desired custom variable of the selected object.";
         }
         
         public override void DrawGUI()

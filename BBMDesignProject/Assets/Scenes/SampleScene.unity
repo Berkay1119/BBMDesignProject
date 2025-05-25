@@ -1787,6 +1787,106 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1344682288
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1344682290}
+  - component: {fileID: 1344682289}
+  m_Layer: 0
+  m_Name: EasyEventManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1344682289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344682288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95de8afebd4045a5b1a9bfabc1b19f1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  events:
+  - eventName: Collect Carrot and Decrease Coin Amount
+    eventDescription: Collect Carrot and Decrease Coin Amount
+    Conditions:
+    - rid: 1605981345321582600
+    Actions:
+    - rid: 1605981345321582609
+  - eventName: Enemy Collide
+    eventDescription: Decrease HP When Colliding Enemy
+    Conditions:
+    - rid: 1605981345321582612
+    Actions:
+    - rid: 1605981345321582613
+  references:
+    version: 2
+    RefIds:
+    - rid: 1605981345321582600
+      type: {class: CollidingCondition, ns: Backend.EasyEvent.Conditions, asm: Assembly-CSharp}
+      data:
+        conditionName: Colliding Condition
+        conditionDescription: Check if two objects are colliding
+        firstTypeName: CharacterComponent
+        secondTypeName: CollectibleComponent
+        firstRequiredTag: Character
+        secondRequiredTag: Carrot
+    - rid: 1605981345321582609
+      type: {class: ModifyVariableAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
+      data:
+        actionName: ModifyVariable
+        actionDescription: Increases or decreases the value of a desired custom variable
+          of the selected object.
+        CustomVariable: {fileID: 1607131178}
+        easyObject: {fileID: 1607131176}
+        variableName: CoinAmount
+        variableOperation: 2
+        operationValue: 2
+    - rid: 1605981345321582612
+      type: {class: CollidingCondition, ns: Backend.EasyEvent.Conditions, asm: Assembly-CSharp}
+      data:
+        conditionName: Colliding Condition
+        conditionDescription: Check if two objects are colliding
+        firstTypeName: CharacterComponent
+        secondTypeName: EnemyComponent
+        firstRequiredTag: Character
+        secondRequiredTag: Enemy
+    - rid: 1605981345321582613
+      type: {class: ModifyVariableAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
+      data:
+        actionName: ModifyVariable
+        actionDescription: Increases or decreases the value of a desired custom variable
+          of the selected object.
+        CustomVariable: {fileID: 1607131179}
+        easyObject: {fileID: 1607131176}
+        variableName: CarrotAmount
+        variableOperation: 1
+        operationValue: 4
+--- !u!4 &1344682290
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344682288}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1420785840
 GameObject:
   m_ObjectHideFlags: 0
@@ -1845,6 +1945,7 @@ GameObject:
   - component: {fileID: 1607131174}
   - component: {fileID: 1607131178}
   - component: {fileID: 1607131179}
+  - component: {fileID: 1607131180}
   m_Layer: 0
   m_Name: Character (Rabbit)
   m_TagString: Character
@@ -1976,8 +2077,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: CarrotAmount
-  _value: 0
+  _value: 10
   _type: 1
+--- !u!114 &1607131180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607131173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94a53438b5544ad78920a25738ff008e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: HP
+  _value: 100
+  _type: 2
 --- !u!1 &1871314783
 GameObject:
   m_ObjectHideFlags: 0
@@ -2061,170 +2177,6 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.93, y: 1.88, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1889582461
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1889582463}
-  - component: {fileID: 1889582462}
-  m_Layer: 0
-  m_Name: EasyEventManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1889582462
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1889582461}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95de8afebd4045a5b1a9bfabc1b19f1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  events:
-  - eventName: collect carrot
-    eventDescription: 
-    Conditions:
-    - rid: 1605981192227651740
-    Actions:
-    - rid: 1605981192227651741
-    - rid: 1605981192227651742
-  - eventName: collect coin
-    eventDescription: 
-    Conditions:
-    - rid: 1605981192227651743
-    Actions:
-    - rid: 1605981192227651744
-    - rid: 1605981192227651745
-  - eventName: collide thieft
-    eventDescription: 
-    Conditions:
-    - rid: 1605981192227651746
-    Actions:
-    - rid: 1605981192227651747
-    - rid: 1605981192227651748
-    - rid: 1605981192227651749
-    - rid: 1605981192227651750
-  references:
-    version: 2
-    RefIds:
-    - rid: 1605981192227651740
-      type: {class: CollidingCondition, ns: Backend.EasyEvent.Conditions, asm: Assembly-CSharp}
-      data:
-        conditionName: Colliding Condition
-        conditionDescription: Check if two objects are colliding
-        firstTypeName: CharacterComponent
-        secondTypeName: CollectibleComponent
-        firstRequiredTag: Character
-        secondRequiredTag: Carrot
-    - rid: 1605981192227651741
-      type: {class: DestroyByTypeAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
-      data:
-        actionName: Destroy by Type
-        actionDescription: Destroys the colliding object that matches the selected
-          type.
-        targetTypeName: CollectibleComponent
-    - rid: 1605981192227651742
-      type: {class: IncrementVariableAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
-      data:
-        actionName: IncrementVariable
-        actionDescription: "Se\xE7ilen objenin custom variable de\u011Ferini artt\u0131r\u0131r,
-          ekleme yapar."
-        CustomVariable: {fileID: 1607131179}
-        easyObject: {fileID: 1607131176}
-        variableName: CarrotAmount
-        operationValue: 5
-    - rid: 1605981192227651743
-      type: {class: CollidingCondition, ns: Backend.EasyEvent.Conditions, asm: Assembly-CSharp}
-      data:
-        conditionName: Colliding Condition
-        conditionDescription: Check if two objects are colliding
-        firstTypeName: CharacterComponent
-        secondTypeName: CollectibleComponent
-        firstRequiredTag: Character
-        secondRequiredTag: Coin
-    - rid: 1605981192227651744
-      type: {class: DestroyByTypeAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
-      data:
-        actionName: Destroy by Type
-        actionDescription: Destroys the colliding object that matches the selected
-          type.
-        targetTypeName: CollectibleComponent
-    - rid: 1605981192227651745
-      type: {class: IncrementVariableAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
-      data:
-        actionName: IncrementVariable
-        actionDescription: "Se\xE7ilen objenin custom variable de\u011Ferini artt\u0131r\u0131r,
-          ekleme yapar."
-        CustomVariable: {fileID: 1607131178}
-        easyObject: {fileID: 1607131176}
-        variableName: CoinAmount
-        operationValue: 10
-    - rid: 1605981192227651746
-      type: {class: CollidingCondition, ns: Backend.EasyEvent.Conditions, asm: Assembly-CSharp}
-      data:
-        conditionName: Colliding Condition
-        conditionDescription: Check if two objects are colliding
-        firstTypeName: CharacterComponent
-        secondTypeName: CollectibleComponent
-        firstRequiredTag: Character
-        secondRequiredTag: Thieft
-    - rid: 1605981192227651747
-      type: {class: DestroyByTypeAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
-      data:
-        actionName: Destroy by Type
-        actionDescription: Destroys the colliding object that matches the selected
-          type.
-        targetTypeName: CollectibleComponent
-    - rid: 1605981192227651748
-      type: {class: IncrementVariableAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
-      data:
-        actionName: IncrementVariable
-        actionDescription: "Se\xE7ilen objenin custom variable de\u011Ferini artt\u0131r\u0131r,
-          ekleme yapar."
-        CustomVariable: {fileID: 1607131179}
-        easyObject: {fileID: 1607131176}
-        variableName: CarrotAmount
-        operationValue: -1
-    - rid: 1605981192227651749
-      type: {class: AssignVariableAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
-      data:
-        actionName: AssignVariable
-        actionDescription: "Se\xE7ilen objenin custom variable de\u011Ferini de\u011Fi\u015Ftirir."
-        CustomVariable: {fileID: 1607131178}
-        easyObject: {fileID: 1607131176}
-        variableName: CoinAmount
-        operationValue: 0
-    - rid: 1605981192227651750
-      type: {class: PrintStringAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
-      data:
-        actionName: Print String
-        actionDescription: Prints text to the console
-        text: take all money and one carrot
---- !u!4 &1889582463
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1889582461}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2601,7 +2553,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
-  - {fileID: 1889582463}
+  - {fileID: 1344682290}
   - {fileID: 1871314784}
   - {fileID: 1124312025}
   - {fileID: 413387376}
