@@ -20,7 +20,11 @@ namespace Backend.EasyEvent.Actions
         public override void DrawGUI()
         {
             base.DrawGUI();
-            text = EditorGUILayout.TextField("Text to Print",text);
+            text = EditorGUILayout.TextField("Text to Print", text);
+            if (string.IsNullOrEmpty(text))
+            {
+                EditorGUILayout.HelpBox("Enter the message you want to display in the console.", MessageType.Info);
+            }
             GUILayout.EndVertical();
         }
 

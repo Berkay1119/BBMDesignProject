@@ -1,5 +1,5 @@
-﻿using System;
-using Backend.Components;
+﻿using System.Linq;
+using Backend.CustomVariableFeature;
 using Backend.UIComponents;
 using UnityEditor;
 using UnityEngine;
@@ -7,10 +7,14 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public class AddUIPanel:EditorWindow
+    public class AddUIPanel : EditorWindow
     {
         private static UIPanelSettings _settings;
-        public static void ShowWindow() {
+        private string[] _availableVariables = new string[0];
+        private int _selectedVariableIndex = 0;
+
+        public static void ShowWindow()
+        {
             GetWindow<AddUIPanel>("Add New UI Panel");
             _settings = new UIPanelSettings();
         }
@@ -18,25 +22,36 @@ namespace UI
         private void OnGUI()
         {
             GUILayout.Label("UI Panel Settings", EditorStyles.boldLabel);
-            
+
             GUILayout.BeginVertical("box");
             _settings.PanelName = EditorGUILayout.TextField("Panel Name: ", _settings.PanelName);
             _settings.Position = (UIPosition)EditorGUILayout.EnumPopup("Position: ", _settings.Position);
             _settings.Size = EditorGUILayout.IntField("Size: ", _settings.Size);
             _settings.BackgroundImage = (Sprite)EditorGUILayout.ObjectField("Background Image: ", _settings.BackgroundImage, typeof(Sprite), true);
-            _settings.Type = (UIType)EditorGUILayout.EnumPopup("Type: ", _settings.Type);
-            
-            if (_settings.Type == UIType.CollectibleAmountDisplay)
+
+            _settings.TrackingObject = (GameObject)EditorGUILayout.ObjectField("Tracking Object: ", _settings.TrackingObject, typeof(GameObject), true);
+
+            if (_settings.TrackingObject != null)
             {
-                _settings.TrackedCollectible = (CollectibleType)EditorGUILayout.EnumPopup("Tracked Collectible: ", _settings.TrackedCollectible);
-                _settings.TrackingObject = (GameObject)EditorGUILayout.ObjectField("Tracking Object: ", _settings.TrackingObject, typeof(GameObject), true);
+                _availableVariables = _settings.TrackingObject
+                    .GetComponents<SerializableCustomVariable>()
+                    .Select(v => v.Name)
+                    .ToArray();
+
+                if (_availableVariables.Length > 0)
+                {
+                    _selectedVariableIndex = Mathf.Clamp(_selectedVariableIndex, 0, _availableVariables.Length - 1);
+                    _selectedVariableIndex = EditorGUILayout.Popup("Tracked Variable:", _selectedVariableIndex, _availableVariables);
+                    _settings.TrackedVariableName = _availableVariables[_selectedVariableIndex];
+                }
+                else
+                {
+                    EditorGUILayout.HelpBox("No custom variables found on selected object.", MessageType.Warning);
+                }
             }
-            else if (_settings.Type == UIType.TextDisplay)
-            {
-                _settings.Text = EditorGUILayout.TextField("Text: ", _settings.Text);
-            }
+
             GUILayout.EndVertical();
-            
+
             if (GUILayout.Button("Add"))
             {
                 CreateNewUIPanel();
@@ -45,142 +60,101 @@ namespace UI
 
         private void CreateNewUIPanel()
         {
-            //Create canvas if it doesn't exist
+            if (string.IsNullOrEmpty(_settings.PanelName) || _settings.TrackingObject == null || string.IsNullOrEmpty(_settings.TrackedVariableName))
+            {
+                Debug.LogWarning("Please ensure Panel Name, Tracking Object and Tracked Variable are assigned.");
+                return;
+            }
+            
             if (GameObject.Find("EasyCanvas") == null)
             {
                 var canvas = new GameObject("EasyCanvas");
-                canvas.AddComponent<Canvas>();
-                canvas.AddComponent<CanvasScaler>();
+                canvas.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+                
+                var scaler = canvas.AddComponent<CanvasScaler>();
+                scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
                 canvas.AddComponent<GraphicRaycaster>();
-                canvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+                
+                // Put the Canvas on top in the hierarchy
+                canvas.transform.SetSiblingIndex(0);
             }
-            
-            //Create panel
+
             var panel = new GameObject(_settings.PanelName);
             panel.transform.SetParent(GameObject.Find("EasyCanvas").transform);
             panel.AddComponent<RectTransform>();
+
             if (_settings.BackgroundImage != null)
             {
-                panel.AddComponent<Image>();
-                panel.GetComponent<Image>().sprite = _settings.BackgroundImage;
+                var img = panel.AddComponent<Image>();
+                img.sprite = _settings.BackgroundImage;
             }
 
+            var rectTransform = panel.GetComponent<RectTransform>();
+            rectTransform.anchorMin = GetAnchorMin(_settings.Position);
+            rectTransform.anchorMax = GetAnchorMax(_settings.Position);
+            rectTransform.pivot = GetPivot(_settings.Position);
+            rectTransform.anchoredPosition = Vector2.zero;
+            rectTransform.localScale = Vector3.one * _settings.Size;
+
+            var display = panel.AddComponent<UICustomVariableDisplay>();
+            display.target = _settings.TrackingObject;
+            display.variableName = _settings.TrackedVariableName;
+
+            GameObject textObject = new GameObject("Text");
+            textObject.transform.SetParent(panel.transform);
+            var textRect = textObject.AddComponent<RectTransform>();
             
-            //Set position
-            panel.GetComponent<RectTransform>().anchorMin = GetAnchorMin(_settings.Position);
-            panel.GetComponent<RectTransform>().anchorMax = GetAnchorMax(_settings.Position);
-            panel.GetComponent<RectTransform>().pivot = GetPivot(_settings.Position);
-            panel.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-            panel.GetComponent<RectTransform>().localScale = Vector3.one*(_settings.Size);
+            // Set to stretch/stretch
+            textRect.anchorMin = new Vector2(0, 0);
+            textRect.anchorMax = new Vector2(1, 1);
+            textRect.offsetMin = Vector2.zero;
+            textRect.offsetMax = Vector2.zero;
+            textRect.pivot = new Vector2(0.5f, 0.5f);
+            textRect.localScale = Vector3.one;
+
+            var text = textObject.AddComponent<TMPro.TextMeshProUGUI>();
+            text.alignment = TMPro.TextAlignmentOptions.Center;
+            display.text = text;
             
+            // Set initial text value
+            var trackedVar = _settings.TrackingObject
+                .GetComponents<SerializableCustomVariable>()
+                .FirstOrDefault(v => v.Name == _settings.TrackedVariableName);
+
+            if (trackedVar != null)
+            {
+                text.text = $"{trackedVar.Name}: {trackedVar._value}";
+            }
+            else
+            {
+                text.text = $"{_settings.TrackedVariableName}: ?";
+            }
             
-            //Add UI component
-            switch (_settings.Type)
-            {
-                case UIType.CollectibleAmountDisplay:
-                    var collectibleAmountDisplay = panel.AddComponent<UICollectibleAmountDisplay>();
-                    collectibleAmountDisplay.type = _settings.TrackedCollectible;
-                    collectibleAmountDisplay.target = _settings.TrackingObject;
-                    GameObject textObject = new GameObject("Text");
-                    var rect = textObject.AddComponent<RectTransform>();
-                    textObject.transform.SetParent(panel.transform);
-                    rect.anchoredPosition = Vector2.zero;
-                    rect.pivot = GetPivot(_settings.Position);
-                    var text = textObject.AddComponent<TMPro.TextMeshProUGUI>();
-                    textObject.GetComponent<RectTransform>().localScale = Vector3.one;
-                    collectibleAmountDisplay.text = text;
-                    text.alignment = TMPro.TextAlignmentOptions.Center;
-                    break;
-                case UIType.TextDisplay:
-                    textObject = new GameObject("Text");
-                    rect = textObject.AddComponent<RectTransform>();
-                    textObject.transform.SetParent(panel.transform);
-                    rect.anchoredPosition = Vector2.zero;
-                    rect.pivot = GetPivot(_settings.Position);
-                    text = textObject.AddComponent<TMPro.TextMeshProUGUI>();
-                    textObject.GetComponent<RectTransform>().localScale = Vector3.one;
-                    text.text = _settings.Text;
-                    text.alignment = TMPro.TextAlignmentOptions.Center;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            Close();
         }
 
-        private Vector2 GetPivot(UIPosition settingsPosition)
+        private Vector2 GetPivot(UIPosition pos) => pos switch
         {
-            switch (settingsPosition)
-            {
-                case UIPosition.RightTop:
-                    return new Vector2(1, 1);
-                case UIPosition.RightBottom:
-                    return new Vector2(1, 0);
-                case UIPosition.LeftTop:
-                    return new Vector2(0, 1);
-                case UIPosition.LeftBottom:
-                    return new Vector2(0, 0);
-                case UIPosition.Center:
-                    return new Vector2(0.5f, 0.5f);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
+            UIPosition.RightTop => new Vector2(1, 1),
+            UIPosition.RightBottom => new Vector2(1, 0),
+            UIPosition.LeftTop => new Vector2(0, 1),
+            UIPosition.LeftBottom => new Vector2(0, 0),
+            UIPosition.Center => new Vector2(0.5f, 0.5f),
+            _ => Vector2.zero
+        };
 
-        private Vector2 GetAnchorMax(UIPosition settingsPosition)
-        {
-            switch (settingsPosition)
-            {
-                case UIPosition.RightTop:
-                    return new Vector2(1, 1);
-                case UIPosition.RightBottom:
-                    return new Vector2(1, 0);
-                case UIPosition.LeftTop:
-                    return new Vector2(0, 1);
-                case UIPosition.LeftBottom:
-                    return new Vector2(0, 0);
-                case UIPosition.Center:
-                    return new Vector2(0.5f, 0.5f);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
-        private Vector2 GetAnchorMin(UIPosition settingsPosition)
-        {
-            switch (settingsPosition)
-            {
-                case UIPosition.RightTop:
-                    return new Vector2(1, 1);
-                case UIPosition.RightBottom:
-                    return new Vector2(1, 0);
-                case UIPosition.LeftTop:
-                    return new Vector2(0, 1);
-                case UIPosition.LeftBottom:
-                    return new Vector2(0, 0);
-                case UIPosition.Center:
-                    return new Vector2(0.5f, 0.5f);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
+        private Vector2 GetAnchorMin(UIPosition pos) => GetPivot(pos);
+        private Vector2 GetAnchorMax(UIPosition pos) => GetPivot(pos);
     }
-    
+
     public struct UIPanelSettings
     {
         public string PanelName;
         public UIPosition Position;
         public int Size;
         public Sprite BackgroundImage;
-        public UIType Type;
-        public CollectibleType TrackedCollectible;
         public GameObject TrackingObject;
-        public string Text;
-    }
-
-    public enum UIType
-    {
-        CollectibleAmountDisplay,
-        TextDisplay,
+        public string TrackedVariableName;
     }
 
     public enum UIPosition

@@ -47,6 +47,9 @@ namespace UI
             var conditionTypes = AttributeFinder.FindClassesWithAttribute<ConditionAttribute>().ToArray();
             var actionTypes    = AttributeFinder.FindClassesWithAttribute<ActionAttribute>().ToArray();
 
+            // Is Unity in playmode?
+            bool isPlaying = EditorApplication.isPlaying;
+            
             for (int i = 0; i < _events.Count; i++)
             {
                 var ev = _events[i];
@@ -60,8 +63,9 @@ namespace UI
                 ev.eventName        = EditorGUILayout.TextField("Event Name",        ev.eventName ?? "");
                 ev.eventDescription = EditorGUILayout.TextField("Event Description", ev.eventDescription ?? "");
 
+                GUILayout.Space(20);
                 // Add Condition
-                if (EditorGUILayout.DropdownButton(new GUIContent("Add Condition"), FocusType.Keyboard))
+                if (EditorGUILayout.DropdownButton(new GUIContent("Add New Condition"), FocusType.Keyboard))
                 {
                     var menu = new GenericMenu();
                     foreach (var t in conditionTypes)
@@ -78,22 +82,59 @@ namespace UI
 
                 // Show Conditions
                 EditorGUILayout.LabelField("Conditions:", EditorStyles.boldLabel);
+                
+                int removeConditionIndex = -1;
+                
                 for (int c = 0; c < ev.Conditions.Count; c++)
                 {
                     var cond = ev.Conditions[c];
-                    GUILayout.BeginHorizontal("box");
-                    GUILayout.Label(cond.conditionName ?? cond.GetType().Name);
-                    if (GUILayout.Button("Remove", GUILayout.Width(60)))
-                    {
-                        ev.Conditions.RemoveAt(c);
-                        break;
-                    }
-                    GUILayout.EndHorizontal();
+                    
+                    // Vertical wrapper for indent 
+                    GUILayout.BeginVertical();
+                    GUILayout.Space(5);    // Spacing between condition boxes
+                    
+                    GUILayout.BeginHorizontal();  // Wrapper for indent
+                    GUILayout.Space(20);    // Left indent (20px)
+                    
+                    Color prevColor = GUI.backgroundColor;
+                    GUI.backgroundColor = new Color(0.8f, 0.9f, 1f);
+                    GUILayout.BeginVertical("box");   // Frame/box
+                    
+                    // Condition title
+                    GUILayout.Label(cond.conditionName ?? cond.GetType().Name, EditorStyles.boldLabel);
+
                     cond.DrawGUI();
+                    
+                    GUILayout.Space(5);
+                    
+                    GUI.enabled = !isPlaying;
+                    
+                    // REMOVE button 
+                    GUILayout.BeginHorizontal();
+                    GUILayout.FlexibleSpace();
+                    if (GUILayout.Button("Remove", GUILayout.Width(80)))
+                    {
+                        removeConditionIndex = c;
+                    }
+                    
+                    GUI.enabled = true;
+                    GUILayout.FlexibleSpace();
+                    GUILayout.EndHorizontal();
+                    
+                    GUILayout.EndVertical();     // Box
+                    GUI.backgroundColor = prevColor;
+                    GUILayout.EndHorizontal();  // Indent wrapper for row
+                    GUILayout.EndVertical();   // Wrapper spacing
+                }
+                
+                if (removeConditionIndex >= 0)
+                {
+                    ev.Conditions.RemoveAt(removeConditionIndex);
                 }
 
+                GUILayout.Space(20);
                 // Add Action
-                if (EditorGUILayout.DropdownButton(new GUIContent("Add Action"), FocusType.Keyboard))
+                if (EditorGUILayout.DropdownButton(new GUIContent("Add New Action"), FocusType.Keyboard))
                 {
                     var menu = new GenericMenu();
                     foreach (var t in actionTypes)
@@ -108,34 +149,86 @@ namespace UI
 
                 // Show Actions
                 EditorGUILayout.LabelField("Actions:", EditorStyles.boldLabel);
+                
+                int removeActionIndex = -1;
+                
                 for (int a = 0; a < ev.Actions.Count; a++)
                 {
                     var act = ev.Actions[a];
-                    GUILayout.BeginHorizontal("box");
-                    GUILayout.Label(act.actionName ?? act.GetType().Name);
-                    if (GUILayout.Button("Remove", GUILayout.Width(60)))
-                    {
-                        ev.Actions.RemoveAt(a);
-                        break;
-                    }
-                    GUILayout.EndHorizontal();
+                    
+                    GUILayout.BeginVertical();    // Vertical wrapper for indent  
+                    GUILayout.Space(5);      // Spacing between action boxes
+                    
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Space(20);     // Left indent
+                    
+                    Color prevColor = GUI.backgroundColor;
+                    GUI.backgroundColor = new Color(0.8f, 0.9f, 1f); 
+                    
+                    GUILayout.BeginVertical("box");
+                    
+                    // Action title
+                    GUILayout.Label(act.actionName ?? act.GetType().Name, EditorStyles.boldLabel);
+  
                     act.DrawGUI();
+                    
+                    GUILayout.Space(5);
+                    
+                    // Disable buttons during play mode
+                    
+                    GUI.enabled = !isPlaying;
+                    
+                    // REMOVE button 
+                    GUILayout.BeginHorizontal();
+                    GUILayout.FlexibleSpace();
+                    if (GUILayout.Button("Remove", GUILayout.Width(80)))
+                    {
+                        removeActionIndex = a;
+                    }
+                    
+                    GUI.enabled = true;     // Enable the rest of the UI
+                    GUILayout.FlexibleSpace();
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.EndVertical();        // Box
+                    GUI.backgroundColor = prevColor;
+                    
+                    GUILayout.EndHorizontal();     // Indent row
+                    GUILayout.EndVertical();       // Wrapper spacing
+                }
+                
+                if (removeActionIndex >= 0)
+                {
+                    ev.Actions.RemoveAt(removeActionIndex);
                 }
 
+                GUILayout.Space(20); 
+                
+                EditorGUILayout.HelpBox("Don't forget to save the event after making any changes or updates!", MessageType.Info);
+                
                 // Save and Remove buttons
                 GUILayout.BeginHorizontal();
+                GUILayout.FlexibleSpace();
+                float buttonWidth = position.width * 0.25f;
                 
-                if (GUILayout.Button("Save Event"))
+                // Disable buttons during play mode
+                GUI.enabled = !isPlaying;
+                
+                if (GUILayout.Button("Save Event", GUILayout.Width(buttonWidth)))
                 {
                     manager.SaveEvent(i, ev);
                 }
 
-                if (GUILayout.Button("Remove Event"))
+                if (GUILayout.Button("Remove Event", GUILayout.Width(buttonWidth)))
                 {
                     removeIndex = i;
                 }
                 
+                GUI.enabled = true;   // Enable the rest of the UI
+                
+                GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
+                
                 GUILayout.EndVertical();
                 GUILayout.Space(25);
             }
