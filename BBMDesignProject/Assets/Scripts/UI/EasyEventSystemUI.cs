@@ -47,6 +47,9 @@ namespace UI
             var conditionTypes = AttributeFinder.FindClassesWithAttribute<ConditionAttribute>().ToArray();
             var actionTypes    = AttributeFinder.FindClassesWithAttribute<ActionAttribute>().ToArray();
 
+            // Is Unity in playmode?
+            bool isPlaying = EditorApplication.isPlaying;
+            
             for (int i = 0; i < _events.Count; i++)
             {
                 var ev = _events[i];
@@ -104,6 +107,8 @@ namespace UI
                     
                     GUILayout.Space(5);
                     
+                    GUI.enabled = !isPlaying;
+                    
                     // REMOVE button 
                     GUILayout.BeginHorizontal();
                     GUILayout.FlexibleSpace();
@@ -111,6 +116,8 @@ namespace UI
                     {
                         removeConditionIndex = c;
                     }
+                    
+                    GUI.enabled = true;
                     GUILayout.FlexibleSpace();
                     GUILayout.EndHorizontal();
                     
@@ -167,6 +174,10 @@ namespace UI
                     
                     GUILayout.Space(5);
                     
+                    // Disable buttons during play mode
+                    
+                    GUI.enabled = !isPlaying;
+                    
                     // REMOVE button 
                     GUILayout.BeginHorizontal();
                     GUILayout.FlexibleSpace();
@@ -174,6 +185,8 @@ namespace UI
                     {
                         removeActionIndex = a;
                     }
+                    
+                    GUI.enabled = true;     // Enable the rest of the UI
                     GUILayout.FlexibleSpace();
                     GUILayout.EndHorizontal();
 
@@ -198,6 +211,9 @@ namespace UI
                 GUILayout.FlexibleSpace();
                 float buttonWidth = position.width * 0.25f;
                 
+                // Disable buttons during play mode
+                GUI.enabled = !isPlaying;
+                
                 if (GUILayout.Button("Save Event", GUILayout.Width(buttonWidth)))
                 {
                     manager.SaveEvent(i, ev);
@@ -207,6 +223,8 @@ namespace UI
                 {
                     removeIndex = i;
                 }
+                
+                GUI.enabled = true;   // Enable the rest of the UI
                 
                 GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
