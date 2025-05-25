@@ -17,5 +17,10 @@ namespace Backend.EasyEvent
         }
 
         public abstract void Execute(BaseComponent source, BaseComponent other);
+        
+        public virtual void Execute(BaseComponent component)
+        {
+            Execute(component, null);
+        }
     }
 }

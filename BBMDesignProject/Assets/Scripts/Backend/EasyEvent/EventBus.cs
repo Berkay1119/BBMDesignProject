@@ -9,6 +9,7 @@ namespace Backend.EasyEvent
         public static event Action<BaseComponent, BaseComponent> OnCollision2D;
         public static event Action<BaseComponent> OnSpawn;
         public static event Action<BaseComponent> OnDestroy;
+        public static event Action<BaseComponent, string, object> OnCustomVariableChanged;
 
         public static void PublishCollision(BaseComponent a, BaseComponent b)
             => OnCollision2D?.Invoke(a, b);
@@ -18,5 +19,8 @@ namespace Backend.EasyEvent
 
         public static void PublishDestroy(BaseComponent comp)
             => OnDestroy?.Invoke(comp);
+        
+        public static void PublishCustomVariableChanged(BaseComponent comp, string variableName, object value)
+            => OnCustomVariableChanged?.Invoke(comp, variableName, value);
     }
 }

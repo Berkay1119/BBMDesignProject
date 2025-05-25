@@ -37,13 +37,15 @@ namespace Backend.EasyEvent.Conditions
                 .ToArray();
             var names = types.Select(t => t.Name).ToArray();
             
+            // Tag list
+            var allTags = InternalEditorUtility.tags;
+            
             // Type 1
             int idx1 = Array.IndexOf(names, firstTypeName);
             idx1 = Mathf.Clamp(EditorGUILayout.Popup("First Type", idx1, names), 0, names.Length - 1);
             firstTypeName = names[idx1];
             
-            // Tag 1
-            var allTags = InternalEditorUtility.tags;
+            // Tag 1 index
             int t1 = Array.IndexOf(allTags, firstRequiredTag);
             firstRequiredTag = allTags[Mathf.Clamp(
                 EditorGUILayout.Popup("First Required Tag", t1, allTags),
@@ -55,12 +57,19 @@ namespace Backend.EasyEvent.Conditions
             idx2 = Mathf.Clamp(EditorGUILayout.Popup("Second Type", idx2, names), 0, names.Length - 1);
             secondTypeName = names[idx2];
             
-            // Tag 2
+            // Tag 2 index
             int t2 = Array.IndexOf(allTags, secondRequiredTag);
             secondRequiredTag = allTags[Mathf.Clamp(
                 EditorGUILayout.Popup("Second Required Tag", t2, allTags),
                 0, allTags.Length - 1
             )];
+            
+            // Show HelpBox only if tags are not properly selected
+            if (string.IsNullOrEmpty(firstRequiredTag) || string.IsNullOrEmpty(secondRequiredTag) ||
+                firstRequiredTag == "Untagged" || secondRequiredTag == "Untagged")
+            {
+                EditorGUILayout.HelpBox("Select two types of objects you want to detect a collision between and their corresponding tags.", MessageType.Info);
+            }
             
             GUILayout.EndVertical();
         }
