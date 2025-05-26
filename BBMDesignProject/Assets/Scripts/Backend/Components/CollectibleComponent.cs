@@ -18,6 +18,7 @@ namespace Backend.Components
         {
             gameObject.tag = "Collectible";
             gameObject.AddComponent<BoxCollider2D>();
+            gameObject.layer = 6;
         }
 
         public override void DrawGUI()

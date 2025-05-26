@@ -34,6 +34,7 @@ namespace Backend.Components
         private void Awake()
         {
             _rigidbody2D = gameObject.AddComponent<Rigidbody2D>();
+            gameObject.AddComponent<BoxCollider2D>();
             _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
         }
 

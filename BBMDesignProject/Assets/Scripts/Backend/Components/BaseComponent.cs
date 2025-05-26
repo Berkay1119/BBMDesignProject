@@ -53,7 +53,7 @@ namespace Backend.Components
             EventBus.PublishDestroy(this);
         }
         
-        private void OnCollisionEnter2D(Collision2D col)
+        protected virtual void OnCollisionEnter2D(Collision2D col)
         {
             var other = col.gameObject.GetComponent<BaseComponent>();
             if (other != null)

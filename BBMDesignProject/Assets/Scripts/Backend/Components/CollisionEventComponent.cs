@@ -15,7 +15,7 @@ namespace Backend.Components
             _targets.Add((obj2, action));
         }
 
-        private void OnCollisionEnter2D(Collision2D collision)
+        protected override void OnCollisionEnter2D(Collision2D collision)
         {
             // Collision’dan hem BaseComponent'imizi hem de diğer objenin BaseComponent'ini alalım
             BaseComponent selfComp  = this;

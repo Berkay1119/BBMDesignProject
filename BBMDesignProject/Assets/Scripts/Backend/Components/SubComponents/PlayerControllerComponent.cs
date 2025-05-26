@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Backend.Interfaces;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Backend.Components.SubComponents
 {
@@ -10,6 +11,8 @@ namespace Backend.Components.SubComponents
         private CharacterComponent _characterComponent;
         private Rigidbody2D _rigidbody2D;
         private Rigidbody2D _currentPlatformRb;
+        
+        public  ProjectileThrower projectileThrower;
         
         private readonly Dictionary<char, KeyCode> _keycodeCache = new Dictionary<char, KeyCode>();
 
@@ -73,6 +76,17 @@ namespace Backend.Components.SubComponents
 
             // Apply the velocity
             _rigidbody2D.velocity = velocity;
+
+            if (projectileThrower != null)
+            {
+                Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                projectileThrower.UpdateAim(mouseWorldPosition);
+                if (Input.GetMouseButtonDown(0))
+                {
+                    projectileThrower.GetThrowDirection(out Vector2 direction);
+                    projectileThrower.ThrowProjectile(transform.position, direction, 10f);
+                }
+            }
         }
 
         public override void SetupComponent()

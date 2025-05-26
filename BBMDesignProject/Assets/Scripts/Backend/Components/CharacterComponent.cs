@@ -50,6 +50,7 @@ namespace Backend.Components
         public override void SetupComponent()
         {
             gameObject.tag = "Character";
+            gameObject.layer = 7;
         }
     }
 }
