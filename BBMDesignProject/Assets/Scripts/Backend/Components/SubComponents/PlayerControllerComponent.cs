@@ -81,8 +81,8 @@ namespace Backend.Components.SubComponents
 
             // Vertical speed
             Vector2 velocity = _rigidbody2D.velocity;
-            velocity = inputVel + platformVel;
-
+            velocity.y = velocity.y + inputVel.y + platformVel.y;
+            velocity.x = inputVel.x + platformVel.x;
             // Jump if the character on a platform
             if (Input.GetKeyDown(KeyCode.Space) && _currentPlatformRb != null)
             {
