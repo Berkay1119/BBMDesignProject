@@ -15,6 +15,9 @@ namespace Backend.Components.SubComponents
         public  ProjectileThrower projectileThrower;
         
         private readonly Dictionary<char, KeyCode> _keycodeCache = new Dictionary<char, KeyCode>();
+        
+        private bool isTopDown = false;
+        private Transform _lookAtTransform;
 
         private KeyCode GetKeyCode(char character)
         {
@@ -28,10 +31,11 @@ namespace Backend.Components.SubComponents
             return code;
         }
         
-        public void Setup(CharacterComponent characterComponent, Rigidbody2D rigidbody2D)
+        public void Setup(CharacterComponent characterComponent, Rigidbody2D rigidbody2D, bool isTopDown = false)
         {
             _characterComponent = characterComponent;
             _rigidbody2D = rigidbody2D;
+            this.isTopDown = isTopDown;
         }
         
         private void OnCollisionEnter2D(Collision2D col)
@@ -53,20 +57,31 @@ namespace Backend.Components.SubComponents
         public void OnUpdate() {
             if (!_characterComponent) return;
             
-            var inputVel = 0f;
+            Vector2 inputVel = Vector2.zero;
             if (Input.GetKey(GetKeyCode(_characterComponent.LeftKey)))
-                inputVel = -_characterComponent.Speed;
+                inputVel = Vector2.left*_characterComponent.Speed;
             else if (Input.GetKey(GetKeyCode(_characterComponent.RightKey)))
-                inputVel = _characterComponent.Speed;
+                inputVel = Vector2.right*_characterComponent.Speed;
+            else if (isTopDown)
+            {
+                if (Input.GetKey(GetKeyCode(_characterComponent.UpKey)))
+                {
+                    inputVel = Vector2.up*_characterComponent.Speed;
+                }
+                else if (Input.GetKey(GetKeyCode(_characterComponent.DownKey)))
+                {
+                    inputVel = Vector2.down*_characterComponent.Speed;
+                }
+            }
 
             // Platform speed
-            var platformVelX = _currentPlatformRb != null
-                ? _currentPlatformRb.velocity.x
-                : 0f;
+            var platformVel = _currentPlatformRb != null
+                ? _currentPlatformRb.velocity
+                : Vector2.zero;
 
             // Vertical speed
             Vector2 velocity = _rigidbody2D.velocity;
-            velocity.x = inputVel + platformVelX;
+            velocity = inputVel + platformVel;
 
             // Jump if the character on a platform
             if (Input.GetKeyDown(KeyCode.Space) && _currentPlatformRb != null)
@@ -87,10 +102,26 @@ namespace Backend.Components.SubComponents
                     projectileThrower.ThrowProjectile(transform.position, direction, 10f);
                 }
             }
+
+            if (_lookAtTransform!=null)
+            {
+                Vector3 direction = _lookAtTransform.position - transform.position;
+                if (direction.sqrMagnitude > 0.01f) // Minimum distance to avoid jitter
+                {
+                    direction.z = 0; // Ignore z-axis for 2D
+                    Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction);
+                    transform.rotation = rotation;
+                }
+            }
         }
 
         public override void SetupComponent()
         {
+        }
+
+        public void LookAt(Transform transform1)
+        {
+            _lookAtTransform = transform1;
         }
     }
 }

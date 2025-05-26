@@ -40,8 +40,8 @@ namespace Backend.Components
 
         public PlatformComponent()
         {
-            SetName("Platform");
-            SetDescription("A platform that the player can stand on.");
+            SetName("Obstacle");
+            SetDescription("A solid surface that the player can collide with or stand on.");
         }
 
         private void Update()

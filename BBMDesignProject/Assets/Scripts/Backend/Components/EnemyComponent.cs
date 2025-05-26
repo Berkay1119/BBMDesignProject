@@ -13,6 +13,10 @@ namespace Backend.Components
         
         [SerializeField] public float oneLoopDuration = 1f;
         
+        [SerializeField] private bool navMeshAgentEnabled = false;
+        
+        [SerializeField] private Transform navMeshTarget;
+        
         private int currentWaypointIndex = 0;
         private float waypointTimer = 0f;
         
@@ -42,6 +46,10 @@ namespace Backend.Components
         {
             waypointTimer += Time.deltaTime;
 
+            if (waypoints.Count==0)
+            {
+                return;
+            }
             float currentSegmentLength = segmentLengths[currentWaypointIndex];
             float segmentDuration = (currentSegmentLength / totalPathLength) * oneLoopDuration;
 

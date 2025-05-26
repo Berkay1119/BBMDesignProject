@@ -15,6 +15,12 @@ namespace Backend.Components.SubComponents
         {
             SetupComponent();
         }
+        
+        public ProjectileThrower()
+        {
+            SetName("Projectile Thrower");
+            SetDescription("This component allows the object to throw projectiles.");
+        }
 
         public override void SetupComponent()
         {
