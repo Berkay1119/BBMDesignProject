@@ -12,7 +12,7 @@ namespace Backend.Managers
     public List<Transform> regionPoints = new List<Transform>(4);
     public Color polygonColor = Color.cyan;
 
-    private void Start()
+    public void Spawn()
     {
         for (int i = 0; i < spawnCount; i++)
         {
