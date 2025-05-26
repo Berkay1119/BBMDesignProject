@@ -28,7 +28,7 @@ namespace UI
             _settings.Position = (UIPosition)EditorGUILayout.EnumPopup("Position: ", _settings.Position);
             _settings.Size = EditorGUILayout.IntField("Size: ", _settings.Size);
             _settings.BackgroundImage = (Sprite)EditorGUILayout.ObjectField("Background Image: ", _settings.BackgroundImage, typeof(Sprite), true);
-
+            _settings.IconImage = (Sprite)EditorGUILayout.ObjectField("Icon:", _settings.IconImage, typeof(Sprite), true);
             _settings.TrackingObject = (GameObject)EditorGUILayout.ObjectField("Tracking Object: ", _settings.TrackingObject, typeof(GameObject), true);
 
             if (_settings.TrackingObject != null)
@@ -43,6 +43,7 @@ namespace UI
                     _selectedVariableIndex = Mathf.Clamp(_selectedVariableIndex, 0, _availableVariables.Length - 1);
                     _selectedVariableIndex = EditorGUILayout.Popup("Tracked Variable:", _selectedVariableIndex, _availableVariables);
                     _settings.TrackedVariableName = _availableVariables[_selectedVariableIndex];
+                    _settings.DisplayText = EditorGUILayout.TextField("Display Text: ", _settings.DisplayText);
                 }
                 else
                 {
@@ -99,7 +100,27 @@ namespace UI
             var display = panel.AddComponent<UICustomVariableDisplay>();
             display.target = _settings.TrackingObject;
             display.variableName = _settings.TrackedVariableName;
+            display.userInputText = _settings.DisplayText;
 
+            if (_settings.IconImage != null)
+            {
+                GameObject iconObject = new GameObject("Icon");
+                iconObject.transform.SetParent(panel.transform);
+
+                var iconRect = iconObject.AddComponent<RectTransform>();
+                iconRect.anchorMin = new Vector2(0f, 0f);   // bottom-left
+                iconRect.anchorMax = new Vector2(1f, 1f);   // top-right
+                iconRect.offsetMin = Vector2.zero;         // remove padding
+                iconRect.offsetMax = Vector2.zero;
+                iconRect.pivot = new Vector2(0.5f, 0.5f);
+                iconRect.localScale = Vector3.one;
+
+                var iconImage = iconObject.AddComponent<Image>();
+                iconImage.sprite = _settings.IconImage;
+                iconImage.preserveAspect = true;
+            }
+            
+            
             GameObject textObject = new GameObject("Text");
             textObject.transform.SetParent(panel.transform);
             var textRect = textObject.AddComponent<RectTransform>();
@@ -111,7 +132,7 @@ namespace UI
             textRect.offsetMax = Vector2.zero;
             textRect.pivot = new Vector2(0.5f, 0.5f);
             textRect.localScale = Vector3.one;
-
+            
             var text = textObject.AddComponent<TMPro.TextMeshProUGUI>();
             text.alignment = TMPro.TextAlignmentOptions.Center;
             display.text = text;
@@ -121,13 +142,17 @@ namespace UI
                 .GetComponents<SerializableCustomVariable>()
                 .FirstOrDefault(v => v.Name == _settings.TrackedVariableName);
 
+            // Set initial text value
             if (trackedVar != null)
             {
-                text.text = $"{trackedVar.Name}: {trackedVar._value}";
-            }
-            else
-            {
-                text.text = $"{_settings.TrackedVariableName}: ?";
+                if (!string.IsNullOrWhiteSpace(_settings.DisplayText))
+                {
+                    text.text = $"{_settings.DisplayText}: {trackedVar._value}";
+                }
+                else
+                {
+                    text.text = $"{trackedVar._value}";
+                }
             }
             
             Close();
@@ -153,8 +178,10 @@ namespace UI
         public UIPosition Position;
         public int Size;
         public Sprite BackgroundImage;
+        public Sprite IconImage;
         public GameObject TrackingObject;
         public string TrackedVariableName;
+        public string DisplayText;
     }
 
     public enum UIPosition

@@ -9,6 +9,7 @@ namespace Backend.UIComponents
         public string variableName;
         public GameObject target;
         public TMPro.TextMeshProUGUI text;
+        [TextArea] public string userInputText = "";
         
         private SerializableCustomVariable trackedVariable;
         
@@ -42,8 +43,16 @@ namespace Backend.UIComponents
         {
             if (trackedVariable != null && text != null)
             {
-                text.text = $"{trackedVariable.Name}: {trackedVariable._value}";
+                if (!string.IsNullOrWhiteSpace(userInputText))
+                {
+                    text.text = $"{userInputText}: {trackedVariable._value}";
+                }
+                else
+                {
+                    text.text = $"{trackedVariable._value}";
+                }
             }
         }
+        
     }
 }
