@@ -92,7 +92,7 @@ namespace Backend.Components
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (IsMoving & collision.gameObject.CompareTag("Character"))
+            if (IsMoving & collision.gameObject.CompareTag("Avatar"))
             {
                 collision.transform.SetParent(transform); // Connect the character to the platform
             }
@@ -100,7 +100,7 @@ namespace Backend.Components
 
         private void OnCollisionExit2D(Collision2D collision)
         {
-            if (IsMoving & collision.gameObject.CompareTag("Character"))
+            if (IsMoving & collision.gameObject.CompareTag("Avatar"))
             {
                 collision.transform.SetParent(null); // Split the character from the platform
             }

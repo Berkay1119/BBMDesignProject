@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Backend.Interfaces;
 using UnityEngine;
 
 namespace Backend.Components
@@ -49,5 +50,6 @@ namespace Backend.Components
 
             base.OnCollisionEnter2D(col);
         }
+        
     }
 }

@@ -140,7 +140,7 @@ namespace UI {
             
             if (selectedComponents.ContainsKey("Character") && selectedComponents["Character"])
             {
-                var characterComponent = newObject.GetComponent<CharacterComponent>();
+                var characterComponent = newObject.GetComponent<AvatarComponent>();
                 if (characterComponent != null && cameraFollowCharacter)
                 {
                     var camGO = Camera.main?.gameObject;

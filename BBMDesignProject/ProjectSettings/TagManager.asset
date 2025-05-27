@@ -5,11 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Coin
-  - Character
   - Platform
   - Carrot
   - Enemy
   - Thieft
+  - Avatar
   layers:
   - Default
   - TransparentFX

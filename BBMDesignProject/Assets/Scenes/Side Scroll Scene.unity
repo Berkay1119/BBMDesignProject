@@ -1771,9 +1771,9 @@ MonoBehaviour:
       data:
         conditionName: Colliding Condition
         conditionDescription: Check if two objects are colliding
-        firstTypeName: CharacterComponent
+        firstTypeName: AvatarComponent
         secondTypeName: CollectibleComponent
-        firstRequiredTag: Character
+        firstRequiredTag: Avatar
         secondRequiredTag: Carrot
     - rid: 1605981374104469505
       type: {class: DestroyObjectAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
@@ -3143,12 +3143,13 @@ GameObject:
   - component: {fileID: 1625159876}
   - component: {fileID: 1625159875}
   - component: {fileID: 1625159874}
-  - component: {fileID: 1625159873}
+  - component: {fileID: 1625159878}
   - component: {fileID: 1625159872}
   - component: {fileID: 1625159877}
+  - component: {fileID: 1625159879}
   m_Layer: 7
   m_Name: Rabbit
-  m_TagString: Character
+  m_TagString: Avatar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3168,27 +3169,6 @@ MonoBehaviour:
   _name: Carrot
   _value: 0
   _type: 1
---- !u!114 &1625159873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1625159871}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d986c8b3d064bcbb855c33291d46339, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraFollowCharacter: 1
-  leftKey: a
-  rightKey: d
-  upKey: w
-  downKey: s
-  speed: 5
-  jumpForce: 10
-  objectToLookAt: {fileID: 1625159871}
-  isTopDown: 0
 --- !u!212 &1625159874
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3283,6 +3263,35 @@ MonoBehaviour:
   _name: Health
   _value: 100
   _type: 1
+--- !u!114 &1625159878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1625159871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42363c2d8ee74b828c1a9f82019895a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftKey: 97
+  rightKey: 100
+  jumpKey: 32
+  moveSpeed: 5
+  jumpForce: 10
+--- !u!114 &1625159879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1625159871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d986c8b3d064bcbb855c33291d46339, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1785950716
 GameObject:
   m_ObjectHideFlags: 0
