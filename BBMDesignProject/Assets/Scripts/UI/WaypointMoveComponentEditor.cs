@@ -1,0 +1,23 @@
+using Backend.Components;
+using UnityEditor;
+
+namespace UI
+{
+    [CustomEditor(typeof(WaypointMoveComponent))]
+    [CanEditMultipleObjects]
+    public class WaypointMoveComponentEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
+
+            EditorGUILayout.HelpBox(
+                "- Create at least 2 empty EasyObjects without sprites and add them to the list. The object will move between these waypoints.\n" +
+                "- Adjust 'One Loop Duration' to control the full cycle time.", 
+                MessageType.Info);
+
+            DrawDefaultInspector();
+            serializedObject.ApplyModifiedProperties();
+        }
+    }
+}

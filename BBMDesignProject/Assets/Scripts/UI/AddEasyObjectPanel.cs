@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Backend.Components;
-using Backend.Components.SubComponents;
 using Backend.Controllers;
 using Backend.CustomVariableFeature;
 using Backend.Object;
@@ -8,25 +7,22 @@ using UnityEditor;
 using UnityEngine;
 
 namespace UI {
-    public class AddObjectWindow : EditorWindow
+    public class AddEasyObjectWindow : EditorWindow
     {
         private string objectName = "";
         private Texture2D objectTexture;
         private static List<BaseComponent> _availableComponents;
-        
         // holds the users selection of components and behaviours
         private static List<bool> _componentsToggle = new List<bool>();
-
-        private bool cameraFollowCharacter = false;
-        private bool isMovingPanel = false;
-        
+        private bool cameraFollowObject = false;
         private List<CustomVariable> _customVariables = new List<CustomVariable>();
         private string newVariableName = "";
         private VariableType newVariableType = VariableType.String;
         private string newVariableValue = "";
+        private Vector2 scrollPosition = Vector2.zero;
         
         public static void ShowWindow() {
-            var window = GetWindow<AddObjectWindow>("Add New EasyObject");
+            var window = GetWindow<AddEasyObjectWindow>("Add New EasyObject");
             window.minSize = new Vector2(Screen.currentResolution.width * 0.4f, Screen.currentResolution.height * 0.3f);
             _availableComponents = ComponentController.FindComponents();
             _componentsToggle.Clear();
@@ -37,45 +33,62 @@ namespace UI {
         }
 
         private void OnGUI() {
-            objectName = EditorGUILayout.TextField("EasyObject Name:", objectName);
+            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+            
+            var halfWidth = position.width * 0.5f;
+            GUILayout.Space(10); 
+            
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("EasyObject Name:", GUILayout.Width(200));
+            objectName = GUILayout.TextField(objectName, GUILayout.Width(halfWidth));
+            GUILayout.EndHorizontal();
+            
+            GUILayout.Space(10); 
 
-            objectTexture = (Texture2D)EditorGUILayout.ObjectField("EasyObject Texture (PNG):", objectTexture, typeof(Texture2D), false);
-
-            GUILayout.Label("Components and Behaviours:", EditorStyles.boldLabel);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("EasyObject Texture (PNG):", GUILayout.Width(200));
+            objectTexture = (Texture2D)EditorGUILayout.ObjectField(
+                objectTexture,
+                typeof(Texture2D),
+                false,
+                GUILayout.Width(halfWidth)
+            );
+            GUILayout.EndHorizontal();
+            
+            GUILayout.Space(30);
+            
+            GUILayout.Label("Select Object Behaviours:", EditorStyles.boldLabel);
+            GUILayout.Space(5);
             
             for (var i = 0; i < _componentsToggle.Count; i++) {
                 DrawToggleWithDescription(ref i, _availableComponents[i].Name, _availableComponents[i].Description);
-               
-                if (_availableComponents[i].Name == "Character" && _componentsToggle[i])
-                {
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Space(20); 
-                    bool cameraFollow = GUILayout.Toggle(cameraFollowCharacter, "Camera: Follow Character");
-                    cameraFollowCharacter = cameraFollow;
-                    GUILayout.EndHorizontal();
-                }
-                if (_availableComponents[i].Name == "Platform" && _componentsToggle[i]) {
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Space(20); 
-                    isMovingPanel = GUILayout.Toggle(isMovingPanel, "Moving Panel");
-                    GUILayout.EndHorizontal();
-                }
-
-                
-                if ( _componentsToggle[i])
-                {
-                    _availableComponents[i].DrawGUI();
-                }
             }
+            
+            bool cameraFollow = GUILayout.Toggle(cameraFollowObject, "   Camera: Follow Object");
+            cameraFollowObject = cameraFollow;
+            
+            GUILayout.Space(30); 
             
             GUILayout.Label("Custom Variables", EditorStyles.boldLabel);
             
-            // Input fields for new variable
-            GUILayout.BeginHorizontal();
-            newVariableName = EditorGUILayout.TextField("Variable Name", newVariableName, GUILayout.Width(300));
-            newVariableType = (VariableType)EditorGUILayout.EnumPopup("Type", newVariableType, GUILayout.Width(300));
-            newVariableValue = EditorGUILayout.TextField("Value", newVariableValue, GUILayout.Width(300));
+            GUILayout.Space(10);
             
+            GUILayout.BeginHorizontal(); 
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Name", GUILayout.Width(80)); 
+            newVariableName = EditorGUILayout.TextField(newVariableName, GUILayout.Width(150));
+            GUILayout.EndHorizontal();
+            
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Type", GUILayout.Width(80)); 
+            newVariableType = (VariableType)EditorGUILayout.EnumPopup(newVariableType, GUILayout.Width(150));
+            GUILayout.EndHorizontal();
+            
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Value", GUILayout.Width(80)); 
+            newVariableValue = EditorGUILayout.TextField(newVariableValue, GUILayout.Width(150));
+            GUILayout.EndHorizontal();
+
             if (GUILayout.Button("+", GUILayout.Width(30))) {
                 if (!string.IsNullOrWhiteSpace(newVariableName)) {
                     _customVariables.Add(new CustomVariable(newVariableName, newVariableType, newVariableValue));
@@ -83,23 +96,33 @@ namespace UI {
                     newVariableValue = "";
                 }
             }
-            GUILayout.EndHorizontal();
+
+            GUILayout.EndHorizontal(); 
 
             // Display custom variables list
             for (int i = 0; i < _customVariables.Count; i++) {
                 GUILayout.BeginHorizontal();
-                GUILayout.Label($"{_customVariables[i].Name} ({_customVariables[i].Type}): {_customVariables[i].Value}");
-                if (GUILayout.Button("Remove", GUILayout.Width(70))) {
+                
+                if (GUILayout.Button("-", GUILayout.Width(30))) {
                     _customVariables.RemoveAt(i);
                 }
+                GUILayout.Label($"{_customVariables[i].Name} ({_customVariables[i].Type}): {_customVariables[i].Value}");
+                
                 GUILayout.EndHorizontal();
             }
             
-
-            // "add" button
-            if (GUILayout.Button("Add")) {
+            GUILayout.Space(50); 
+            
+            // Add new object button
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace(); 
+            if (GUILayout.Button("Create Easy Object!", GUILayout.Width(halfWidth/2))) {
                 CreateNewObject();
             }
+            GUILayout.FlexibleSpace(); 
+            GUILayout.EndHorizontal();
+            
+            EditorGUILayout.EndScrollView();
         }
 
         private void CreateNewObject() {
@@ -119,6 +142,7 @@ namespace UI {
                 Debug.Log("No texture provided, SpriteRenderer not added.");
             }
             
+            // Behaviours that user selected for the object
             var selectedComponents = new Dictionary<string, bool>();
             for (var i = 0; i < _componentsToggle.Count; i++) {
                 selectedComponents.Add(_availableComponents[i].Name, _componentsToggle[i]);
@@ -141,7 +165,7 @@ namespace UI {
             if (selectedComponents.ContainsKey("Character") && selectedComponents["Character"])
             {
                 var characterComponent = newObject.GetComponent<AvatarComponent>();
-                if (characterComponent != null && cameraFollowCharacter)
+                if (characterComponent != null && cameraFollowObject)
                 {
                     var camGO = Camera.main?.gameObject;
                     if (camGO != null)
@@ -166,12 +190,12 @@ namespace UI {
                 }
             }
             
-            if (selectedComponents.ContainsKey("Platform") && selectedComponents["Platform"]){
-                var platformComponent = newObject.GetComponent<PlatformComponent>();
-                if (platformComponent != null && isMovingPanel) {
-                    platformComponent.IsMoving = true; 
-                }
-            }
+            // if (selectedComponents.ContainsKey("Platform") && selectedComponents["Platform"]){
+            //     var platformComponent = newObject.GetComponent<SolidComponent>();
+            //     if (platformComponent != null && isMovingPanel) {
+            //         platformComponent.IsMoving = true; 
+            //     }
+            // }
 
             // Auto highlight the new object in the hierarchy
             Selection.activeGameObject = newObject;

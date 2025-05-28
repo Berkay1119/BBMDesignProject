@@ -1,20 +1,15 @@
-﻿using System.Collections;
-using Backend.Interfaces;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Backend.Components
 {
     public abstract class ProjectileComponent : BaseComponent
     {
         private Vector2 _startPosition;
-
         private Vector2 _direction;
-        
         private float _speed = 10f; 
-        
         private Rigidbody2D _rigidbody2D;
-
         private GameObject _originGameObject;
+        
         public override void SetupComponent()
         {
             if (gameObject.GetComponent<Rigidbody2D>() == null )
@@ -35,7 +30,7 @@ namespace Backend.Components
             transform.position = _startPosition;
             
             //_rigidbody2D.isKinematic = true;
-            _rigidbody2D.velocity = _direction * speed; // Örnek hız
+            _rigidbody2D.velocity = _direction * speed; 
             
             _originGameObject = originGameObject;
         }
@@ -44,7 +39,7 @@ namespace Backend.Components
         {
             if (col.gameObject == _originGameObject)
             {
-                // Eğer çarpışma kendi kaynağıyla ise, hiçbir şey yapma
+                // If the collision is with its own source, do nothing
                 return;
             }
 

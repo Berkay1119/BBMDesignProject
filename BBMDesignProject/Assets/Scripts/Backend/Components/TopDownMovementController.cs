@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using Backend.Attributes;
+﻿using Backend.Attributes;
 using Backend.Interfaces;
 using UnityEngine;
 
 namespace Backend.Components
 {
     [Component]
-    public class TopDownAvatarController:BaseComponent,IUpdatable
+    public class TopDownMovementController:BaseComponent,IUpdatable
     {
         [SerializeField] private KeyCode leftKey = KeyCode.A;
         [SerializeField] private KeyCode rightKey = KeyCode.D;
@@ -22,9 +21,9 @@ namespace Backend.Components
             
         }
         
-        public TopDownAvatarController()
+        public TopDownMovementController()
         {
-            SetName("Top Down Avatar Controller");
+            SetName("Top Down Movement Controller");
             SetDescription("This component allows the object to move in a top-down manner.");
         }
 
@@ -32,13 +31,16 @@ namespace Backend.Components
         {
             base.OnEnable();
             _rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
+            
             if (_rigidbody2D==null)
             {
                 _rigidbody2D = gameObject.AddComponent<Rigidbody2D>();
                 _rigidbody2D.gravityScale = 0f; // Default gravity scale
             }
+            
             _rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
             BoxCollider2D tempCollider = gameObject.GetComponent<BoxCollider2D>();
+            
             if (tempCollider == null)
             {
                 tempCollider = gameObject.AddComponent<BoxCollider2D>();

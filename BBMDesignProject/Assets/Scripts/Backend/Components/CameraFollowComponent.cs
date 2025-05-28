@@ -1,15 +1,19 @@
-using Backend.Attributes;
 using Backend.Interfaces;
 using UnityEngine;
 
-namespace Backend.Components.SubComponents
+namespace Backend.Components
 {
     public class CameraFollowComponent : BaseComponent, IUpdatable
     {
         public Transform target;
         public float smoothSpeed = 1.0f;
         public Vector3 offset;
-
+        
+        public override void SetupComponent()
+        {
+            
+        }
+        
         private void Start() {
             if (target != null) {
                 offset = transform.position - target.position;
@@ -29,8 +33,6 @@ namespace Backend.Components.SubComponents
             transform.position = smoothedPosition;
         }
 
-        public override void SetupComponent()
-        {
-        }
+
     }
 }

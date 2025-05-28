@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using Backend.Attributes;
-using Backend.Interfaces;
+﻿using Backend.Attributes;
 using UnityEngine;
 
-namespace Backend.Components.SubComponents
+namespace Backend.Components
 {
     [Component]
     public class ProjectileThrower : BaseComponent
     {
         [SerializeField] private ProjectileComponent projectilePrefab;
         [SerializeField] private GameObject aimGameObject;
-
-        private void Start()
-        {
-            SetupComponent();
-        }
         
         public ProjectileThrower()
         {
@@ -28,7 +20,7 @@ namespace Backend.Components.SubComponents
             
         }
         
-        public void ThrowProjectile(Vector2 startPosition, Vector2 direction, float speed)
+        private void ThrowProjectile(Vector2 startPosition, Vector2 direction, float speed)
         {
             if (projectilePrefab == null)
             {
@@ -36,14 +28,14 @@ namespace Backend.Components.SubComponents
                 return;
             }
             
-            Vector2 spawnPosition = startPosition + direction * 1f; // Yönün biraz önünde doğurmak için
+            Vector2 spawnPosition = startPosition + direction * 1f; 
             
             ProjectileComponent projectile = Instantiate(projectilePrefab, spawnPosition, Quaternion.identity);
             projectile.Initialize(gameObject, spawnPosition, direction, speed);
         }
         
         
-        public void GetThrowDirection(out Vector2 direction)
+        private void GetThrowDirection(out Vector2 direction)
         {
             if (aimGameObject == null)
             {
@@ -58,7 +50,7 @@ namespace Backend.Components.SubComponents
 
             if (direction == Vector2.zero)
             {
-                direction = Vector2.right; // Varsayılan yön
+                direction = Vector2.right; // Return to default
             }
         }
         

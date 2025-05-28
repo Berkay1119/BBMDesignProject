@@ -20,12 +20,12 @@ namespace Backend.Components
             EventBus.PublishSpawn(this);
         }
         
-        public void SetName(string name)
+        protected void SetName(string name)
         {
             _name = name;
         }
         
-        public void SetDescription(string description)
+        protected void SetDescription(string description)
         {
             _description = description;
         }

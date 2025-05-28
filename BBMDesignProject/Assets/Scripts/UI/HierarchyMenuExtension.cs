@@ -5,7 +5,7 @@ namespace UI {
         
         [MenuItem("GameObject/🎮 Easy Prototyping Object 🎮", false, 10)]
         private static void OpenEasyPrototypingPanel() {
-            AddObjectWindow.ShowWindow();
+            AddEasyObjectWindow.ShowWindow();
         }
         
         [MenuItem("GameObject/🎮 Easy Prototyping UI 🎮", false, 10)]

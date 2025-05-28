@@ -7,6 +7,7 @@ namespace Backend.Components
     [Component]
     public class CollectibleComponent: BaseComponent
     {
+        private BoxCollider2D _boxCollider2D;
         
         public CollectibleComponent()
         {
@@ -17,8 +18,17 @@ namespace Backend.Components
         public override void SetupComponent()
         {
             gameObject.tag = "Collectible";
-            gameObject.AddComponent<BoxCollider2D>();
-            gameObject.layer = 6;
+            gameObject.layer = LayerMask.NameToLayer("Collectible");
+        }
+        
+        private void Awake()
+        {
+            _boxCollider2D = gameObject.GetComponent<BoxCollider2D>();
+
+            if (_boxCollider2D == null)
+            {
+                _boxCollider2D = gameObject.AddComponent<BoxCollider2D>();
+            }
         }
 
         public override void DrawGUI()

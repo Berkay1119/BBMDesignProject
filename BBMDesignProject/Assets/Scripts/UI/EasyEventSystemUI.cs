@@ -13,7 +13,7 @@ namespace UI
         private List<EasyEvent> _events = new List<EasyEvent>();
         private EasyEventManager _easyEventManager;
 
-        [MenuItem("Window/Easy Event System")]
+        [MenuItem("Window/🎮 Easy Event System 🎮")]
         public static void ShowWindow() => GetWindow<EasyEventSystemUI>("Easy Event System");
         private Vector2 _scrollPos;
    

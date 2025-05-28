@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Backend.Attributes;
+﻿using Backend.Attributes;
 using Backend.Interfaces;
 using UnityEngine;
 
 namespace Backend.Components
 {
     [Component]
-    public class PlatformAvatarController:BaseComponent,IUpdatable
+    public class PlatformMovementController:BaseComponent,IUpdatable
     {
         [SerializeField] private KeyCode leftKey = KeyCode.A;
         [SerializeField] private KeyCode rightKey = KeyCode.D;
@@ -15,51 +13,59 @@ namespace Backend.Components
         [SerializeField] private float moveSpeed = 5f;
         [SerializeField] private float jumpForce = 10f;
 
-        private Rigidbody2D _currentPlatformRb;
+        private Rigidbody2D _platformRb;
         private Rigidbody2D _rigidbody2D;
+        private BoxCollider2D _boxCollider2D;
+        private bool isGrounded = false;
 
+        public PlatformMovementController()
+        {
+            SetName("Platform Movement Controller");
+            SetDescription("This component allows controlling the object in platformer games");
+        }
+        
         public override void SetupComponent()
         {
             
         }
         
-        public PlatformAvatarController()
-        {
-            SetName("Platform Avatar Controller");
-            SetDescription("This component allows the object to move on platforms and jump.");
-        }
-
         protected override void OnEnable()
         {
             base.OnEnable();
+            
             _rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
             if (_rigidbody2D==null)
             {
                 _rigidbody2D = gameObject.AddComponent<Rigidbody2D>();
-                _rigidbody2D.gravityScale = 1f; // Default gravity scale
+                // Default gravity scale
             }
+            _rigidbody2D.gravityScale = 1f; 
             _rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
-            BoxCollider2D tempCollider = gameObject.GetComponent<BoxCollider2D>();
-            if (tempCollider == null)
+            
+            _boxCollider2D = gameObject.GetComponent<BoxCollider2D>();
+            if (_boxCollider2D == null)
             {
-                tempCollider = gameObject.AddComponent<BoxCollider2D>();
+                _boxCollider2D = gameObject.AddComponent<BoxCollider2D>();
             }
         }
 
         protected override void OnCollisionEnter2D(Collision2D col)
         {
             base.OnCollisionEnter2D(col);
-            if (col.gameObject.CompareTag("Platform"))
+            if (col.gameObject.GetComponent<SolidComponent>() != null)
             {
-                _currentPlatformRb = col.rigidbody;
+                isGrounded = true;
+                _platformRb = col.rigidbody;
             }
+            
         }
 
         private void OnCollisionExit2D(Collision2D col)
         {
-            if (col.gameObject.CompareTag("Platform"))
+            if (col.gameObject.GetComponent<SolidComponent>() != null)
             {
-                _currentPlatformRb = null;
+                isGrounded = false;
+                _platformRb = null;
             }
         }
         
@@ -67,6 +73,7 @@ namespace Backend.Components
         public void OnUpdate()
         {
             Vector2 inputVel = Vector2.zero;
+            
             if (Input.GetKey(leftKey))
             {
                 inputVel = Vector2.left * moveSpeed;
@@ -76,17 +83,28 @@ namespace Backend.Components
                 inputVel = Vector2.right * moveSpeed;
             }
             
-            var platformVel = _currentPlatformRb != null
-                ? _currentPlatformRb.velocity
+            
+            var platformVel = _platformRb != null
+                ? _platformRb.velocity
                 : Vector2.zero;
             
             Vector2 velocity = _rigidbody2D.velocity;
             velocity.x = inputVel.x + platformVel.x;
-            velocity.y = velocity.y + inputVel.y + platformVel.y;
+
+            if (isGrounded)
+            {
+                velocity.y = platformVel.y;
+            }
+            else
+            {
+                velocity.y = velocity.y + inputVel.y;
+            }
             
-            if (Input.GetKeyDown(jumpKey) && _currentPlatformRb != null)
+            
+            if (Input.GetKeyDown(jumpKey) && _platformRb != null)
             {
                 velocity.y = jumpForce;
+                isGrounded = false;
             }
             
             _rigidbody2D.velocity = velocity;
