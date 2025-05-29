@@ -1,4 +1,5 @@
 ﻿using Backend.Attributes;
+using Backend.CustomVariableFeature;
 using Backend.Interfaces;
 using UnityEngine;
 
@@ -10,9 +11,28 @@ namespace Backend.Components
         [SerializeField] private KeyCode leftKey = KeyCode.A;
         [SerializeField] private KeyCode rightKey = KeyCode.D;
         [SerializeField] private KeyCode jumpKey = KeyCode.Space;
-        [SerializeField] private float moveSpeed = 5f;
-        [SerializeField] private float jumpForce = 10f;
+       
+        [SerializeField] private SerializableCustomVariable moveSpeedVariable;
+        [SerializeField] private SerializableCustomVariable jumpForceVariable;
+        
+        private float MoveSpeed => ParseFloatVariable(moveSpeedVariable, 0f);
+        private float JumpForce => ParseFloatVariable(jumpForceVariable, 0f);
 
+        private float ParseFloatVariable(SerializableCustomVariable variable, float defaultValue)
+        {
+            if (variable == null)
+            {
+                return defaultValue;
+            }
+
+            if (float.TryParse(variable._value, out float result))
+            {
+                return result;
+            }
+            
+            return defaultValue;
+        }
+        
         private Rigidbody2D _platformRb;
         private Rigidbody2D _rigidbody2D;
         private BoxCollider2D _boxCollider2D;
@@ -52,7 +72,8 @@ namespace Backend.Components
         protected override void OnCollisionEnter2D(Collision2D col)
         {
             base.OnCollisionEnter2D(col);
-            if (col.gameObject.GetComponent<SolidComponent>() != null)
+            
+            if (col.gameObject.GetComponent<JumpableComponent>() != null)
             {
                 isGrounded = true;
                 _platformRb = col.rigidbody;
@@ -76,11 +97,11 @@ namespace Backend.Components
             
             if (Input.GetKey(leftKey))
             {
-                inputVel = Vector2.left * moveSpeed;
+                inputVel = Vector2.left * MoveSpeed;
             }
             else if (Input.GetKey(rightKey))
             {
-                inputVel = Vector2.right * moveSpeed;
+                inputVel = Vector2.right * MoveSpeed;
             }
             
             
@@ -101,9 +122,9 @@ namespace Backend.Components
             }
             
             
-            if (Input.GetKeyDown(jumpKey) && _platformRb != null)
+            if (Input.GetKeyDown(jumpKey) && isGrounded)
             {
-                velocity.y = jumpForce;
+                velocity.y = JumpForce;
                 isGrounded = false;
             }
             
