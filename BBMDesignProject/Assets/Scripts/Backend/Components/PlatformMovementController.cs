@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Backend.Components
 {
     [Component]
+    [AddComponentMenu("EasyPrototyping/Platform Movement Component")]
     public class PlatformMovementController:BaseComponent,IUpdatable
     {
         [SerializeField] private KeyCode leftKey = KeyCode.A;

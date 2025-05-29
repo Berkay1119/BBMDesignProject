@@ -1,4 +1,5 @@
 using UnityEditor;
+using UnityEngine;
 
 namespace Editor
 {
@@ -9,16 +10,18 @@ namespace Editor
         {
             serializedObject.Update();
 
-            SerializedProperty useGravityProp = serializedObject.FindProperty("useGravity");
-            SerializedProperty gravityScaleProp = serializedObject.FindProperty("gravityScale");
+            // SerializedProperty useGravityProp = serializedObject.FindProperty("useGravity");
+            // SerializedProperty gravityScaleProp = serializedObject.FindProperty("gravityScale");
+            //
+            // EditorGUILayout.PropertyField(useGravityProp);
+            //
+            // if (useGravityProp.boolValue)
+            // {
+            //     EditorGUILayout.PropertyField(gravityScaleProp);
+            // }
+            SerializedProperty physicsProp= serializedObject.FindProperty("isPhysicsActive");
 
-            EditorGUILayout.PropertyField(useGravityProp);
-
-            if (useGravityProp.boolValue)
-            {
-                EditorGUILayout.PropertyField(gravityScaleProp);
-            }
-
+            EditorGUILayout.PropertyField(physicsProp, new GUIContent("Use Physics"));
             serializedObject.ApplyModifiedProperties();
         }
     }

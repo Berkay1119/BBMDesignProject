@@ -5,11 +5,10 @@ using UnityEngine;
 namespace Backend.Components
 {
     [Component]
+    [AddComponentMenu("EasyPrototyping/Collectible Component")]
     public class CollectibleComponent: BaseComponent
     {
-        [SerializeField] bool useGravity = false;
-        [SerializeField] private float gravityScale = 1f;
-        
+        public bool isPhysicsActive = false;
         private BoxCollider2D _boxCollider2D;
         private Rigidbody2D _rigidbody2D;
         
@@ -31,13 +30,8 @@ namespace Backend.Components
             if (_rigidbody2D == null)
             {
                 _rigidbody2D = gameObject.AddComponent<Rigidbody2D>();
-            }
-            _rigidbody2D.gravityScale = gravityScale;
-            
-            if (!useGravity)
-            {
-                // Stays in the air
-                _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+                _rigidbody2D.bodyType = isPhysicsActive ? RigidbodyType2D.Dynamic : RigidbodyType2D.Static;
+                _rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
             }
             
             _boxCollider2D = gameObject.GetComponent<BoxCollider2D>();

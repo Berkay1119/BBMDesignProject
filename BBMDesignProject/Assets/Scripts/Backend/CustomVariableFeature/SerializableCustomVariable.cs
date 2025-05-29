@@ -27,5 +27,67 @@ namespace Backend.CustomVariableFeature
             _variable.Type = _type;
             _variable.Value = _value; 
         }
+
+        public void Add(int value)
+        {
+            if (_type != VariableType.Integer) throw new InvalidOperationException("Variable type is not Integer");
+            if (int.TryParse(_value, out int currentValue))
+            {
+                _value = (currentValue + value).ToString();
+            }
+            else
+            {
+                throw new FormatException("Value is not a valid integer");
+            }
+        }
+        
+        public void Add(float value)
+        {
+            if (_type != VariableType.Float) throw new InvalidOperationException("Variable type is not Float");
+            if (float.TryParse(_value, out float currentValue))
+            {
+                _value = (currentValue + value).ToString();
+            }
+            else
+            {
+                throw new FormatException("Value is not a valid float");
+            }
+        }
+        
+        public void SetValue(string value)
+        {
+            if (_type == VariableType.String)
+            {
+                _value = value;
+            }
+            else
+            {
+                throw new InvalidOperationException("Variable type is not String");
+            }
+        }
+        
+        public void SetValue(int value)
+        {
+            if (_type == VariableType.Integer)
+            {
+                _value = value.ToString();
+            }
+            else
+            {
+                throw new InvalidOperationException("Variable type is not Integer");
+            }
+        }
+        
+        public void SetValue(float value)
+        {
+            if (_type == VariableType.Float)
+            {
+                _value = value.ToString();
+            }
+            else
+            {
+                throw new InvalidOperationException("Variable type is not Float");
+            }
+        }
     }
 }

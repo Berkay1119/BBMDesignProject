@@ -4,6 +4,7 @@ using UnityEngine;
 namespace Backend.Components
 {
     [Component]
+    [AddComponentMenu("EasyPrototyping/Projectile Thrower Component")]
     public class ProjectileThrower : BaseComponent
     {
         [SerializeField] private ProjectileComponent projectilePrefab;

@@ -6,10 +6,12 @@ using UnityEngine;
 namespace Backend.Components
 {
     [Component]
+    [AddComponentMenu("EasyPrototyping/Waypoint Move Component")]
     public class WaypointMoveComponent : BaseComponent
     {
         [SerializeField] private List<EasyObject> waypoints = new List<EasyObject>();
         [SerializeField] private float oneLoopDuration = 1f;
+        [SerializeField] private Color color = Color.green;
 
         private int index = 0;
         private float timer = 0f;
@@ -36,7 +38,9 @@ namespace Backend.Components
                 _rigidbody2D = gameObject.AddComponent<Rigidbody2D>();
             }
 
-            _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+            _rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+            _rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
+            _rigidbody2D.gravityScale = 0f; // Disable gravity for waypoint movement
             CalculateSegmentLengths();
         }
 
@@ -76,6 +80,20 @@ namespace Backend.Components
                 float distance = Vector3.Distance(start, end);
                 segmentLengths.Add(distance);
                 totalPathLength += distance;
+            }
+        }
+
+        private  void OnDrawGizmos()
+        {
+            if (waypoints.Count < 2) return;
+
+            Gizmos.color = color;
+            for (int i = 0; i < waypoints.Count; i++)
+            {
+                Vector3 start = waypoints[i].transform.position;
+                Vector3 end = waypoints[(i + 1) % waypoints.Count].transform.position;
+                Gizmos.DrawLine(start, end);
+                Gizmos.DrawSphere(start, 0.1f);
             }
         }
         
