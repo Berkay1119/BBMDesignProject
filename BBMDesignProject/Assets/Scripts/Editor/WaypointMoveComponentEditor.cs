@@ -1,11 +1,11 @@
 using Backend.Components;
 using UnityEditor;
 
-namespace UI
+namespace Editor
 {
     [CustomEditor(typeof(WaypointMoveComponent))]
     [CanEditMultipleObjects]
-    public class WaypointMoveComponentEditor : Editor
+    public class WaypointMoveComponentEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {

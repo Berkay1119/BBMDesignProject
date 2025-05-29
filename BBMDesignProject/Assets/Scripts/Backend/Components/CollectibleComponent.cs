@@ -8,6 +8,8 @@ namespace Backend.Components
     public class CollectibleComponent: BaseComponent
     {
         [SerializeField] bool useGravity = false;
+        [SerializeField] private float gravityScale = 1f;
+        
         private BoxCollider2D _boxCollider2D;
         private Rigidbody2D _rigidbody2D;
         
@@ -30,8 +32,7 @@ namespace Backend.Components
             {
                 _rigidbody2D = gameObject.AddComponent<Rigidbody2D>();
             }
-            // So that it doesn't fly away easily
-            _rigidbody2D.gravityScale = 5f;
+            _rigidbody2D.gravityScale = gravityScale;
             
             if (!useGravity)
             {

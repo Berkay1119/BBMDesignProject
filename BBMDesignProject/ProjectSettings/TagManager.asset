@@ -12,6 +12,9 @@ TagManager:
   - Avatar
   - Collectible
   - GoldenCarrot
+  - movingPlatform
+  - wp1
+  - wp2
   layers:
   - Default
   - TransparentFX

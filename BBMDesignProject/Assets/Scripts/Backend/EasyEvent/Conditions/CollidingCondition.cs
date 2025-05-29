@@ -78,7 +78,7 @@ namespace Backend.EasyEvent.Conditions
         {
             if (string.IsNullOrEmpty(firstTypeName) || string.IsNullOrEmpty(secondTypeName))
             {
-                //Debug.LogWarning($"[{nameof(CollidingCondition)}] Type-1 or Type-2 is undefined. Subscription skipped.");
+                Debug.LogWarning($"[{nameof(CollidingCondition)}] Type-1 or Type-2 is undefined. Subscription skipped.");
                 return;
             }
             
@@ -110,14 +110,21 @@ namespace Backend.EasyEvent.Conditions
         {
             // Type check
             if (source.GetType() != firstType || other.GetType() != secondType)
+            {
                 return;
+            }
 
             // Tag check
             if (!source.CompareTag(firstRequiredTag) || !other.CompareTag(secondRequiredTag))
+            {
                 return;
+            }
 
             foreach (var action in relatedEvent.Actions)
+            {
                 action.Execute(source, other);
+            }
+                
         }
         
     }
