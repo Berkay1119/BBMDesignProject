@@ -7,7 +7,9 @@ namespace Backend.Components
     [Component]
     public class CollectibleComponent: BaseComponent
     {
+        [SerializeField] bool useGravity = false;
         private BoxCollider2D _boxCollider2D;
+        private Rigidbody2D _rigidbody2D;
         
         public CollectibleComponent()
         {
@@ -23,6 +25,20 @@ namespace Backend.Components
         
         private void Awake()
         {
+            _rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
+            if (_rigidbody2D == null)
+            {
+                _rigidbody2D = gameObject.AddComponent<Rigidbody2D>();
+            }
+            // So that it doesn't fly away easily
+            _rigidbody2D.gravityScale = 5f;
+            
+            if (!useGravity)
+            {
+                // Stays in the air
+                _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+            }
+            
             _boxCollider2D = gameObject.GetComponent<BoxCollider2D>();
 
             if (_boxCollider2D == null)

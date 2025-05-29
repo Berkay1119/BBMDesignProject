@@ -37,8 +37,8 @@ namespace Backend.Components
             if (_rigidbody2D==null)
             {
                 _rigidbody2D = gameObject.AddComponent<Rigidbody2D>();
-                // Default gravity scale
             }
+            // Default gravity scale
             _rigidbody2D.gravityScale = 1f; 
             _rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
             

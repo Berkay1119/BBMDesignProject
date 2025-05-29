@@ -10,6 +10,8 @@ TagManager:
   - Enemy
   - Thieft
   - Avatar
+  - Collectible
+  - GoldenCarrot
   layers:
   - Default
   - TransparentFX

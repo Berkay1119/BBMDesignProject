@@ -6,6 +6,7 @@ namespace Backend.Components
     [Component]
     public class SolidComponent : BaseComponent
     {
+        [SerializeField] bool useGravity = false;
         private Rigidbody2D _rigidbody2D;
         private BoxCollider2D _boxCollider2D;
 
@@ -29,12 +30,17 @@ namespace Backend.Components
             {
                 _rigidbody2D = gameObject.AddComponent<Rigidbody2D>();
             }
+
+            if (!useGravity)
+            {
+                // Stays in the air
+                _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+            }
             
             _boxCollider2D  = gameObject.GetComponent<BoxCollider2D>();
             if (_boxCollider2D == null)
             {
                 gameObject.AddComponent<BoxCollider2D>();
-                //_addedComponents.Add(tempCollider);    destroy etmek için
             }
         }
 
