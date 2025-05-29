@@ -64,9 +64,6 @@ namespace UI {
                 DrawToggleWithDescription(ref i, _availableComponents[i].Name, _availableComponents[i].Description);
             }
             
-            bool cameraFollow = GUILayout.Toggle(cameraFollowObject, "   Camera: Follow Object");
-            cameraFollowObject = cameraFollow;
-            
             GUILayout.Space(30); 
             
             GUILayout.Label("Custom Variables", EditorStyles.boldLabel);
@@ -170,22 +167,22 @@ namespace UI {
                     var camGO = Camera.main?.gameObject;
                     if (camGO != null)
                     {
-                        // Check if there is already a CameraFollowComponent 
-                        var existingFollow = camGO.GetComponent<CameraFollowComponent>();
-                        if (existingFollow != null)
-                        {
-                            // Update the target
-                            var oldTarget = existingFollow.target;
-                            existingFollow.target = newObject.transform;
-                            Debug.Log($"Camera following target changed from '{oldTarget?.name}' to '{newObject.name}'.");
-                        } 
-                        else
-                        {
-                            // Add a new CameraFollowComponent
-                            var cameraFollow = camGO.AddComponent<CameraFollowComponent>();
-                            cameraFollow.target = newObject.transform;
-                            Debug.Log($"CameraFollowComponent added with target '{newObject.name}'");
-                        }
+                        // // Check if there is already a CameraFollowComponent 
+                        // var existingFollow = camGO.GetComponent<CameraFollowComponent>();
+                        // if (existingFollow != null)
+                        // {
+                        //     // Update the target
+                        //     var oldTarget = existingFollow.target;
+                        //     existingFollow.target = newObject.transform;
+                        //     Debug.Log($"Camera following target changed from '{oldTarget?.name}' to '{newObject.name}'.");
+                        // } 
+                        // else
+                        // {
+                        //     // Add a new CameraFollowComponent
+                        //     var cameraFollow = camGO.AddComponent<CameraFollowComponent>();
+                        //     cameraFollow.target = newObject.transform;
+                        //     Debug.Log($"CameraFollowComponent added with target '{newObject.name}'");
+                        // }
                     }
                 }
             }

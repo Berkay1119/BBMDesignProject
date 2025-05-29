@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Backend.Components
 {
     [Component]
+    [AddComponentMenu("EasyPrototyping/Follow Mouse Component")]
     public class FollowMouseComponent:BaseComponent,IUpdatable
     {
         public override void SetupComponent()

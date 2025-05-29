@@ -1,9 +1,11 @@
 ﻿using Backend.Attributes;
 using Backend.Interfaces;
+using UnityEngine;
 
 namespace Backend.Components
 {
     [Component]
+    [AddComponentMenu("EasyPrototyping/Default Ammo Component")]
     public class DefaultAmmoComponent:ProjectileComponent,IDamager
     {
         public DefaultAmmoComponent()

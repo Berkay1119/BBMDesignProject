@@ -9,15 +9,15 @@ namespace Editor
         {
             serializedObject.Update();
 
-            SerializedProperty useGravityProp = serializedObject.FindProperty("useGravity");
-            SerializedProperty gravityScaleProp = serializedObject.FindProperty("gravityScale");
-
-            EditorGUILayout.PropertyField(useGravityProp);
-
-            if (useGravityProp.boolValue)
-            {
-                EditorGUILayout.PropertyField(gravityScaleProp);
-            }
+            // SerializedProperty useGravityProp = serializedObject.FindProperty("useGravity");
+            // SerializedProperty gravityScaleProp = serializedObject.FindProperty("gravityScale");
+            //
+            // EditorGUILayout.PropertyField(useGravityProp);
+            //
+            // if (useGravityProp.boolValue)
+            // {
+            //     EditorGUILayout.PropertyField(gravityScaleProp);
+            // }
 
             serializedObject.ApplyModifiedProperties();
         }

@@ -6,6 +6,7 @@ using UnityEngine.Events;
 namespace Backend.Components
 {
     [Component]
+    [AddComponentMenu("EasyPrototyping/Input Action Component")]
     public class InputActionComponent:BaseComponent, IUpdatable
     {
         [SerializeField] private KeyCode actionKey = KeyCode.Mouse0;

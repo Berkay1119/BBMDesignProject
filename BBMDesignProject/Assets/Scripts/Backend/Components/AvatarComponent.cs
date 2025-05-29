@@ -4,6 +4,7 @@ using UnityEngine;
 namespace Backend.Components
 {
     [Component]
+    [AddComponentMenu("EasyPrototyping/Avatar Component")]
     public class AvatarComponent: BaseComponent
     {
         private BoxCollider2D _boxCollider2D;
@@ -25,6 +26,7 @@ namespace Backend.Components
             if (_rigidbody2D == null)
             {
                 _rigidbody2D = gameObject.AddComponent<Rigidbody2D>();
+                _rigidbody2D.bodyType = RigidbodyType2D.Static;
             }
             
             _boxCollider2D = gameObject.GetComponent<BoxCollider2D>();

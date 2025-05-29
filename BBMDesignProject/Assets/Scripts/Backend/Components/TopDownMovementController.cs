@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Backend.Components
 {
     [Component]
+    [AddComponentMenu("EasyPrototyping/Top Down Movement Component")]
     public class TopDownMovementController:BaseComponent,IUpdatable
     {
         [SerializeField] private KeyCode leftKey = KeyCode.A;
@@ -35,8 +36,9 @@ namespace Backend.Components
             if (_rigidbody2D==null)
             {
                 _rigidbody2D = gameObject.AddComponent<Rigidbody2D>();
-                _rigidbody2D.gravityScale = 0f; // Default gravity scale
             }
+            _rigidbody2D.bodyType = RigidbodyType2D.Dynamic; // Use dynamic for top-down movement
+            _rigidbody2D.gravityScale = 0f; // Default gravity scale
             
             _rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
             BoxCollider2D tempCollider = gameObject.GetComponent<BoxCollider2D>();

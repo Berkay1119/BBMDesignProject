@@ -4,11 +4,9 @@ using UnityEngine;
 namespace Backend.Components
 {
     [Component]
+    [AddComponentMenu("EasyPrototyping/Solid Component")]
     public class SolidComponent : BaseComponent
     {
-        [SerializeField] bool useGravity = false;
-        [SerializeField] private float gravityScale = 1f;
-        
         private Rigidbody2D _rigidbody2D;
         private BoxCollider2D _boxCollider2D;
 
@@ -31,13 +29,7 @@ namespace Backend.Components
             if (_rigidbody2D == null)
             {
                 _rigidbody2D = gameObject.AddComponent<Rigidbody2D>();
-            }
-            _rigidbody2D.gravityScale = gravityScale;
-
-            if (!useGravity)
-            {
-                // Stays in the air
-                _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+                _rigidbody2D.bodyType = RigidbodyType2D.Static; // Solid objects are typically static
             }
             
             _boxCollider2D  = gameObject.GetComponent<BoxCollider2D>();

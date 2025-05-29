@@ -6,6 +6,7 @@ using UnityEngine.Events;
 namespace Backend.Components
 {
     [Component]
+    [AddComponentMenu("EasyPrototyping/Custom Event Listener Component")]
     public class CustomEventListenerComponent:BaseComponent
     {
         [SerializeField] private CustomEventScriptableObject gameEvent;

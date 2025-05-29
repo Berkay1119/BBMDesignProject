@@ -52,7 +52,7 @@ namespace Backend.Components
             {
                 _rigidbody = gameObject.AddComponent<Rigidbody2D>();
             }
-            _rigidbody.bodyType = RigidbodyType2D.Kinematic;
+            _rigidbody.bodyType = RigidbodyType2D.Static;
         }
     }
 }
