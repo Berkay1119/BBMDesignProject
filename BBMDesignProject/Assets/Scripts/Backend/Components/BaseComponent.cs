@@ -50,6 +50,16 @@ namespace Backend.Components
                 Destroy(component);
             }
             
+            if (this is IUpdatable u)
+            {
+                UpdateManager.Instance?.Unregister(u);
+            }
+
+            if (this is IFixedUpdatable f)
+            {
+                UpdateManager.Instance?.Unregister(f);
+            }
+            
             EventBus.PublishDestroy(this);
         }
         

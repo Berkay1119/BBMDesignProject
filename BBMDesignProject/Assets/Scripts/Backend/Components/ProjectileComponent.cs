@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+﻿using Backend.Attributes;
+using UnityEngine;
 
 namespace Backend.Components
 {
-    public abstract class ProjectileComponent : BaseComponent
+    [Component]
+    [AddComponentMenu("EasyPrototyping/Projectile Component")]
+    public class ProjectileComponent : BaseComponent
     {
         private Vector2 _startPosition;
         private Vector2 _direction;
@@ -12,18 +15,24 @@ namespace Backend.Components
         
         public override void SetupComponent()
         {
+
+        }
+        
+        public void Initialize(GameObject originGameObject, Vector2 startPosition, Vector2 direction, float speed)
+        {
             if (gameObject.GetComponent<Rigidbody2D>() == null )
             {
                 _rigidbody2D = gameObject.AddComponent<Rigidbody2D>();
             }
 
             _rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
+            _rigidbody2D.gravityScale = 0; // Disable gravity for the projectile
 
-        }
-        
-        public void Initialize(GameObject originGameObject, Vector2 startPosition, Vector2 direction, float speed)
-        {
-            SetupComponent();
+            if (gameObject.GetComponent<BoxCollider2D>() == null)
+            {
+                gameObject.AddComponent<BoxCollider2D>();
+            }
+            
             _startPosition = startPosition;
             _direction = direction.normalized;
 
