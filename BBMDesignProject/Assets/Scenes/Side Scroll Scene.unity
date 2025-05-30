@@ -792,7 +792,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: CarrotAmount
-  _value: 0
+  _value: 200
   _type: 1
 --- !u!114 &242688870
 MonoBehaviour:
@@ -1463,6 +1463,7 @@ GameObject:
   - component: {fileID: 811817434}
   - component: {fileID: 811817433}
   - component: {fileID: 811817432}
+  - component: {fileID: 811817437}
   m_Layer: 9
   m_Name: Enemy
   m_TagString: Enemy
@@ -1483,8 +1484,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: Health
-  _value: 100
-  _type: 2
+  _value: 2
+  _type: 1
 --- !u!114 &811817433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1576,6 +1577,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &811817437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811817431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94a53438b5544ad78920a25738ff008e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: EnemyMessage
+  _value: I AM STILL ALIVE
+  _type: 0
 --- !u!1 &1055853566
 GameObject:
   m_ObjectHideFlags: 0
@@ -1606,17 +1622,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   events:
-  - eventName: 
+  - eventName: collide with golden carrot
     eventDescription: 
     Conditions:
-    - rid: 1605981462893953118
+    - rid: 1605981462893953385
     Actions:
-    - rid: 1605981462893953162
-    - rid: 1605981462893953295
+    - rid: 1605981462893953416
+    - rid: 1605981462893953433
   references:
     version: 2
     RefIds:
-    - rid: 1605981462893953118
+    - rid: 1605981462893953385
       type: {class: CollidingCondition, ns: Backend.EasyEvent.Conditions, asm: Assembly-CSharp}
       data:
         conditionName: Colliding Condition
@@ -1625,27 +1641,30 @@ MonoBehaviour:
         secondTypeName: CollectibleComponent
         firstRequiredTag: Avatar
         secondRequiredTag: GoldenCarrot
-    - rid: 1605981462893953162
-      type: {class: PrintStringAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
+    - rid: 1605981462893953416
+      type: {class: DestroyObjectAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
       data:
-        actionName: Print String
-        actionDescription: Prints text to the console
-        text: COLLIDE!!
-    - rid: 1605981462893953295
+        actionName: Destroy Object
+        actionDescription: Destroys object that matches the selected type and tag.
+        targetTypeName: AvatarComponent
+        targetTag: Untagged
+        operationType: 1
+        referenceObject: {fileID: 1213754733}
+    - rid: 1605981462893953433
       type: {class: ModifyVariableAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
       data:
         actionName: ModifyVariable
         actionDescription: Modifies or sets the value of a custom variable based
           on its type and selected operation.
-        CustomVariable: {fileID: 811817432}
-        easyObject: {fileID: 811817435}
-        variableName: Health
+        CustomVariable: {fileID: 242688869}
+        easyObject: {fileID: 242688874}
+        variableName: CarrotAmount
         valueInputMode: 1
-        referenceEasyObject: {fileID: 242688874}
-        referenceCustomVariable: {fileID: 242688879}
-        referenceVariableName: Damage
-        variableOperation: 0
-        operationValue: 5
+        referenceEasyObject: {fileID: 811817435}
+        referenceCustomVariable: {fileID: 811817432}
+        referenceVariableName: Health
+        variableOperation: 2
+        operationValue: 
 --- !u!4 &1055853568
 Transform:
   m_ObjectHideFlags: 0
@@ -3146,6 +3165,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fd7b11e2f9ef464bbd24a74d7b16edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1964190009
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1964190011}
+  - component: {fileID: 1964190010}
+  m_Layer: 0
+  m_Name: EasyEventManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1964190010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1964190009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9c2161cc80e44ca2a52a5293cc5b9c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  events: []
+  references:
+    version: 2
+    RefIds: []
+--- !u!4 &1964190011
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1964190009}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1985336861
 GameObject:
   m_ObjectHideFlags: 0
@@ -3320,3 +3387,4 @@ SceneRoots:
   - {fileID: 1820426304}
   - {fileID: 1430537861}
   - {fileID: 811817436}
+  - {fileID: 1964190011}
