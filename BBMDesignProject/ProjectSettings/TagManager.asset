@@ -15,6 +15,7 @@ TagManager:
   - movingPlatform
   - wp1
   - wp2
+  - Ammo
   layers:
   - Default
   - TransparentFX
