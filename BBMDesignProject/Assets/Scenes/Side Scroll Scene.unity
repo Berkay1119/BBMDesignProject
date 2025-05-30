@@ -772,6 +772,7 @@ GameObject:
   - component: {fileID: 242688876}
   - component: {fileID: 242688878}
   - component: {fileID: 242688879}
+  - component: {fileID: 242688880}
   m_Layer: 7
   m_Name: Rabbit
   m_TagString: Avatar
@@ -960,8 +961,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: Live
-  _value: 100.5
-  _type: 2
+  _value: 4
+  _type: 1
 --- !u!114 &242688879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -977,6 +978,21 @@ MonoBehaviour:
   _name: Damage
   _value: -15
   _type: 2
+--- !u!114 &242688880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 242688868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94a53438b5544ad78920a25738ff008e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Rabbit Message
+  _value: I AM A RABBIT
+  _type: 0
 --- !u!1 &363071197
 GameObject:
   m_ObjectHideFlags: 0
@@ -1464,6 +1480,7 @@ GameObject:
   - component: {fileID: 811817433}
   - component: {fileID: 811817432}
   - component: {fileID: 811817437}
+  - component: {fileID: 811817438}
   m_Layer: 9
   m_Name: Enemy
   m_TagString: Enemy
@@ -1484,7 +1501,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: Health
-  _value: 2
+  _value: 3
   _type: 1
 --- !u!114 &811817433
 MonoBehaviour:
@@ -1590,8 +1607,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: EnemyMessage
-  _value: I AM STILL ALIVE
+  _value: I AM A MURDERER
   _type: 0
+--- !u!114 &811817438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811817431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94a53438b5544ad78920a25738ff008e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: isDead
+  _value: False
+  _type: 3
 --- !u!1 &1055853566
 GameObject:
   m_ObjectHideFlags: 0
@@ -1628,7 +1660,13 @@ MonoBehaviour:
     - rid: 1605981462893953385
     Actions:
     - rid: 1605981462893953416
-    - rid: 1605981462893953433
+    - rid: 1605981462893953498
+  - eventName: 
+    eventDescription: 
+    Conditions:
+    - rid: 1605981462893953669
+    Actions:
+    - rid: 1605981462893953500
   references:
     version: 2
     RefIds:
@@ -1650,21 +1688,44 @@ MonoBehaviour:
         targetTag: Untagged
         operationType: 1
         referenceObject: {fileID: 1213754733}
-    - rid: 1605981462893953433
+    - rid: 1605981462893953498
       type: {class: ModifyVariableAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
       data:
         actionName: ModifyVariable
         actionDescription: Modifies or sets the value of a custom variable based
           on its type and selected operation.
-        CustomVariable: {fileID: 242688869}
+        CustomVariable: {fileID: 242688878}
         easyObject: {fileID: 242688874}
-        variableName: CarrotAmount
+        variableName: Live
+        valueInputMode: 0
+        referenceEasyObject: {fileID: 0}
+        referenceCustomVariable: {fileID: 0}
+        referenceVariableName: 
+        variableOperation: 0
+        operationValue: -1
+    - rid: 1605981462893953500
+      type: {class: PrintStringAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
+      data:
+        actionName: Print String
+        actionDescription: Prints text to the console
+        text: RABBIT IS A MURDERER!!!!!!
+    - rid: 1605981462893953669
+      type: {class: CheckValueCondition, ns: Backend.EasyEvent.Conditions, asm: Assembly-CSharp}
+      data:
+        conditionName: Check Value Condition
+        conditionDescription: Checks if a selected variable on a object matches the
+          desired value.
+        targetObject: {fileID: 242688874}
+        selectedIndex: 4
+        selectedVariableName: Live
+        selectedVariableType: 1
+        valueToCompare: 3
+        checkType: 0
         valueInputMode: 1
-        referenceEasyObject: {fileID: 811817435}
-        referenceCustomVariable: {fileID: 811817432}
+        referenceObject: {fileID: 811817435}
+        referenceVariableIndex: 0
         referenceVariableName: Health
-        variableOperation: 2
-        operationValue: 
+        referenceVariable: {fileID: 811817432}
 --- !u!4 &1055853568
 Transform:
   m_ObjectHideFlags: 0
