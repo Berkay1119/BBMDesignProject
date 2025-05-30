@@ -49,6 +49,7 @@ namespace UI
 
             // Is Unity in playmode?
             bool isPlaying = EditorApplication.isPlaying;
+            float buttonWidth = position.width * 0.25f;
             
             for (int i = 0; i < _events.Count; i++)
             {
@@ -60,6 +61,7 @@ namespace UI
                 GUILayout.BeginVertical("box");
                 GUI.backgroundColor = oldBg;
                 
+                GUILayout.Space(15);
                 ev.eventName        = EditorGUILayout.TextField("Event Name",        ev.eventName ?? "");
                 ev.eventDescription = EditorGUILayout.TextField("Event Description", ev.eventDescription ?? "");
 
@@ -206,10 +208,11 @@ namespace UI
                 
                 EditorGUILayout.HelpBox("Don't forget to save the event after making any changes or updates!", MessageType.Info);
                 
+                GUILayout.Space(15);
+                
                 // Save and Remove buttons
                 GUILayout.BeginHorizontal();
                 GUILayout.FlexibleSpace();
-                float buttonWidth = position.width * 0.25f;
                 
                 // Disable buttons during play mode
                 GUI.enabled = !isPlaying;
@@ -228,7 +231,7 @@ namespace UI
                 
                 GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
-                
+                GUILayout.Space(15);
                 GUILayout.EndVertical();
                 GUILayout.Space(25);
             }
@@ -240,8 +243,12 @@ namespace UI
                 _events.RemoveAt(removeIndex);
             }
 
+            
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            
             // Add new event
-            if (GUILayout.Button("Add New Event"))
+            if (GUILayout.Button("Add New Event", GUILayout.Width(buttonWidth)))
             {
                 var newEvt = new EasyEvent
                 {
@@ -253,6 +260,9 @@ namespace UI
                 manager.AddEvent(newEvt);
                 _events.Add(newEvt);
             }
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            
             EditorGUILayout.EndScrollView();
             GUILayout.EndVertical();
         }

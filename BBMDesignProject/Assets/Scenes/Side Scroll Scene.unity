@@ -464,8 +464,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 491e9823ed92473a9115c6129c763d00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useGravity: 0
-  gravityScale: 1
 --- !u!212 &160611091
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -772,6 +770,8 @@ GameObject:
   - component: {fileID: 242688869}
   - component: {fileID: 242688877}
   - component: {fileID: 242688876}
+  - component: {fileID: 242688878}
+  - component: {fileID: 242688879}
   m_Layer: 7
   m_Name: Rabbit
   m_TagString: Avatar
@@ -911,7 +911,7 @@ Transform:
   m_GameObject: {fileID: 242688868}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.62, y: 0, z: 0}
+  m_LocalPosition: {x: -2.09, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -946,6 +946,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: MoveSpeed
   _value: 5
+  _type: 2
+--- !u!114 &242688878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 242688868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94a53438b5544ad78920a25738ff008e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Live
+  _value: 100.5
+  _type: 2
+--- !u!114 &242688879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 242688868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94a53438b5544ad78920a25738ff008e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Damage
+  _value: -15
   _type: 2
 --- !u!1 &363071197
 GameObject:
@@ -1295,7 +1325,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 606bc11d07a14fd2b6f14a7560212c1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
   smoothSpeed: 1
   offset: {x: 0, y: 0, z: 0}
 --- !u!1 &532396830
@@ -1330,8 +1359,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 491e9823ed92473a9115c6129c763d00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useGravity: 0
-  gravityScale: 1
 --- !u!212 &532396832
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1423,6 +1450,132 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49235fdc925443fa8e2c0e1e587376e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &811817431
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 811817436}
+  - component: {fileID: 811817435}
+  - component: {fileID: 811817434}
+  - component: {fileID: 811817433}
+  - component: {fileID: 811817432}
+  m_Layer: 9
+  m_Name: Enemy
+  m_TagString: Enemy
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &811817432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811817431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94a53438b5544ad78920a25738ff008e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Health
+  _value: 100
+  _type: 2
+--- !u!114 &811817433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811817431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d986c8b3d064bcbb855c33291d46339, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!212 &811817434
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811817431}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 1422604260}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1.22, y: 1.35}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!114 &811817435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811817431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfeff612f0e2495fb1af91f7bc32885e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &811817436
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811817431}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1055853566
 GameObject:
   m_ObjectHideFlags: 0
@@ -1456,19 +1609,14 @@ MonoBehaviour:
   - eventName: 
     eventDescription: 
     Conditions:
-    - rid: 1605981430721020017
+    - rid: 1605981462893953118
     Actions:
-    - rid: 1605981430721020018
-  - eventName: 
-    eventDescription: 
-    Conditions:
-    - rid: 1605981430721020019
-    Actions:
-    - rid: 1605981430721020020
+    - rid: 1605981462893953162
+    - rid: 1605981462893953295
   references:
     version: 2
     RefIds:
-    - rid: 1605981430721020017
+    - rid: 1605981462893953118
       type: {class: CollidingCondition, ns: Backend.EasyEvent.Conditions, asm: Assembly-CSharp}
       data:
         conditionName: Colliding Condition
@@ -1477,37 +1625,27 @@ MonoBehaviour:
         secondTypeName: CollectibleComponent
         firstRequiredTag: Avatar
         secondRequiredTag: GoldenCarrot
-    - rid: 1605981430721020018
+    - rid: 1605981462893953162
+      type: {class: PrintStringAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
+      data:
+        actionName: Print String
+        actionDescription: Prints text to the console
+        text: COLLIDE!!
+    - rid: 1605981462893953295
       type: {class: ModifyVariableAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
       data:
         actionName: ModifyVariable
         actionDescription: Modifies or sets the value of a custom variable based
           on its type and selected operation.
-        CustomVariable: {fileID: 242688869}
-        easyObject: {fileID: 242688874}
-        variableName: CarrotAmount
+        CustomVariable: {fileID: 811817432}
+        easyObject: {fileID: 811817435}
+        variableName: Health
+        valueInputMode: 1
+        referenceEasyObject: {fileID: 242688874}
+        referenceCustomVariable: {fileID: 242688879}
+        referenceVariableName: Damage
         variableOperation: 0
-        operationValue: 100
-    - rid: 1605981430721020019
-      type: {class: CollidingCondition, ns: Backend.EasyEvent.Conditions, asm: Assembly-CSharp}
-      data:
-        conditionName: Colliding Condition
-        conditionDescription: Check if two objects are colliding
-        firstTypeName: AvatarComponent
-        secondTypeName: AvatarComponent
-        firstRequiredTag: Avatar
-        secondRequiredTag: Enemy
-    - rid: 1605981430721020020
-      type: {class: ModifyVariableAction, ns: Backend.EasyEvent.Actions, asm: Assembly-CSharp}
-      data:
-        actionName: ModifyVariable
-        actionDescription: Modifies or sets the value of a custom variable based
-          on its type and selected operation.
-        CustomVariable: {fileID: 242688869}
-        easyObject: {fileID: 242688874}
-        variableName: CarrotAmount
-        variableOperation: 0
-        operationValue: -10
+        operationValue: 5
 --- !u!4 &1055853568
 Transform:
   m_ObjectHideFlags: 0
@@ -1523,216 +1661,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!213 &1148359124
-Sprite:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_Rect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 122
-    height: 139
-  m_Offset: {x: 0, y: 0}
-  m_Border: {x: 0, y: 0, z: 0, w: 0}
-  m_PixelsToUnits: 100
-  m_Pivot: {x: 0.5, y: 0.5}
-  m_Extrude: 0
-  m_IsPolygon: 0
-  m_AtlasName: 
-  m_PackingTag: 
-  m_RenderDataKey:
-    00000000000000000000000000000000: 0
-  m_AtlasTags: []
-  m_SpriteAtlas: {fileID: 0}
-  m_RD:
-    serializedVersion: 3
-    texture: {fileID: 2800000, guid: 3c6d06091c7bff64ba47caac5dac1ade, type: 3}
-    alphaTexture: {fileID: 0}
-    secondaryTextures: []
-    m_SubMeshes:
-    - serializedVersion: 2
-      firstByte: 0
-      indexCount: 12
-      topology: 0
-      baseVertex: 0
-      firstVertex: 0
-      vertexCount: 6
-      localAABB:
-        m_Center: {x: 0, y: 0, z: 0}
-        m_Extent: {x: 0, y: 0, z: 0}
-    m_IndexBuffer: 050004000100030001000400000001000300020001000000
-    m_VertexData:
-      serializedVersion: 3
-      m_VertexCount: 6
-      m_Channels:
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 3
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 1
-        offset: 0
-        format: 0
-        dimension: 2
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      m_DataSize: 128
-      _typelessdata: f6281c3f85eb313f000000009a99193f85eb31bf00000000f6281c3f000020bf000000009a9919bf85eb313f00000000f6281cbf295c2f3f00000000f6281cbf85eb31bf0000000000000000000000000000803f0000803fd2e67d3f000000000000803ffc454e3d694b063c0000803f0000000085287e3f0000000000000000
-    m_Bindpose: []
-    textureRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 122
-      height: 139
-    textureRectOffset: {x: 0, y: 0}
-    atlasRectOffset: {x: -1, y: -1}
-    settingsRaw: 64
-    uvTransform: {x: 100, y: 61, z: 100, w: 69.5}
-    downscaleMultiplier: 1
-  m_AtlasRD:
-    serializedVersion: 3
-    texture: {fileID: 2800000, guid: 3c6d06091c7bff64ba47caac5dac1ade, type: 3}
-    alphaTexture: {fileID: 0}
-    secondaryTextures: []
-    m_SubMeshes:
-    - serializedVersion: 2
-      firstByte: 0
-      indexCount: 12
-      topology: 0
-      baseVertex: 0
-      firstVertex: 0
-      vertexCount: 6
-      localAABB:
-        m_Center: {x: 0, y: 0, z: 0}
-        m_Extent: {x: 0, y: 0, z: 0}
-    m_IndexBuffer: 050004000100030001000400000001000300020001000000
-    m_VertexData:
-      serializedVersion: 3
-      m_VertexCount: 6
-      m_Channels:
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 3
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 1
-        offset: 0
-        format: 0
-        dimension: 2
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      - stream: 0
-        offset: 0
-        format: 0
-        dimension: 0
-      m_DataSize: 128
-      _typelessdata: f6281c3f85eb313f000000009a99193f85eb31bf00000000f6281c3f000020bf000000009a9919bf85eb313f00000000f6281cbf295c2f3f00000000f6281cbf85eb31bf0000000000000000000000000000803f0000803fd2e67d3f000000000000803ffc454e3d694b063c0000803f0000000085287e3f0000000000000000
-    m_Bindpose: []
-    textureRect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 122
-      height: 139
-    textureRectOffset: {x: 0, y: 0}
-    atlasRectOffset: {x: -1, y: -1}
-    settingsRaw: 64
-    uvTransform: {x: 100, y: 61, z: 100, w: 69.5}
-    downscaleMultiplier: 1
-  m_PhysicsShape: []
-  m_Bones: []
-  m_SpriteID: 
 --- !u!1 &1213754730
 GameObject:
   m_ObjectHideFlags: 0
@@ -1765,8 +1693,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a24551ea9a864f0d97d2cced64cbc338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useGravity: 0
-  gravityScale: 50
+  isPhysicsActive: 0
 --- !u!212 &1213754732
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1840,7 +1767,7 @@ Transform:
   m_GameObject: {fileID: 1213754730}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.9, y: 0.2, z: 0}
+  m_LocalPosition: {x: -0.6, y: 2.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1858,132 +1785,216 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49235fdc925443fa8e2c0e1e587376e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1407940986
-GameObject:
+--- !u!213 &1422604260
+Sprite:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1407940992}
-  - component: {fileID: 1407940991}
-  - component: {fileID: 1407940990}
-  - component: {fileID: 1407940989}
-  - component: {fileID: 1407940987}
-  m_Layer: 7
-  m_Name: Enemyyy
-  m_TagString: Enemy
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1407940987
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1407940986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94a53438b5544ad78920a25738ff008e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  _name: Health
-  _value: 50
-  _type: 1
---- !u!114 &1407940989
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1407940986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d986c8b3d064bcbb855c33291d46339, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!212 &1407940990
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1407940986}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 1148359124}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1.22, y: 1.39}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
---- !u!114 &1407940991
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1407940986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfeff612f0e2495fb1af91f7bc32885e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1407940992
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1407940986}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.44, y: 1.03, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Rect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 122
+    height: 135
+  m_Offset: {x: 0, y: 0}
+  m_Border: {x: 0, y: 0, z: 0, w: 0}
+  m_PixelsToUnits: 100
+  m_Pivot: {x: 0.5, y: 0.5}
+  m_Extrude: 0
+  m_IsPolygon: 0
+  m_AtlasName: 
+  m_PackingTag: 
+  m_RenderDataKey:
+    00000000000000000000000000000000: 0
+  m_AtlasTags: []
+  m_SpriteAtlas: {fileID: 0}
+  m_RD:
+    serializedVersion: 3
+    texture: {fileID: 2800000, guid: 007a9194f2cc49c429bf5241ab6387a7, type: 3}
+    alphaTexture: {fileID: 0}
+    secondaryTextures: []
+    m_SubMeshes:
+    - serializedVersion: 2
+      firstByte: 0
+      indexCount: 9
+      topology: 0
+      baseVertex: 0
+      firstVertex: 0
+      vertexCount: 5
+      localAABB:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 0, y: 0, z: 0}
+    m_IndexBuffer: 040003000100000001000300020001000000
+    m_VertexData:
+      serializedVersion: 3
+      m_VertexCount: 5
+      m_Channels:
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 3
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 1
+        offset: 0
+        format: 0
+        dimension: 2
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      m_DataSize: 104
+      _typelessdata: 295c0f3fcdcc2c3f00000000f6281c3fcdcc2cbf00000000f6281c3f5c8f223f00000000f6281cbfcdcc2c3f00000000f6281cbfcdcc2cbf00000000000000001982753f0000803f0000803f000000000000803f316a783f000000000000803f0000000000000000
+    m_Bindpose: []
+    textureRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 122
+      height: 135
+    textureRectOffset: {x: 0, y: 0}
+    atlasRectOffset: {x: -1, y: -1}
+    settingsRaw: 64
+    uvTransform: {x: 100, y: 61, z: 100, w: 67.5}
+    downscaleMultiplier: 1
+  m_AtlasRD:
+    serializedVersion: 3
+    texture: {fileID: 2800000, guid: 007a9194f2cc49c429bf5241ab6387a7, type: 3}
+    alphaTexture: {fileID: 0}
+    secondaryTextures: []
+    m_SubMeshes:
+    - serializedVersion: 2
+      firstByte: 0
+      indexCount: 9
+      topology: 0
+      baseVertex: 0
+      firstVertex: 0
+      vertexCount: 5
+      localAABB:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 0, y: 0, z: 0}
+    m_IndexBuffer: 040003000100000001000300020001000000
+    m_VertexData:
+      serializedVersion: 3
+      m_VertexCount: 5
+      m_Channels:
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 3
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 1
+        offset: 0
+        format: 0
+        dimension: 2
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      m_DataSize: 104
+      _typelessdata: 295c0f3fcdcc2c3f00000000f6281c3fcdcc2cbf00000000f6281c3f5c8f223f00000000f6281cbfcdcc2c3f00000000f6281cbfcdcc2cbf00000000000000001982753f0000803f0000803f000000000000803f316a783f000000000000803f0000000000000000
+    m_Bindpose: []
+    textureRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 122
+      height: 135
+    textureRectOffset: {x: 0, y: 0}
+    atlasRectOffset: {x: -1, y: -1}
+    settingsRaw: 64
+    uvTransform: {x: 100, y: 61, z: 100, w: 67.5}
+    downscaleMultiplier: 1
+  m_PhysicsShape: []
+  m_Bones: []
+  m_SpriteID: 
 --- !u!1 &1430537859
 GameObject:
   m_ObjectHideFlags: 0
@@ -2103,8 +2114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a24551ea9a864f0d97d2cced64cbc338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useGravity: 0
-  gravityScale: 1
+  isPhysicsActive: 0
 --- !u!212 &1475526507
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2215,8 +2225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a24551ea9a864f0d97d2cced64cbc338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useGravity: 0
-  gravityScale: 100
+  isPhysicsActive: 0
 --- !u!212 &1499077978
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2308,7 +2317,6 @@ GameObject:
   - component: {fileID: 1520497284}
   - component: {fileID: 1520497283}
   - component: {fileID: 1520497282}
-  - component: {fileID: 1520497281}
   - component: {fileID: 1520497286}
   m_Layer: 8
   m_Name: movePlatform
@@ -2317,22 +2325,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1520497281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1520497280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d9aef294287488fbf9c03eb17361e18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waypoints:
-  - {fileID: 1452163892}
-  - {fileID: 1985336863}
-  oneLoopDuration: 3
 --- !u!114 &1520497282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2345,8 +2337,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 491e9823ed92473a9115c6129c763d00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useGravity: 0
-  gravityScale: 1
 --- !u!212 &1520497283
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3231,8 +3221,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 491e9823ed92473a9115c6129c763d00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useGravity: 0
-  gravityScale: 1
 --- !u!212 &2128329046
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3329,6 +3317,6 @@ SceneRoots:
   - {fileID: 1475526509}
   - {fileID: 1499077980}
   - {fileID: 1213754734}
-  - {fileID: 1407940992}
   - {fileID: 1820426304}
   - {fileID: 1430537861}
+  - {fileID: 811817436}
