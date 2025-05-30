@@ -121,36 +121,29 @@ namespace Backend.EasyEvent.Actions
 
                             if (referenceEasyObject != null)
                             {
-                                Debug.Log("--- hereeeğeğeğe");
                                 var refVariables = referenceEasyObject.GetComponents<SerializableCustomVariable>()
                                     .Where(v => v.Type == CustomVariable.Type)
                                     .ToList();
 
                                 if (refVariables.Count > 0)
                                 {
-                                    Debug.Log("--- aaaaaaa");
                                     var refVarNames = refVariables.Select(v => v.Name).ToArray();
 
                                     if (!string.IsNullOrEmpty(referenceVariableName))
                                     {
-                                        Debug.Log("--- bbbbbbb");
                                         referenceVariableIndex = Array.IndexOf(refVarNames, referenceVariableName);
                                     }
                                     else
                                     {
-                                        Debug.Log("--- cccccccc");
                                         referenceVariableIndex = 0;
                                     }
                                     if (referenceVariableIndex < 0) referenceVariableIndex = 0;
 
                                     int newRefVarIndex = EditorGUILayout.Popup("Reference Variable", referenceVariableIndex, refVarNames);
-                                    Debug.Log("--- newRefVarIndex " + newRefVarIndex);
                                     
                                     referenceVariableIndex = newRefVarIndex;
                                     referenceVariableName = refVarNames[referenceVariableIndex];
                                     referenceCustomVariable = refVariables[referenceVariableIndex];
-                                    
-                                    Debug.Log("name: " + referenceVariableName);
                                 }
                                 else
                                 {
@@ -240,10 +233,10 @@ namespace Backend.EasyEvent.Actions
         public override void Execute(BaseComponent source, BaseComponent other)
         {
             if (CustomVariable == null) return;
-            Debug.Log("MODIFY VARIABLE EXECUTE");
+            
             BaseComponent component = easyObject.GetComponent<BaseComponent>();
             if (component == null) return;
-            Debug.Log("MODIFY VARIABLE EXECUTE");
+            
             string currentValue = CustomVariable._value;
             string inputValue = "";
             
@@ -251,32 +244,19 @@ namespace Backend.EasyEvent.Actions
             {
                 if (OperationNeedsValueInput(variableOperation))
                 {
-                    Debug.Log("HERE 11");
                     if (valueInputMode == ValueInputMode.EnterValue)
                     {
-                        Debug.Log("HERE 22");
                         inputValue = operationValue;
                     }
                     else if (valueInputMode == ValueInputMode.ValueByReference)
                     {
-                        Debug.Log("HERE 33");
                         if (referenceEasyObject == null || referenceCustomVariable == null)
                         {
-                            if (referenceEasyObject == null)
-                            {
-                                Debug.Log("HERE 44");
-                            }
-
-                            if (referenceCustomVariable == null)
-                            {
-                                Debug.Log("HERE 55");
-                            }
                             Debug.LogWarning("[ModifyVariableAction] Reference object or variable is not set.");
                             return;
                         }
-                        Debug.Log("HERE 66");
+                        
                         inputValue = referenceCustomVariable._value;
-                        Debug.Log("--- VALUE: " + inputValue);
                     }
                 }
                 
@@ -285,7 +265,6 @@ namespace Backend.EasyEvent.Actions
                     case VariableType.Integer:
                         int iVal = int.TryParse(currentValue, out var iParsed) ? iParsed : 0;
                         int iInput = int.TryParse(inputValue, out var iOp) ? iOp : 0;
-                        Debug.Log("--- iInput VALUE: " + iInput);
                         
                         CustomVariable._value = variableOperation switch
                         {
