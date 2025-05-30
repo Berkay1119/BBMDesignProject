@@ -25,7 +25,7 @@ namespace Backend.CustomVariableFeature
 
         private void OnValidate()
         {
-            if (_variable == null) return;
+            _variable ??= new CustomVariable(_name, _type, _value);
             _variable.Name = _name;
             _variable.Type = _type;
             _variable.Value = _value; 
@@ -33,7 +33,7 @@ namespace Backend.CustomVariableFeature
 
         public void ValueChanged()
         {
-            if (_variable == null) return;
+            _variable ??= new CustomVariable(_name, _type, _value);
             _variable.Value = _value;
             OnValueChanged?.Invoke();
         }
@@ -49,6 +49,7 @@ namespace Backend.CustomVariableFeature
             {
                 throw new FormatException("Value is not a valid integer");
             }
+            ValueChanged();
         }
         
         public void Add(float value)
@@ -62,6 +63,7 @@ namespace Backend.CustomVariableFeature
             {
                 throw new FormatException("Value is not a valid float");
             }
+            ValueChanged();
         }
         
         public void SetValue(string value)
@@ -74,6 +76,7 @@ namespace Backend.CustomVariableFeature
             {
                 throw new InvalidOperationException("Variable type is not String");
             }
+            ValueChanged();
         }
         
         public void SetValue(int value)
@@ -86,6 +89,7 @@ namespace Backend.CustomVariableFeature
             {
                 throw new InvalidOperationException("Variable type is not Integer");
             }
+            ValueChanged();
         }
         
         public void SetValue(float value)
@@ -98,6 +102,7 @@ namespace Backend.CustomVariableFeature
             {
                 throw new InvalidOperationException("Variable type is not Float");
             }
+            ValueChanged();
         }
     }
 }

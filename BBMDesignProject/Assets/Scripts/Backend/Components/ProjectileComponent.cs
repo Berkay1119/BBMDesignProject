@@ -18,6 +18,12 @@ namespace Backend.Components
 
         }
         
+        public ProjectileComponent()
+        {
+            SetName("Projectile");
+            SetDescription("This component represents a projectile that can be thrown in a specified direction.");
+        }
+        
         public void Initialize(GameObject originGameObject, Vector2 startPosition, Vector2 direction, float speed)
         {
             if (gameObject.GetComponent<Rigidbody2D>() == null )
