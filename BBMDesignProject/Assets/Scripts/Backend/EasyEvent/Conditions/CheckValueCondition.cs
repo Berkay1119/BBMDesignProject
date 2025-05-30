@@ -25,8 +25,10 @@ namespace Backend.EasyEvent.Conditions
 
         public override void DrawGUI()
         {
+            GUILayout.Space(10);
             base.DrawGUI();
-
+            GUILayout.Space(10);
+            
             targetObject = (EasyObject)EditorGUILayout.ObjectField("Target Object", targetObject, typeof(EasyObject), true);
 
             if (targetObject == null)
