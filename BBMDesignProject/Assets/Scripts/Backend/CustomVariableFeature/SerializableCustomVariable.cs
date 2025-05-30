@@ -8,9 +8,12 @@ namespace Backend.CustomVariableFeature
         [SerializeField] public string _name;
         [SerializeField] public string _value;
         [SerializeField] public VariableType _type;
+        
         private CustomVariable _variable;
         public string Name => _name;
         public VariableType Type => _type;
+
+        public Action OnValueChanged;
 
         public void SetVariable(CustomVariable variable)
         {
@@ -26,6 +29,13 @@ namespace Backend.CustomVariableFeature
             _variable.Name = _name;
             _variable.Type = _type;
             _variable.Value = _value; 
+        }
+
+        public void ValueChanged()
+        {
+            if (_variable == null) return;
+            _variable.Value = _value;
+            OnValueChanged?.Invoke();
         }
 
         public void Add(int value)

@@ -180,6 +180,8 @@ namespace Backend.EasyEvent.Actions
                         EventBus.PublishCustomVariableChanged(component, variableName, operationValue);
                         break;
                 }
+
+                CustomVariable.ValueChanged();
             }
             catch (Exception e)
             {
