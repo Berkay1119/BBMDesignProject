@@ -70,21 +70,26 @@ namespace Backend.Components
 
             if (loopCount==-1)
             {
-                yield return new WaitForSeconds(durationBySecond);
-                foreach (var unityEvent in onOneLoopEnd)
+                while (coroutine != null)
                 {
-                    unityEvent.Invoke();
+                    yield return new WaitForSeconds(durationBySecond);
+                    foreach (var unityEvent in onOneLoopEnd)
+                    {
+                        unityEvent.Invoke();
+                    }
                 }
             }
             
-            foreach (var unityEvent in onTimerEnd)
-            {
-                unityEvent.Invoke();
-            }
+            StopTimer();
         }
 
         public void StopTimer()
         {
+            foreach (var unityEvent in onTimerEnd)
+            {
+                unityEvent.Invoke();
+            }
+            
             if (coroutine != null)
             {
                 StopCoroutine(coroutine);

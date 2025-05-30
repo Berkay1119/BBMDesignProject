@@ -1,4 +1,5 @@
-﻿using Backend.Attributes;
+﻿using System;
+using Backend.Attributes;
 using Backend.Interfaces;
 using UnityEngine;
 
@@ -55,6 +56,11 @@ namespace Backend.Components
                 case FacingDirection.Down: return 90f;
                 default: return 0f;
             }
+        }
+
+        private void OnDestroy()
+        {
+            
         }
     }
 }

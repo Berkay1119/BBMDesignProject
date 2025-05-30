@@ -84,7 +84,7 @@ namespace Backend.Components
 
         private void OnCollisionExit2D(Collision2D col)
         {
-            if (col.gameObject.GetComponent<SolidComponent>() != null)
+            if (col.gameObject.GetComponent<JumpableComponent>() != null)
             {
                 isGrounded = false;
                 _platformRb = null;

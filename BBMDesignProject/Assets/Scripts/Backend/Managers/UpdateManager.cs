@@ -81,6 +81,24 @@ namespace Backend.Managers
         {
             RegisterHelper(_fixedUpdatables, fixedUpdatable, "fixed updateable");
         }
+        
+        public void Unregister(IUpdatable updatable)
+        {
+            if (_updatables.Contains(updatable))
+            {
+                _updatables.Remove(updatable);
+                Debug.Log($"Unregistered updateable: {updatable}");
+            }
+        }
+        
+        public void Unregister(IFixedUpdatable fixedUpdatable)
+        {
+            if (_fixedUpdatables.Contains(fixedUpdatable))
+            {
+                _fixedUpdatables.Remove(fixedUpdatable);
+                Debug.Log($"Unregistered fixed updateable: {fixedUpdatable}");
+            }
+        }
 
         private void Update()
         {
