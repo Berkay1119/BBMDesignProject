@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Backend.Attributes;
 using Backend.Components;
@@ -83,7 +82,6 @@ namespace Backend.EasyEvent.Conditions
                 switch (selectedVariableType)
                 {
                     case VariableType.Integer:
-                        Debug.Log("HERE 111");
                         int intVal = int.TryParse(valueToCompare, out var iVal) ? iVal : 0;
                         intVal = EditorGUILayout.IntField("Target Value", intVal);
                         valueToCompare = intVal.ToString();
@@ -91,21 +89,18 @@ namespace Backend.EasyEvent.Conditions
                         break;
 
                     case VariableType.Float:
-                        Debug.Log("HERE 222");
                         float floatVal = float.TryParse(valueToCompare, out var fVal) ? fVal : 0f;
                         floatVal = EditorGUILayout.FloatField("Target Value", floatVal);
                         valueToCompare = floatVal.ToString();
                         break;
 
                     case VariableType.Boolean:
-                        Debug.Log("HERE 333");
                         bool bVal = valueToCompare == "True";
                         bVal = EditorGUILayout.Popup("Target Value", bVal ? 0 : 1, new[] { "True", "False" }) == 0;
                         valueToCompare = bVal.ToString();
                         break;
 
                     case VariableType.String:
-                        Debug.Log("HERE 333");
                         valueToCompare = EditorGUILayout.TextField("Value", valueToCompare);
                         break;
                 }
@@ -116,19 +111,16 @@ namespace Backend.EasyEvent.Conditions
 
                 if (referenceObject != null)
                 {
-                    Debug.Log("HERE 444");
                     var refVars = referenceObject.GetComponents<SerializableCustomVariable>()
                         .Where(v => v.Type == selectedVariableType)
                         .ToList();
 
                     if (refVars.Count > 0)
                     {
-                        Debug.Log("HERE 555");
                         var refVarNames = refVars.Select(v => v.Name).ToArray();
-                        Debug.Log(refVarNames);
+                        
                         if (!string.IsNullOrEmpty(referenceVariableName))
                         {
-                            Debug.Log("HERE 666");
                             referenceVariableIndex = Array.IndexOf(refVarNames, referenceVariableName);
                         }
                         else
@@ -138,34 +130,14 @@ namespace Backend.EasyEvent.Conditions
                         if (referenceVariableIndex < 0) referenceVariableIndex = 0;
 
                         int newRefIndex = EditorGUILayout.Popup("Reference Variable", referenceVariableIndex, refVarNames);
-                        // if (newRefIndex != referenceVariableIndex)
-                        // {
-                        //     Debug.Log("HERE 999");
-                        //     // referenceVariableIndex = newRefIndex;
-                        //     // referenceVariableName = refVarNames[referenceVariableIndex];
-                        //     // referenceVariable = refVars[referenceVariableIndex];
-                        //     // valueToCompare = referenceVariable._value;
-                        //     //Debug.Log("VALUETOCOMPARE: " + valueToCompare);
-                        // }
-                        // else
-                        // {
-                        //     if (referenceVariable != null)
-                        //     {
-                        //         Debug.Log("HERE 888");
-                        //         valueToCompare = referenceVariable._value;
-                        //         Debug.Log("VALUETOCOMPARE: " + valueToCompare);
-                        //     }
-                        // }
-                        Debug.Log("HERE 777");
+                        
                         referenceVariableIndex = newRefIndex;
                         referenceVariableName = refVarNames[referenceVariableIndex];
                         referenceVariable = refVars[referenceVariableIndex];
                         valueToCompare = referenceVariable._value;
-                        Debug.Log("VALUETOCOMPARE: " + valueToCompare);
                     }
                     else
                     {
-                        Debug.Log("HERE 999");
                         EditorGUILayout.HelpBox($"No {selectedVariableType} variables found on reference object.", MessageType.Warning);
                         referenceVariableIndex = 0;
                         referenceVariableName = null;
@@ -182,8 +154,6 @@ namespace Backend.EasyEvent.Conditions
                 }
             }
             
-            Debug.Log("Check Value: " + valueToCompare);
-
             GUILayout.EndVertical();
         }
         
@@ -215,8 +185,6 @@ namespace Backend.EasyEvent.Conditions
         private void OnCustomVariableChanged(BaseComponent comp, string varName, object value)
         {
             if (targetObject == null) return;
-            Debug.Log("---OnCustomVariableChanged");
-            Debug.Log(value);
             var targetComp = targetObject.GetComponent<BaseComponent>();
             if (comp != targetComp) return;
             if (varName != selectedVariableName) return;
@@ -224,27 +192,21 @@ namespace Backend.EasyEvent.Conditions
             switch (selectedVariableType)
             {
                 case VariableType.Integer:
-                    Debug.Log("---intttt");
-                    Debug.Log("valueToCompare " + valueToCompare);
-                    Debug.Log("int: " + value);
                     if (value is int i && int.TryParse(valueToCompare, out var targetInt) && i == targetInt)
                         Trigger(comp);
                     break;
 
                 case VariableType.Float:
-                    Debug.Log("---floatttt");
                     if (value is float f && float.TryParse(valueToCompare, out var targetFloat) && Mathf.Approximately(f, targetFloat))
                         Trigger(comp);
                     break;
 
                 case VariableType.Boolean:
-                    Debug.Log("---boooll");
                     if (value is bool b && bool.TryParse(valueToCompare, out var targetBool) && b == targetBool)
                         Trigger(comp);
                     break;
                 
                 case VariableType.String:
-                    Debug.Log("---string");
                     if (value is string s && s == valueToCompare)
                         Trigger(comp);
                     break;
