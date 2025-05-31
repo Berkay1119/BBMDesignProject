@@ -1,5 +1,6 @@
 using Backend.Attributes;
 using Backend.CustomVariableFeature;
+using Backend.Object;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,14 +11,20 @@ namespace Backend.Components
     [AddComponentMenu("EasyPrototyping/Game World Bar Component")]
     public class GameWorldBarComponent : BaseComponent
     {
-        [SerializeField] private SerializableCustomVariable currentValue;
-        [SerializeField] private SerializableCustomVariable maxValue;
-        [SerializeField] private Color backgroundColor = Color.gray;
-        [SerializeField] private Color fillColor = Color.red;
-        [SerializeField] private Sprite barSprite;
-        [SerializeField] private Image _fillImage;
-        [SerializeField] private GameObject _valueBarUI;
-        [SerializeField] private Image _backgroundImage;
+        public EasyObject currentValueReferenceObject;
+        public string currentValueNameString;
+        public int currentValueReferenceVariableIndex = 0;
+        public SerializableCustomVariable currentValue;
+        public EasyObject maxValueReferenceObject;
+        public string maxValueNameString;
+        public int maxValueReferenceVariableIndex = 0;
+        public SerializableCustomVariable maxValue;
+        public Color backgroundColor = Color.gray;
+        public Color fillColor = Color.red;
+        public Sprite barSprite;
+        public Image _fillImage;
+        public GameObject _valueBarUI;
+        public Image _backgroundImage;
 
         public override void SetupComponent()
         {
