@@ -42,6 +42,7 @@ namespace Backend.Components
             base.OnEnable();
             currentValue.OnValueChanged += UpdateBarDisplay;
             maxValue.OnValueChanged += UpdateBarDisplay;
+            UpdateBarDisplay();
         }
 
         protected override void OnDisable()
@@ -106,6 +107,8 @@ namespace Backend.Components
                 
                 _fillImage.sprite = barSprite;
                 _fillImage.SetNativeSize();
+                
+                _fillImage.color = fillColor;
             }
             else
             {
