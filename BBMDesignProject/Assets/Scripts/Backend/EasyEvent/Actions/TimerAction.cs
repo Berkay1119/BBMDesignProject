@@ -41,7 +41,10 @@ namespace Backend.EasyEvent.Actions
         
         public override void DrawGUI()
         {
+            GUILayout.Space(10);
             base.DrawGUI();
+            GUILayout.Space(10);
+            
             TimerComponent = (TimerComponent)UnityEditor.EditorGUILayout.ObjectField("Timer Component", TimerComponent, typeof(TimerComponent), true);
             ActionType = (TimerActionType)UnityEditor.EditorGUILayout.EnumPopup("Action Type", ActionType);
             GUILayout.EndVertical();

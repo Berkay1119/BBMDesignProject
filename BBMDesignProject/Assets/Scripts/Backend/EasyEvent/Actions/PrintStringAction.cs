@@ -19,7 +19,10 @@ namespace Backend.EasyEvent.Actions
         
         public override void DrawGUI()
         {
+            GUILayout.Space(10);
             base.DrawGUI();
+            GUILayout.Space(10);
+            
             text = EditorGUILayout.TextField("Text to Print", text);
             if (string.IsNullOrEmpty(text))
             {

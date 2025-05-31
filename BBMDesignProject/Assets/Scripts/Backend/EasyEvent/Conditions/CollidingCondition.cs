@@ -29,7 +29,9 @@ namespace Backend.EasyEvent.Conditions
 
         public override void DrawGUI()
         {
+            GUILayout.Space(10);
             base.DrawGUI();
+            GUILayout.Space(10);
             
             var types = Assembly.GetAssembly(typeof(BaseComponent))
                 .GetTypes()

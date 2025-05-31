@@ -1,7 +1,6 @@
 ﻿using Backend.Attributes;
 using Backend.Components;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Backend.EasyEvent.Actions
 {
@@ -26,7 +25,10 @@ namespace Backend.EasyEvent.Actions
 
         public override void DrawGUI()
         {
+            GUILayout.Space(10);
             base.DrawGUI();
+            GUILayout.Space(10);
+            
             onInvoke = (CustomEventScriptableObject)UnityEditor.EditorGUILayout.ObjectField("On Invoke", onInvoke, typeof(CustomEventScriptableObject), false);
             GUILayout.EndVertical();
         }
