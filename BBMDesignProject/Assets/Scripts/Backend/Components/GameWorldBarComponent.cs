@@ -14,9 +14,10 @@ namespace Backend.Components
         [SerializeField] private SerializableCustomVariable maxValue;
         [SerializeField] private Color backgroundColor = Color.gray;
         [SerializeField] private Color fillColor = Color.red;
-
+        [SerializeField] private Sprite barSprite;
         [SerializeField] private Image _fillImage;
         [SerializeField] private GameObject _valueBarUI;
+        [SerializeField] private Image _backgroundImage;
 
         public override void SetupComponent()
         {
@@ -58,8 +59,9 @@ namespace Backend.Components
             // Background
             GameObject backgroundGO = new GameObject("Background");
             backgroundGO.transform.SetParent(canvasGO.transform, false);
-            Image bgImage = backgroundGO.AddComponent<Image>();
-            bgImage.color = backgroundColor;
+            _backgroundImage = backgroundGO.AddComponent<Image>();
+            _backgroundImage.color = backgroundColor;
+            _backgroundImage.sprite = barSprite;
             RectTransform bgRect = backgroundGO.GetComponent<RectTransform>();
             bgRect.sizeDelta = new Vector2(100, 10);
 
@@ -68,19 +70,13 @@ namespace Backend.Components
             fillGO.transform.SetParent(backgroundGO.transform, false);
             _fillImage = fillGO.AddComponent<Image>();
             _fillImage.color = fillColor;
+            _fillImage.sprite = barSprite;
             _fillImage.type = Image.Type.Filled;
             _fillImage.fillMethod = Image.FillMethod.Horizontal;
 
-            RectTransform fillRect = fillGO.GetComponent<RectTransform>();
-            fillRect.anchorMin = new Vector2(0, 0);
-            fillRect.anchorMax = new Vector2(1, 1);
-            fillRect.offsetMin = Vector2.zero;
-            fillRect.offsetMax = Vector2.zero;
-
             _valueBarUI = canvasGO;
             _valueBarUI.transform.localScale = Vector3.one * 0.1f;
-
-            UpdateBarDisplay();
+            
         }
 
         private void UpdateBarDisplay()
@@ -92,6 +88,22 @@ namespace Backend.Components
 
             if (_fillImage != null)
                 _fillImage.fillAmount = fillAmount;
+        }
+
+        public void UpdateSprite()
+        {
+            if (_fillImage != null && barSprite != null)
+            {
+                 _backgroundImage.sprite = barSprite;
+                _backgroundImage.SetNativeSize();
+                
+                _fillImage.sprite = barSprite;
+                _fillImage.SetNativeSize();
+            }
+            else
+            {
+                Debug.LogWarning("Fill Image or Bar Sprite is not set.");
+            }
         }
     }
 }
