@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 namespace Backend.Components
 {
-    
     [Component]
     [AddComponentMenu("EasyPrototyping/Game World Bar Component")]
     public class GameWorldBarComponent : BaseComponent
