@@ -163,7 +163,7 @@ namespace Backend.EasyEvent.Conditions
             {
                 case VariableType.Integer:
                 case VariableType.Float:
-                    return new[] { CheckType.Equals, CheckType.GreaterThan, CheckType.LessThan };
+                    return new[] { CheckType.Equals, CheckType.GreaterThan, CheckType.GreaterEqualThan, CheckType.LessThan, CheckType.LessEqualThan };
                 case VariableType.String:
                 case VariableType.Boolean:
                     return new[] { CheckType.Equals };
@@ -189,28 +189,11 @@ namespace Backend.EasyEvent.Conditions
             if (comp != targetComp) return;
             if (varName != selectedVariableName) return;
 
-            switch (selectedVariableType)
-            {
-                case VariableType.Integer:
-                    if (value is int i && int.TryParse(valueToCompare, out var targetInt) && i == targetInt)
-                        Trigger(comp);
-                    break;
+            var comparator = VariableComparatorFactory.GetComparator(selectedVariableType);
+            if (comparator == null) return;
 
-                case VariableType.Float:
-                    if (value is float f && float.TryParse(valueToCompare, out var targetFloat) && Mathf.Approximately(f, targetFloat))
-                        Trigger(comp);
-                    break;
-
-                case VariableType.Boolean:
-                    if (value is bool b && bool.TryParse(valueToCompare, out var targetBool) && b == targetBool)
-                        Trigger(comp);
-                    break;
-                
-                case VariableType.String:
-                    if (value is string s && s == valueToCompare)
-                        Trigger(comp);
-                    break;
-            }
+            if (comparator.Compare(valueToCompare, value, checkType))
+                Trigger(comp);
         }
 
         private void Trigger(BaseComponent source)
@@ -223,7 +206,9 @@ namespace Backend.EasyEvent.Conditions
         {
             Equals,
             GreaterThan,
-            LessThan
+            GreaterEqualThan,
+            LessThan,
+            LessEqualThan
         }
         
         public enum ValueInputMode
