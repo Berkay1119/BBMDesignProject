@@ -11,6 +11,8 @@ namespace Backend.Components
         public float smoothSpeed = 1.0f;
         public Vector3 offset;
         
+        private Vector3 targetPos;
+        
         public override void SetupComponent()
         {
             
@@ -21,16 +23,20 @@ namespace Backend.Components
             SetName("Camera Follow");
             SetDescription("This component makes the camera follow this object smoothly.");
         }
-        
-        private void Start() {
-            offset = Camera.main.transform.position - this.transform.position;
-        }
     
         public void OnUpdate()
         {
-            Vector3 desiredPosition = transform.position + offset;
-            Vector3 smoothedPosition = Vector3.Lerp(Camera.main.transform.position, desiredPosition, smoothSpeed);
-            Camera.main.transform.position = smoothedPosition;
+            if (Camera.main == null)
+            {
+                Debug.Log("Main Camera is null!");
+                return;
+            }
+            
+            targetPos = transform.position;
+            Camera.main.transform.position = 
+                new Vector3(targetPos.x, targetPos.y, 0f) + 
+                new Vector3(offset.x, offset.y, 0f) +
+                new Vector3(0f, 0f, Camera.main.transform.position.z);
         }
     }
 }

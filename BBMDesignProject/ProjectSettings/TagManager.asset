@@ -6,16 +6,18 @@ TagManager:
   tags:
   - Coin
   - Platform
-  - Carrot
   - Enemy
-  - Thieft
   - Avatar
   - Collectible
-  - GoldenCarrot
-  - movingPlatform
-  - wp1
-  - wp2
   - Ammo
+  - Princess
+  - PinkDiamond
+  - StonePlatform
+  - PinkPlatform
+  - SlimyPlatform
+  - Mushroom
+  - IronObstacle
+  - ObstaclePlatform
   layers:
   - Default
   - TransparentFX
@@ -27,12 +29,12 @@ TagManager:
   - Avatar
   - Solid
   - Enemy
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Princess
+  - Player
+  - StonePlatform
+  - PinkPlatform
+  - IronObstacle
+  - ObstaclePlatform
   - 
   - 
   - 
