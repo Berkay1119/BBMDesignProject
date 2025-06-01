@@ -24,7 +24,11 @@ namespace Backend.Managers
 
                 if (_instance == null)
                 {
-                    Debug.LogError("UpdateManager instance not found! (It may have been destroyed or not initialized)");
+                    // Create new game object and add UpdateManager component
+                    GameObject updateManagerObject = new GameObject("UpdateManager");
+                    _instance = updateManagerObject.AddComponent<UpdateManager>();
+                    
+                    //Debug.LogError("UpdateManager instance not found! (It may have been destroyed or not initialized)");
                 }
                 
                 return _instance;

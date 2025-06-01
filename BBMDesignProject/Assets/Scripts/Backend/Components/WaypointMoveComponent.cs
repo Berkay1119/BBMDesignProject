@@ -90,6 +90,10 @@ namespace Backend.Components
             Gizmos.color = color;
             for (int i = 0; i < waypoints.Count; i++)
             {
+                if (waypoints[i] == null)
+                {
+                    continue;
+                }
                 Vector3 start = waypoints[i].transform.position;
                 Vector3 end = waypoints[(i + 1) % waypoints.Count].transform.position;
                 Gizmos.DrawLine(start, end);
