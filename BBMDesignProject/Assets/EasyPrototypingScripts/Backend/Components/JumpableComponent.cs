@@ -1,8 +1,10 @@
 using Backend.Attributes;
+using UnityEngine;
 
 namespace Backend.Components
 {
     [Component]
+    [AddComponentMenu("EasyPrototyping/Jumpable Component")]
     public class JumpableComponent : BaseComponent
     {
         public JumpableComponent()

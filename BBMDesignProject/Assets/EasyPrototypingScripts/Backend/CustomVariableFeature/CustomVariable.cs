@@ -15,6 +15,10 @@
 
         private void ParseTheValue(string newVariableValue)
         {
+            if (newVariableValue == null)
+            {
+                return;
+            }
             newVariableValue = newVariableValue.Trim();
             newVariableValue = newVariableValue.Replace(" ", "");
             newVariableValue = newVariableValue.ToLower();

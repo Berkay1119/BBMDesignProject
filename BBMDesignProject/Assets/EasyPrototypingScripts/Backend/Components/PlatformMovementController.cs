@@ -1,4 +1,6 @@
-﻿using Backend.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using Backend.Attributes;
 using Backend.CustomVariableFeature;
 using Backend.Interfaces;
 using UnityEngine;
@@ -18,6 +20,8 @@ namespace Backend.Components
         
         private float MoveSpeed => ParseFloatVariable(moveSpeedVariable, 0f);
         private float JumpForce => ParseFloatVariable(jumpForceVariable, 0f);
+        
+        private List<JumpableComponent> _jumpableComponents = new List<JumpableComponent>();
 
         private float ParseFloatVariable(SerializableCustomVariable variable, float defaultValue)
         {
@@ -49,7 +53,21 @@ namespace Backend.Components
         {
             
         }
-        
+
+        private void FixedUpdate()
+        {
+            for (int i = 0; i < _jumpableComponents.Count; i++)
+            {
+                var component = _jumpableComponents[i];
+                if (component==null || !component.gameObject.activeInHierarchy)
+                {
+                    OnSimulatedCollisionExit(); 
+                    _jumpableComponents.RemoveAt(i);
+                    i--; // Adjust index after removal
+                }
+            }
+        }
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -78,6 +96,10 @@ namespace Backend.Components
             {
                 isGrounded = true;
                 _platformRb = col.rigidbody;
+                if (!_jumpableComponents.Contains(col.gameObject.GetComponent<JumpableComponent>()))
+                {
+                    _jumpableComponents.Add(col.gameObject.GetComponent<JumpableComponent>());
+                }
             }
             
         }
@@ -88,7 +110,18 @@ namespace Backend.Components
             {
                 isGrounded = false;
                 _platformRb = null;
+                var jumpableComponent = col.gameObject.GetComponent<JumpableComponent>();
+                if (_jumpableComponents.Contains(jumpableComponent))
+                {
+                    _jumpableComponents.Remove(jumpableComponent);
+                }
             }
+        }
+
+        private void OnSimulatedCollisionExit()
+        {
+            isGrounded = false;
+            _platformRb = null;
         }
         
 
