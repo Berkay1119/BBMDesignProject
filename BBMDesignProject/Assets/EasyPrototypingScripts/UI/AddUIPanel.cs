@@ -26,7 +26,7 @@ namespace UI
             GUILayout.BeginVertical("box");
             _settings.PanelName = EditorGUILayout.TextField("Panel Name: ", _settings.PanelName);
             _settings.Position = (UIPosition)EditorGUILayout.EnumPopup("Position: ", _settings.Position);
-            _settings.Size = EditorGUILayout.IntField("Size: ", _settings.Size);
+            _settings.Size = EditorGUILayout.IntField("Size (1-10): ", _settings.Size);
             _settings.BackgroundImage = (Sprite)EditorGUILayout.ObjectField("Background Image: ", _settings.BackgroundImage, typeof(Sprite), true);
             _settings.IconImage = (Sprite)EditorGUILayout.ObjectField("Icon:", _settings.IconImage, typeof(Sprite), true);
             _settings.TrackingObject = (GameObject)EditorGUILayout.ObjectField("Tracking Object: ", _settings.TrackingObject, typeof(GameObject), true);

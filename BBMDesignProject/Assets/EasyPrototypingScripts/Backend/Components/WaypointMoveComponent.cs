@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Backend.Attributes;
 using Backend.Object;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Backend.Components
 {
@@ -10,7 +11,9 @@ namespace Backend.Components
     public class WaypointMoveComponent : BaseComponent
     {
         [SerializeField] private List<EasyObject> waypoints = new List<EasyObject>();
-        [SerializeField] private float oneLoopDuration = 1f;
+        [FormerlySerializedAs("durationOfOneLoop")]
+        [Tooltip("Duration of one full loop in seconds")]
+        [FormerlySerializedAs("oneLoopDuration")] [SerializeField] private float durationOfOneLoopInSeconds = 1f;
         [SerializeField] private Color color = Color.green;
 
         private int index = 0;
@@ -49,7 +52,7 @@ namespace Backend.Components
             if (waypoints.Count == 0 || totalPathLength == 0f) return;
             
             float currentSegmentLength = segmentLengths[index];
-            float segmentDuration = (currentSegmentLength / totalPathLength) * oneLoopDuration;
+            float segmentDuration = (currentSegmentLength / totalPathLength) * durationOfOneLoopInSeconds;
             timer += Time.deltaTime;
             float t = timer / segmentDuration;
 
