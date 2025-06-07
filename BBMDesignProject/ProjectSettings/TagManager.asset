@@ -22,11 +22,14 @@ TagManager:
   - Fire
   - Life
   - FireWoman
+  - Flail
+  - Boss
+  - Knife
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Boss
   - Water
   - UI
   - Collectible
@@ -40,10 +43,10 @@ TagManager:
   - IronObstacle
   - ObstaclePlatform
   - Bomb
-  - 
+  - Flail
   - Fire
-  - 
-  - 
+  - Knife
+  - Boss
   - 
   - 
   - 
