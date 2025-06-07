@@ -19,6 +19,9 @@ TagManager:
   - IronObstacle
   - ObstaclePlatform
   - Bomb
+  - Fire
+  - Life
+  - FireWoman
   layers:
   - Default
   - TransparentFX
@@ -38,7 +41,7 @@ TagManager:
   - ObstaclePlatform
   - Bomb
   - 
-  - 
+  - Fire
   - 
   - 
   - 

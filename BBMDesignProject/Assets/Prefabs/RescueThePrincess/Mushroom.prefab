@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 6215219955632509367}
   - component: {fileID: 2660334010809320318}
   - component: {fileID: 4833339525955269068}
-  - component: {fileID: 3189141131306064371}
   m_Layer: 6
   m_Name: Mushroom
   m_TagString: Mushroom
@@ -112,18 +111,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPhysicsActive: 0
---- !u!114 &3189141131306064371
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2064342425964746196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94a53438b5544ad78920a25738ff008e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _name: point
-  _value: 15
-  _type: 1

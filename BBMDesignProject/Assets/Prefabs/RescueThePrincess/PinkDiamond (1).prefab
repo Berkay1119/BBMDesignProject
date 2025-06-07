@@ -125,5 +125,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: point
-  _value: 3
+  _value: 5
   _type: 1
