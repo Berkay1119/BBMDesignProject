@@ -12,6 +12,7 @@ namespace UI
         private static UIPanelSettings _settings;
         private string[] _availableVariables = new string[0];
         private int _selectedVariableIndex = 0;
+        private bool _trackingObjectExists = false;
 
         public static void ShowWindow()
         {
@@ -29,8 +30,18 @@ namespace UI
             _settings.Size = EditorGUILayout.IntField("Size (1-10): ", _settings.Size);
             _settings.BackgroundImage = (Sprite)EditorGUILayout.ObjectField("Background Image: ", _settings.BackgroundImage, typeof(Sprite), true);
             _settings.IconImage = (Sprite)EditorGUILayout.ObjectField("Icon:", _settings.IconImage, typeof(Sprite), true);
-            _settings.TrackingObject = (GameObject)EditorGUILayout.ObjectField("Tracking Object: ", _settings.TrackingObject, typeof(GameObject), true);
-
+            
+            _trackingObjectExists = EditorGUILayout.Toggle("Track Variable", _trackingObjectExists);
+            if (!_trackingObjectExists)
+            {
+                _settings.TrackingObject = null;
+                _selectedVariableIndex = 0; // Reset variable index if no tracking object
+            }
+            else
+            {
+                _settings.TrackingObject = (GameObject)EditorGUILayout.ObjectField("Tracking Object: ", _settings.TrackingObject, typeof(GameObject), true);
+            }
+            
             if (_settings.TrackingObject != null)
             {
                 _availableVariables = _settings.TrackingObject
@@ -61,9 +72,9 @@ namespace UI
 
         private void CreateNewUIPanel()
         {
-            if (string.IsNullOrEmpty(_settings.PanelName) || _settings.TrackingObject == null || string.IsNullOrEmpty(_settings.TrackedVariableName))
+            if (string.IsNullOrEmpty(_settings.PanelName))
             {
-                Debug.LogWarning("Please ensure Panel Name, Tracking Object and Tracked Variable are assigned.");
+                Debug.LogWarning("Please ensure Panel Name, Tracking Object are assigned.");
                 return;
             }
             
@@ -97,10 +108,16 @@ namespace UI
             rectTransform.anchoredPosition = Vector2.zero;
             rectTransform.localScale = Vector3.one * _settings.Size;
 
-            var display = panel.AddComponent<UICustomVariableDisplay>();
-            display.target = _settings.TrackingObject;
-            display.variableName = _settings.TrackedVariableName;
-            display.userInputText = _settings.DisplayText;
+            UICustomVariableDisplay display = null;
+
+            if (_settings.TrackingObject != null)
+            {
+                display = panel.AddComponent<UICustomVariableDisplay>();
+                display.target = _settings.TrackingObject;
+                display.variableName = _settings.TrackedVariableName;
+                display.userInputText = _settings.DisplayText;
+            }
+            
 
             if (_settings.IconImage != null)
             {
@@ -135,25 +152,32 @@ namespace UI
             
             var text = textObject.AddComponent<TMPro.TextMeshProUGUI>();
             text.alignment = TMPro.TextAlignmentOptions.Center;
-            display.text = text;
+            
+            if (display!=null)
+            {
+                display.text = text;
+            }
             
             // Set initial text value
-            var trackedVar = _settings.TrackingObject
-                .GetComponents<SerializableCustomVariable>()
-                .FirstOrDefault(v => v.Name == _settings.TrackedVariableName);
-
-            // Set initial text value
-            if (trackedVar != null)
+            if (display!=null)
             {
-                if (!string.IsNullOrWhiteSpace(_settings.DisplayText))
+                var trackedVar = _settings.TrackingObject
+                    .GetComponents<SerializableCustomVariable>()
+                    .FirstOrDefault(v => v.Name == _settings.TrackedVariableName);
+                // Set initial text value
+                if (trackedVar != null)
                 {
-                    text.text = $"{_settings.DisplayText}: {trackedVar._value}";
-                }
-                else
-                {
-                    text.text = $"{trackedVar._value}";
+                    if (!string.IsNullOrWhiteSpace(_settings.DisplayText))
+                    {
+                        text.text = $"{_settings.DisplayText}: {trackedVar._value}";
+                    }
+                    else
+                    {
+                        text.text = $"{trackedVar._value}";
+                    }
                 }
             }
+            
             
             Close();
         }

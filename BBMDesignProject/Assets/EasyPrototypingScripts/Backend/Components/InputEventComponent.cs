@@ -6,8 +6,8 @@ using UnityEngine.Events;
 namespace Backend.Components
 {
     [Component]
-    [AddComponentMenu("EasyPrototyping/Input Action Component")]
-    public class InputActionComponent:BaseComponent, IUpdatable
+    [AddComponentMenu("EasyPrototyping/Input Event Component")]
+    public class InputEventComponent:BaseComponent, IUpdatable
     {
         [SerializeField] private KeyCode actionKey = KeyCode.Mouse0;
         [SerializeField] private UnityEvent actionEvent;
@@ -16,9 +16,9 @@ namespace Backend.Components
             
         }
         
-        public InputActionComponent()
+        public InputEventComponent()
         {
-            SetName("Input Action");
+            SetName("Input Event");
             SetDescription("This component allows the object to respond to input actions.");
         }
 

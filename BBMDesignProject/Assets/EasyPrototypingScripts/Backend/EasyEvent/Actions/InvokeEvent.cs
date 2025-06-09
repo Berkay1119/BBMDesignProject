@@ -5,14 +5,14 @@ using UnityEngine;
 namespace Backend.EasyEvent.Actions
 {
     [Action]
-    public class InvokeAction:EasyAction
+    public class InvokeEvent:EasyAction
     {
         public CustomEventScriptableObject onInvoke;
 
-        public InvokeAction()
+        public InvokeEvent()
         {
-            actionName = "Invoke Action";
-            actionDescription = "This action invokes the UnityEvent when executed.";
+            actionName = "Invoke Event";
+            actionDescription = "This Event invokes the UnityEvent when executed.";
         }
 
         public override void Execute(BaseComponent source, BaseComponent other)

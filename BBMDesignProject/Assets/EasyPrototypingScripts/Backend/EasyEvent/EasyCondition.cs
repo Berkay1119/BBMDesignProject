@@ -18,6 +18,7 @@ namespace Backend.EasyEvent
         {
             GUILayout.BeginVertical();
             GUILayout.Label("Condition Name: " + conditionName);
+            GUILayout.Label("Condition Description: " + conditionDescription);
         }
 
         public virtual void Setup(EasyEvent easyEvent)

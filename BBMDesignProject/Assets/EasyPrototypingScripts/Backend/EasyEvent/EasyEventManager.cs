@@ -36,6 +36,25 @@ namespace Backend.EasyEvent
                 events[i].eventDescription = newEvent.eventDescription;
                 events[i].Setup(); 
          }
-         
+
+         public void SaveAllEvents(List<EasyEvent> newEvents)
+         {
+             if (newEvents == null || newEvents.Count != events.Count)
+             {
+                 Debug.LogError("Cannot save events: Mismatched event count.");
+                 return;
+             }
+
+             for (int i = 0; i < newEvents.Count; i++)
+             {
+                 SaveEvent(i, newEvents[i]);
+             }
+         }
+
+         public void ClearAllEvents()
+         {
+             
+                events.Clear();
+         }
     }
 }

@@ -60,8 +60,27 @@ namespace UI
                 GUI.backgroundColor = new Color(1f, 0f, 0.54f, 1f);
                 GUILayout.BeginVertical("box");
                 GUI.backgroundColor = oldBg;
+
+                //GUILayout.Space(15);
                 
-                GUILayout.Space(15);
+                GUIStyle centeredBoldLabel = new GUIStyle(EditorStyles.boldLabel)
+                {
+                    fontSize = 32,
+                    alignment = TextAnchor.MiddleCenter,
+                    fontStyle = FontStyle.Bold,
+                    normal = { textColor = Color.white } // Optional: customize color
+                };
+
+                // Add some vertical space before and after for better spacing
+                GUILayout.Space(10);
+
+                // Draw a boxed label for more visual clarity
+                EditorGUILayout.BeginVertical("box");
+                GUILayout.Label($"{ev.eventName} Event", centeredBoldLabel, GUILayout.ExpandWidth(true));
+                EditorGUILayout.EndVertical();
+
+                GUILayout.Space(10);
+                
                 ev.eventName        = EditorGUILayout.TextField("Event Name",        ev.eventName ?? "");
                 ev.eventDescription = EditorGUILayout.TextField("Event Description", ev.eventDescription ?? "");
 
@@ -157,6 +176,12 @@ namespace UI
                 for (int a = 0; a < ev.Actions.Count; a++)
                 {
                     var act = ev.Actions[a];
+                    if (act==null)
+                    {
+                        ev.Actions.RemoveAt(a);
+                        a--; // Adjust index after removal
+                        continue; // Skip null actions
+                    }
                     
                     GUILayout.BeginVertical();    // Vertical wrapper for indent  
                     GUILayout.Space(5);      // Spacing between action boxes
@@ -260,6 +285,32 @@ namespace UI
                 manager.AddEvent(newEvt);
                 _events.Add(newEvt);
             }
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+
+            if (GUILayout.Button("Save All Events", GUILayout.Width(buttonWidth)) 
+                && _easyEventManager != null && _easyEventManager.Events != null)
+            {
+                _easyEventManager.SaveAllEvents( _events);
+            }
+            
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            
+            if (GUILayout.Button("Clear All Events", GUILayout.Width(buttonWidth)))
+            {
+                _easyEventManager.ClearAllEvents();
+                _events.Clear();
+            }
+            
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             

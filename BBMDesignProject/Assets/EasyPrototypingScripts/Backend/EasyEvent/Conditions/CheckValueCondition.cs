@@ -85,7 +85,7 @@ namespace Backend.EasyEvent.Conditions
                         int intVal = int.TryParse(valueToCompare, out var iVal) ? iVal : 0;
                         intVal = EditorGUILayout.IntField("Target Value", intVal);
                         valueToCompare = intVal.ToString();
-                        Debug.Log("val to comp :" + valueToCompare);
+                        //Debug.Log("val to comp :" + valueToCompare);
                         break;
 
                     case VariableType.Float:
