@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Backend.EasyEvent.Actions;
 using UnityEngine;
 
 namespace Backend.EasyEvent
@@ -22,8 +24,23 @@ namespace Backend.EasyEvent
               easyEvent.Setup(); 
          }
 
+        private void OnValidate()
+        {
+            foreach (var easyEvent in events)
+            {
+                foreach (var action in easyEvent.Actions)
+                {
+                    if (action is InvokeAction)
+                    {
+                        action.actionName = "Invoke Event";
+                        action.actionDescription = "This Event invokes the UnityEvent when executed.";
+                    }
+                }
+            }
+        }
 
-         public void RemoveEvent(int i)
+
+        public void RemoveEvent(int i)
          {
                 events.RemoveAt(i);
          }
