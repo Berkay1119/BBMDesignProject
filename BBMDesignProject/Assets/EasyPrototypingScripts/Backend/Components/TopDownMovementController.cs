@@ -13,8 +13,7 @@ namespace Backend.Components
         [SerializeField] private KeyCode upKey = KeyCode.W;
         [SerializeField] private KeyCode downKey = KeyCode.S;
         [SerializeField] private float moveSpeed = 5f;
-
-        private Rigidbody2D _currentPlatformRb;
+        
         private Rigidbody2D _rigidbody2D;
 
         public override void SetupComponent()
@@ -49,23 +48,6 @@ namespace Backend.Components
             }
         }
 
-        protected override void OnCollisionEnter2D(Collision2D col)
-        {
-            base.OnCollisionEnter2D(col);
-            if (col.gameObject.CompareTag("Platform"))
-            {
-                _currentPlatformRb = col.rigidbody;
-            }
-        }
-
-        private void OnCollisionExit2D(Collision2D col)
-        {
-            if (col.gameObject.CompareTag("Platform"))
-            {
-                _currentPlatformRb = null;
-            }
-        }
-        
 
         public void OnUpdate()
         {
